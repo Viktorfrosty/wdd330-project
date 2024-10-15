@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/main.js",
+    "build": "parcel build src/scripts/main.js",
     "lint": "eslint *.js src/**/*.js src/**/*.mjs",
     "lint-fix": "eslint *.js src/**/*.js src/**/*.mjs --fix",
     "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,mjs,ts,css}\""

@@ -1,1 +1,1 @@
-{"mappings":"","sources":["src/main.js"],"sourcesContent":[""],"names":[],"version":3,"file":"main.js.map"}
+{"mappings":"ACAO,SAAS;IAChB,MAAM,WAAW;IACjB,QAAQ,GAAG,CAAC;IACZ,QAAQ,GAAG,CAAC;AACZ;;;ADFA,CAAA,GAAA,yCAAS","sources":["src/scripts/main.js","src/scripts/main.mjs"],"sourcesContent":["import { aeMiBanana } from \"./main.mjs\";\n\naeMiBanana();","export function aeMiBanana() {\r\nconst yayayahu = \"lol\";\r\nconsole.log(yayayahu);\r\nconsole.log('rofl');\r\n}"],"names":[],"version":3,"file":"main.js.map"}
