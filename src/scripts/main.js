@@ -1,3 +1,3 @@
-import { aeMiBanana } from "./main.mjs";
+import { aeMiBanana } from "./main.mjs"
 
-aeMiBanana();
+aeMiBanana()

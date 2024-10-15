@@ -1,5 +1,5 @@
 export function aeMiBanana() {
-const yayayahu = "lol";
-console.log(yayayahu);
-console.log('rofl');
+  const yayayahu = "lol"
+  console.log(yayayahu)
+  console.log("rofl")
 }
