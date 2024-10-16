@@ -16,9 +16,12 @@ export function headDescriptionChanger(description = "None") {
 
 export function renderPageElements(page="Default") {
   const headerElement = document.querySelector("body > header");
+  const testbox1 = document.createElement("p");
+  testbox1.textContent = page;
+  headerElement.appendChild(testbox1);
+  
   const footerElement = document.querySelector("body > footer");
-  const testbox = document.createElement("p");
-  testbox.textContent = page;
-  headerElement.appendChild(testbox);
-  footerElement.appendChild(testbox);
+  const testbox2 = document.createElement("p");
+  testbox2.textContent = page;
+  footerElement.appendChild(testbox2);
 }
