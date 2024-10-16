@@ -1,4 +1,4 @@
-const url = "https://api.scryfall.com/cards/named?q=Force of Will";
+const url = "https://api.scryfall.com/cards/named?fuzzy=aust+com";
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";
 
