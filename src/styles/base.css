@@ -1,0 +1,32 @@
+/* ---------------------- */
+/* -- General Elements -- */
+/* -----------↓---------- */
+
+:root {
+
+    /* Color palette (page) */
+    --main-color: #1d5890;
+    --secondary-color: #393939;
+    --detail1-color: #ffffff;
+    --detail2-color: #000000;
+    /* Fonts */
+    --headers-fonts: Kanit, serif, arial;
+    --paragraphs-fonts: Syne, sans-serif, garamond;
+    /* others elements */
+    --background: linear-gradient(to right, var(--main-color), var(--secondary-color));
+}
+
+body {
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* -----------x---------- */
+/* - Home Page Elements - */
+/* -----------↓---------- */
+
+
+/* -----------x---------- */
+/* - Card Page Elements - */
+/* -----------↓---------- */
