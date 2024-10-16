@@ -2,4 +2,4 @@
 WDD 330 Final Project
 
 Netlify page:
-[text](https://trading-card-info-tracker.netlify.app/)
+https://trading-card-info-tracker.netlify.app/

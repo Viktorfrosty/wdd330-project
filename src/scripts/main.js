@@ -1,3 +1,8 @@
-import { aeMiBanana } from "./main.mjs"
+import { aeMiBanana } from "./main.mjs";
+import { headTitleChanger, headDescriptionChanger } from "./utils.mjs";
 
-aeMiBanana()
+const description = "lorem ipsum";
+
+headTitleChanger("Home");
+headDescriptionChanger(description);
+aeMiBanana();
