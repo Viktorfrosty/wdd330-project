@@ -1,13 +1,7 @@
-import { aeMiBanana } from "./main.mjs";
-import { headTitleChanger, headDescriptionChanger, renderPageElements } from "./dataVisualization.mjs";
-import { fetchData } from "./dataHandler.mjs";
+import visualizer from "./dataVisualization.mjs";
 
+const title = "Home";
 const description = "lorem ipsum";
+const page = new visualizer(title, description);
 
-headTitleChanger("Home");
-headDescriptionChanger(description);
-renderPageElements();
-aeMiBanana();
-
-const card = fetchData();
-console.log(card);
+page.run();

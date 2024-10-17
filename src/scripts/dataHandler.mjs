@@ -1,13 +1,9 @@
-const url = "https://api.scryfall.com/cards/named?fuzzy=aust+com";
-const userAgent = "TradingCardsInfoTracker/0.0.1";
-const accept = "application/json";
-
 export async function fetchData(url) {
   try {
     const response = await fetch(url, {
       headers: {
-        "User-Agent": userAgent,
-        "Accept": accept,
+        "User-Agent": "TradingCardsInfoTracker/0.0.1",
+        Accept: "application/json",
       },
     });
     if (!response.ok) {

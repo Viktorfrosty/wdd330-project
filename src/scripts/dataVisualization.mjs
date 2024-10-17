@@ -1,27 +1,41 @@
 // Data visualization module.
 
-export function headTitleChanger(page = "Default") {
-  // Customize the page title.
-  const title = document.getElementById("head-title");
-  const ogTitle = document.getElementById("og-title");
-  title.textContent = `Trading Cards Info Tracker | ${page}`;
-  ogTitle.setAttribute("content", `Trading Cards Info Tracker | ${page}`);
-}
+export default class Visualizer {
+  constructor(title = "Default", description = "None", link = "default") {
+    this.title = title;
+    this.description = description;
+    this.link = link;
+  }
 
-export function headDescriptionChanger(description = "None") {
-  // Customize the page description.
-  const title = document.getElementById("head-desc");
-  title.setAttribute("content", description);
-}
+  run() {
+    this.headTitleChanger(this.title);
+    this.headDescriptionChanger(this.description);
+    this.headLinkChanger(this.link);
+    console.log("success");
+  }
 
-export function renderPageElements(page="Default") {
-  const headerElement = document.querySelector("body > header");
-  const testbox1 = document.createElement("p");
-  testbox1.textContent = page;
-  headerElement.appendChild(testbox1);
-  
-  const footerElement = document.querySelector("body > footer");
-  const testbox2 = document.createElement("p");
-  testbox2.textContent = page;
-  footerElement.appendChild(testbox2);
+  headTitleChanger(title) {
+    // Customize the page title and meta title.
+    const pageTitle = document.getElementById("head-title");
+    const metaTitle = document.getElementById("meta-title");
+    pageTitle.textContent = `Trading Cards Info Tracker | ${title}`;
+    metaTitle.setAttribute("content", `Trading Cards Info Tracker | ${title}`);
+    console.log(pageTitle);
+  }
+
+  headDescriptionChanger(description) {
+    // Customize the page meta description.
+    const metaDesc = document.getElementById("meta-desc");
+    metaDesc.setAttribute("content", description);
+    console.log(metaDesc);
+  }
+
+  headLinkChanger(link) {
+    // Customize the page meta link.
+    const metaLink = document.getElementById("meta-link");
+    if (link === !"default") {
+      metaLink.setAttribute("content", link);
+    }
+    console.log(metaLink);
+  }
 }
