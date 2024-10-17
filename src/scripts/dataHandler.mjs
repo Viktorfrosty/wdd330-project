@@ -1,4 +1,6 @@
 // Data handler module.
+
+// API call requirements.
 const baseURL = "https://api.scryfall.com";
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";
@@ -22,7 +24,7 @@ export function getParams(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const value = urlParams.get(param);
-  console.log(value);
+  console.log(`Parameter Value: ${value}`);
   return value;
 }
 
@@ -37,6 +39,7 @@ export class cardData {
   async fetchCardData() {
     try {
       const requestedUrl = `${baseURL}/cards/named?fuzzy=${this.cardName}`;
+      console.log(`API link: ${requestedUrl}`)
       const response = await fetch(requestedUrl, {
         headers: {
           "User-Agent": userAgent,
@@ -62,6 +65,7 @@ export class setData {
   async fetchCardData() {
     try {
       const requestedUrl = `${baseURL}/sets/${this.setName}`;
+      console.log(`API link: ${requestedUrl}`)
       const response = await fetch(requestedUrl, {
         headers: {
           "User-Agent": userAgent,
