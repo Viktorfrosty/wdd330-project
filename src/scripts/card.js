@@ -1,6 +1,7 @@
-import { cardData, getParams } from "./dataHandler.mjs";
+import { cardData, getParams, updateLinks } from "./dataHandler.mjs";
 import Visualizer from "./dataVisualization.mjs";
 
+updateLinks();
 const cardName = getParams("name");
 
 const card = new cardData(cardName);

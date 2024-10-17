@@ -1,6 +1,7 @@
-import { setData, getParams } from "./dataHandler.mjs";
+import { setData, getParams, updateLinks } from "./dataHandler.mjs";
 import Visualizer from "./dataVisualization.mjs";
 
+updateLinks();
 const setName = getParams("name");
 
 const set = new setData(setName);

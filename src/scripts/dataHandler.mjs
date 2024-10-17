@@ -3,11 +3,26 @@ const baseURL = "https://api.scryfall.com";
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";
 
+// Function to update the links with query parameters
+export function updateLinks() {
+  const cardLink = document.getElementById('card-link');
+  const setLink = document.getElementById('set-link');
+  if (cardLink) {
+    cardLink.href = 'card.html?name=black+lotus';
+    console.log("cardlink success!");
+  }
+  if (setLink) {
+    setLink.href = 'set.html?name=aer';
+    console.log("setLink success!");
+  }
+}
+
 // search parameter retriever.
 export function getParams(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const value = urlParams.get(param);
+  console.log(value);
   return value;
 }
 
