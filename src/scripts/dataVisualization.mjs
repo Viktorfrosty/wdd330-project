@@ -1,10 +1,8 @@
 // Data visualization module.
 
 export default class Visualizer {
-  constructor(title = "Default", description = "None", link = "default") {
+  constructor(title = "Default") {
     this.title = title;
-    this.description = description;
-    this.link = link;
   }
 
   run() {
