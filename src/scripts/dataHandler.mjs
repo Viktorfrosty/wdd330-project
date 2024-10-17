@@ -36,10 +36,12 @@ export class cardData {
   constructor(cardName) {
     this.cardName = cardName;
   }
+
   async fetchCardData() {
     try {
       const requestedUrl = `${baseURL}/cards/named?fuzzy=${this.cardName}`;
-      console.log(`API link: ${requestedUrl}`)
+      console.log(`API link: ${requestedUrl}`);
+      await this.delay(100); // Add delay here
       const response = await fetch(requestedUrl, {
         headers: {
           "User-Agent": userAgent,
@@ -54,6 +56,10 @@ export class cardData {
     } catch (error) {
       console.error("Error retrieving data:", error);
     }
+  }
+  // Required API fetch delay.
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
 
@@ -62,10 +68,12 @@ export class setData {
   constructor(setName) {
     this.setName = setName;
   }
+
   async fetchCardData() {
     try {
       const requestedUrl = `${baseURL}/sets/${this.setName}`;
-      console.log(`API link: ${requestedUrl}`)
+      console.log(`API link: ${requestedUrl}`);
+      await this.delay(100); // Add delay here
       const response = await fetch(requestedUrl, {
         headers: {
           "User-Agent": userAgent,
@@ -80,5 +88,9 @@ export class setData {
     } catch (error) {
       console.error("Error retrieving data:", error);
     }
+  }
+  // Required API fetch delay.
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
