@@ -1,20 +1,12 @@
-// import { fetchData } from "./dataHandler.mjs";
-// import {
-//   headTitleChanger,
-//   headDescriptionChanger,
-//   renderPageElements,
-// } from "./dataVisualization.mjs";
+import { cardData, getParams } from "./dataHandler.mjs";
+import Visualizer from "./dataVisualization.mjs";
 
-// const url = "https://api.scryfall.com/cards/named?fuzzy=aust+com";
+const cardName = getParams("name");
 
-// const card = fetchData(url);
+const card = new cardData(cardName);
 
-// card.then((cardData) => {
-//   console.log(cardData.name);
-//   console.log(cardData);
-//   const description = `${cardData.name} detailed information page`;
-//   headTitleChanger(cardData.name);
-//   headDescriptionChanger(description);
-// });
-
-// renderPageElements();
+card.fetchCardData().then((cardInfo) => {
+  const page = new Visualizer(cardInfo.name, cardInfo.object);
+  console.log(cardInfo);
+  page.run();
+});

@@ -1,6 +1,5 @@
 import visualizer from "./dataVisualization.mjs";
 
-const title = "Home";
-const page = new visualizer(title);
+const page = new visualizer("Home");
 
 page.run();
