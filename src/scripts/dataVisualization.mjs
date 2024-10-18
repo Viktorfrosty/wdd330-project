@@ -26,7 +26,7 @@ export default class Visualizer {
     }
     metaTitle.textContent = `${capitalize(type)} ${title} ${misc} | Trading Cards Info Tracker`;
   }
-  
+
   pageTitleChanger(title) {
     // customize the title of the page.
     const header = document.querySelector("header");
