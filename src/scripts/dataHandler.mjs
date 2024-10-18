@@ -91,30 +91,35 @@ export async function symbolsData() {
 
 // Convert every text symbol into an image symmbol
 export function symbolConverter(text) {
-  const symbolsInfo = getLocalStorage("symbols");
-  console.log(`Pre-worked text: ${text}`);
-  const symbolslisted = [];
-  const matches = text.match(regex);
-  if (matches) {
-    symbolslisted.push(...matches);
-  }
-  if (symbolslisted.length >= 1) {
-    symbolslisted.forEach((textSymbol) => {
-      symbolsInfo.data.forEach((retrievedSymbol) => {
-        if (textSymbol === retrievedSymbol.symbol) {
-          const imgElement = `<img loading="eager" src="${retrievedSymbol.svg_uri}" alt="${retrievedSymbol.english}" width="15">`;
-          console.log(
-            `symbolRetriever function test success. symbol description: ${retrievedSymbol.english} svg symbol link: ${retrievedSymbol.svg_uri}`,
-          );
-          text = text.replace(textSymbol, imgElement);
-        }
-      });
-    });
-    console.log(`Post-worked text: ${text}`);
+  if (typeof text !== "string") {
+    console.log("symbolConverter function skipped. text is not string.");
     return text;
   } else {
-    console.log("symbolConverter function skipped.");
-    return text;
+    const symbolsInfo = getLocalStorage("symbols");
+    console.log(`Pre-worked text: ${text}`);
+    const symbolslisted = [];
+    const matches = text.match(regex);
+    if (matches) {
+      symbolslisted.push(...matches);
+    }
+    if (symbolslisted.length >= 1) {
+      symbolslisted.forEach((textSymbol) => {
+        symbolsInfo.data.forEach((retrievedSymbol) => {
+          if (textSymbol === retrievedSymbol.symbol) {
+            const imgElement = `<img loading="eager" src="${retrievedSymbol.svg_uri}" alt="${retrievedSymbol.english}" width="15">`;
+            console.log(
+              `symbolRetriever function test success. symbol description: ${retrievedSymbol.english} svg symbol link: ${retrievedSymbol.svg_uri}`,
+            );
+            text = text.replace(textSymbol, imgElement);
+          }
+        });
+      });
+      console.log(`Post-worked text: ${text}`);
+      return text;
+    } else {
+      console.log("symbolConverter function skipped. Not symbols found.");
+      return text;
+    }
   }
 }
 
@@ -123,7 +128,7 @@ export function updateLinks() {
   const cardLink = document.getElementById("card-link");
   const setLink = document.getElementById("set-link");
   if (cardLink) {
-    cardLink.href = "card.html?name=black+lotus";
+    cardLink.href = "card.html?id=359d1b13-6156-43b0-a9a7-6bfff36c1a91";
     console.log("cardlink success!");
   }
   if (setLink) {
@@ -146,12 +151,12 @@ export default class listData {}
 
 // card data retriever.
 export class cardData {
-  constructor(cardName) {
-    this.cardName = cardName;
+  constructor(id) {
+    this.id = id;
   }
 
   async fetchData() {
-    const requestedUrl = `${baseURL}/cards/named?fuzzy=${this.cardName}`;
+    const requestedUrl = `${baseURL}/cards/${this.id}`;
     console.log(`API link: ${requestedUrl}`);
     await delay(100);
     const response = await fetch(requestedUrl, {

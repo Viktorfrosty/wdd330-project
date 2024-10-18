@@ -1,5 +1,36 @@
 import { setIconRetriever, symbolConverter } from "./dataHandler.mjs";
 
+// Generate the desired elements.
+function elementGenerator(list, object) {
+  const root = document.getElementById("root");
+  list.forEach((property) => {
+    if (property !== "set_id") {
+      if (property !== "image_uris") {
+        if (property !== "set_id") {
+          if (property in object) {
+            console.log(
+              `${object.name} ${property}: ${symbolConverter(object[property])}`,
+            );
+            const element = document.createElement("p");
+            element.innerHTML = symbolConverter(object[property]);
+            element.setAttribute("id", property);
+            root.appendChild(element);
+          }
+        }
+      }
+    } else {
+      if (object.set_id) {
+        console.log(setIconRetriever(object.set_id));
+        const element = document.createElement("p");
+        element.innerHTML = setIconRetriever(object[property]);
+        element.setAttribute("id", property);
+        root.appendChild(element);
+      }
+    }
+  });
+}
+
+// Organize the card details.
 export default class cardDetails {
   constructor(card) {
     this.card = card;
@@ -7,15 +38,47 @@ export default class cardDetails {
   render() {
     this.CardInfoOrganizer(this.card);
   }
-  async CardInfoOrganizer(card) {
-    const display = document.getElementById("root");
-    const cost = symbolConverter(card.mana_cost);
-    const cmc = card.cmc;
-    const type = card.type_line;
-    const text = symbolConverter(card.oracle_text);
-    const setName = card.set_name;
-    const setCode = card.set;
-    const setIcon = await setIconRetriever(card.set_id);
-    display.innerHTML = `<p>${type}</p><p>Mana cost: ${cost}</p><p>Combined Mana cost: ${cmc}</p><p>Text: ${text}<p>Set: ${setName} (${setCode.toUpperCase()}) ${setIcon}</p><img loading="lazy" src="${card.image_uris.normal}" alt="${card.name} image">`;
+  CardInfoOrganizer(card) {
+    const valuesList = [
+      "name",
+      "type",
+      "color_identity",
+      "color_indicator",
+      "colors",
+      "mana_cost",
+      "cmc",
+      "defense",
+      "power",
+      "toughness",
+      "loyalty",
+      "hand_modifier",
+      "life_modifier",
+      "produced_mana",
+      "oracle_text",
+      "keywords",
+      "flavor_name",
+      "flavor_text",
+      "attraction_lights",
+      "set_name",
+      "set",
+      "set_id",
+      "collector_number",
+      "rarity",
+      "reprint",
+      "released_at",
+      "finishes",
+      "artist",
+      "image_uris",
+    ];
+    if (!card.card_faces) {
+      console.log(`${card.name} has one face.`);
+      elementGenerator(valuesList, card);
+    } else {
+      console.log(`The card has ${card.card_faces.length} faces.`);
+      card.card_faces.forEach((face) => {
+        console.log(face);
+        elementGenerator(valuesList, face);
+      });
+    }
   }
 }

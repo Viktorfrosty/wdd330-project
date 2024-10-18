@@ -9,8 +9,8 @@ import Visualizer from "./dataVisualization.mjs";
 
 symbolsData().then(() => {
   updateLinks(); // erase later.
-  const cardName = getParams("name");
-  const card = new cardData(cardName);
+  const id = getParams("id");
+  const card = new cardData(id);
   card.fetchData().then((cardInfo) => {
     const misc = `${cardInfo.set_name} (${cardInfo.set.toUpperCase()})`;
     const page = new Visualizer(cardInfo.name, cardInfo.object, misc);
