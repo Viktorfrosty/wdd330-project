@@ -1,44 +1,40 @@
 import { setIconRetriever, symbolConverter } from "./dataHandler.mjs";
 
 // Generate the desired elements.
-function elementGenerator(list, object) {
+async function elementGenerator(list, object) {
   const root = document.getElementById("root");
-  list.forEach((property) => {
-    if (property !== "set_id") {
-      if (property !== "image_uris") {
-        if (property !== "set_id") {
-          if (property in object) {
-            console.log(
-              `${object.name} ${property}: ${symbolConverter(object[property])}`,
-            );
-            const element = document.createElement("p");
-            element.innerHTML = symbolConverter(object[property]);
-            element.setAttribute("id", property);
-            root.appendChild(element);
-          }
-        }
-      }
-    } else {
-      if (object.set_id) {
-        console.log(setIconRetriever(object.set_id));
-        const element = document.createElement("p");
-        element.innerHTML = setIconRetriever(object[property]);
-        element.setAttribute("id", property);
-        root.appendChild(element);
+  for (const property of list) {
+    if (property === "set_id" && object.set_id) {
+      const element = document.createElement("p");
+      element.innerHTML = await setIconRetriever(object[property]);
+      element.setAttribute("id", property);
+      root.appendChild(element);
+    } else if (property !== "image_uris" && property in object) {
+      const element = document.createElement("p");
+      element.innerHTML = symbolConverter(object[property]);
+      element.setAttribute("id", property);
+      root.appendChild(element);
+    } else if (property === "image_uris" && property in object) {
+      if ("normal" in object[property]) {
+        const img = document.createElement("img");
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("src", object[property]["normal"]);
+        img.setAttribute("alt", `${object.name} image.`);
+        root.appendChild(img);
       }
     }
-  });
+  }
 }
 
 // Organize the card details.
-export default class cardDetails {
+export default class CardDetails {
   constructor(card) {
     this.card = card;
   }
   render() {
-    this.CardInfoOrganizer(this.card);
+    this.cardInfoOrganizer(this.card);
   }
-  CardInfoOrganizer(card) {
+  cardInfoOrganizer(card) {
     const valuesList = [
       "name",
       "type",
@@ -75,9 +71,11 @@ export default class cardDetails {
       elementGenerator(valuesList, card);
     } else {
       console.log(`The card has ${card.card_faces.length} faces.`);
-      card.card_faces.forEach((face) => {
-        console.log(face);
-        elementGenerator(valuesList, face);
+      elementGenerator(valuesList, card).then(() => {
+        card.card_faces.forEach((face) => {
+            console.log(face);
+            elementGenerator(valuesList, face);
+          });
       });
     }
   }

@@ -44,7 +44,6 @@ function dataExpirationCheck(key) {
 // Fetch and extract the set icon.
 export async function setIconRetriever(setId) {
   const setData = `${baseURL}/sets/${setId}`;
-  console.log(`API link: ${setData}`);
   await delay(100);
   const response = await fetch(setData, {
     headers: {
@@ -54,7 +53,6 @@ export async function setIconRetriever(setId) {
   });
   if (response.ok) {
     const set = await response.json();
-    console.log(`${set.name} Set icon link: ${set.icon_svg_uri}`);
     return `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
   } else {
     console.log("Error: setIconRetriever function");
@@ -68,7 +66,6 @@ export async function symbolsData() {
   console.log(`Symbols are valid: ${isValid}`);
   if (isValid === false || (isValid === true && !symbolsData)) {
     const symbolsLink = `${baseURL}/symbology`;
-    console.log(symbolsLink);
     await delay(50);
     const response = await fetch(symbolsLink, {
       headers: {
@@ -92,11 +89,10 @@ export async function symbolsData() {
 // Convert every text symbol into an image symmbol
 export function symbolConverter(text) {
   if (typeof text !== "string") {
-    console.log("symbolConverter function skipped. text is not string.");
+    console.log(`symbolConverter function skipped. ${text} is: ` + typeof text);
     return text;
   } else {
     const symbolsInfo = getLocalStorage("symbols");
-    console.log(`Pre-worked text: ${text}`);
     const symbolslisted = [];
     const matches = text.match(regex);
     if (matches) {
@@ -107,17 +103,12 @@ export function symbolConverter(text) {
         symbolsInfo.data.forEach((retrievedSymbol) => {
           if (textSymbol === retrievedSymbol.symbol) {
             const imgElement = `<img loading="eager" src="${retrievedSymbol.svg_uri}" alt="${retrievedSymbol.english}" width="15">`;
-            console.log(
-              `symbolRetriever function test success. symbol description: ${retrievedSymbol.english} svg symbol link: ${retrievedSymbol.svg_uri}`,
-            );
             text = text.replace(textSymbol, imgElement);
           }
         });
       });
-      console.log(`Post-worked text: ${text}`);
       return text;
     } else {
-      console.log("symbolConverter function skipped. Not symbols found.");
       return text;
     }
   }
@@ -142,7 +133,6 @@ export function getParams(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const value = urlParams.get(param);
-  console.log(`Parameter Value: ${value}`);
   return value;
 }
 
@@ -154,10 +144,8 @@ export class cardData {
   constructor(id) {
     this.id = id;
   }
-
   async fetchData() {
     const requestedUrl = `${baseURL}/cards/${this.id}`;
-    console.log(`API link: ${requestedUrl}`);
     await delay(100);
     const response = await fetch(requestedUrl, {
       headers: {
@@ -168,8 +156,6 @@ export class cardData {
     if (response.ok) {
       const data = await response.json();
       return data;
-    } else {
-      console.log("Error: fetchCardData function");
     }
   }
 }
