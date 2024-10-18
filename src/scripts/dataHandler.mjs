@@ -54,7 +54,7 @@ export async function setIconRetriever(setId) {
   });
   if (response.ok) {
     const set = await response.json();
-    console.log(`${set.name} Set icon link: ${set.icon_svg_uri}`)
+    console.log(`${set.name} Set icon link: ${set.icon_svg_uri}`);
     return `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
   } else {
     console.log("Error: setIconRetriever function");
