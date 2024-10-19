@@ -17,7 +17,7 @@ const page = new visualizer("Home");
 
 symbolsData().then(() => {
   updateLinks(); // erase later.
-  retrieve().then(data => {
+  retrieve().then((data) => {
     const cardEntries = Object.entries(data);
     cardEntries.forEach((card) => {
       console.log(card);

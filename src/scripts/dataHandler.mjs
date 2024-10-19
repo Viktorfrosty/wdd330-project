@@ -27,10 +27,13 @@ function dataExpirationCheck(key) {
 // Function to update links with query parameters
 export function updateLinks() {
   const links = [
-    { id: "card-link", url: "card.html?id=bc140950-d7d0-46d3-98a0-8d1453f4b0cf" },
-    { id: "set-link", url: "set.html?name=aer" }
+    {
+      id: "card-link",
+      url: "card.html?id=bc140950-d7d0-46d3-98a0-8d1453f4b0cf",
+    },
+    { id: "set-link", url: "set.html?name=aer" },
   ];
-  links.forEach(link => {
+  links.forEach((link) => {
     const element = document.getElementById(link.id);
     if (element) {
       element.href = link.url;
@@ -45,8 +48,8 @@ async function fetchData(url) {
   const response = await fetch(url, {
     headers: {
       "User-Agent": userAgent,
-      "Accept": accept
-    }
+      Accept: accept,
+    },
   });
   if (response.ok) {
     return response.json();
@@ -81,10 +84,13 @@ function symbolConverter(text) {
   const symbolsInfo = getLocalStorage("symbols");
   const matches = text.match(regex);
   if (matches) {
-    matches.forEach(textSymbol => {
-      symbolsInfo.data.forEach(retrievedSymbol => {
+    matches.forEach((textSymbol) => {
+      symbolsInfo.data.forEach((retrievedSymbol) => {
         if (textSymbol === retrievedSymbol.symbol) {
-          text = text.replace(textSymbol, `<img loading="eager" src="${retrievedSymbol.svg_uri}" alt="${retrievedSymbol.english}" width="15">`);
+          text = text.replace(
+            textSymbol,
+            `<img loading="eager" src="${retrievedSymbol.svg_uri}" alt="${retrievedSymbol.english}" width="15">`,
+          );
         }
       });
     });
@@ -94,7 +100,7 @@ function symbolConverter(text) {
 
 export function symbolInjector(text) {
   if (Array.isArray(text)) {
-    return text.map(symbol => symbolConverter(`{${symbol}}`)).join(", ");
+    return text.map((symbol) => symbolConverter(`{${symbol}}`)).join(", ");
   }
   return symbolConverter(text);
 }
