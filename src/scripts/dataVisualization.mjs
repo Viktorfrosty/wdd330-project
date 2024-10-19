@@ -11,7 +11,7 @@ export default class Visualizer {
   run() {
     // Execute the functions.
     this.headTitleChanger(this.title, this.type, this.misc);
-    this.pageTitleChanger(this.title);
+    // this.pageTitleChanger(this.title);
   }
 
   headTitleChanger(title, type, misc) {

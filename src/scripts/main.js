@@ -1,30 +1,20 @@
-import CardDetails from "./card.mjs";
+import searchData from "./dataHandler.mjs";
 import { symbolsData, updateLinks } from "./dataHandler.mjs";
 import visualizer from "./dataVisualization.mjs";
-
-async function retrieve() {
-  const response = await fetch(
-    "https://api.scryfall.com/cards/search?q=c%3Awhite+mv%3D1",
-  );
-  if (response.ok) {
-    const data = await response.json();
-    console.log(data["data"]);
-    return data["data"];
-  }
-}
+import cardGlimpse, { resultsBox } from "./main.mjs";
 
 const page = new visualizer("Home");
+page.run();
 
 symbolsData().then(() => {
-  updateLinks(); // erase later.
-  retrieve().then((data) => {
-    const cardEntries = Object.entries(data);
-    cardEntries.forEach((card) => {
-      console.log(card);
-      console.log("lol");
-      const info = new CardDetails(card);
-      info.render();
+  updateLinks(); // Consider removing this line if not needed later.
+  const params = "search?q=c%3Awhite+mv%3D1"; // Rework this if necessary.
+  const search = new searchData(params);
+  search.fetchData().then((searchInfo) => {
+    resultsBox();
+    searchInfo.data.forEach(card => {
+      const snippet = new cardGlimpse(card);
+      snippet.render();
     });
   });
-  page.run();
 });

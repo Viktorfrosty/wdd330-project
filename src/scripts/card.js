@@ -1,4 +1,4 @@
-import cardDetails from "./card.mjs";
+import { cardDetails } from "./card.mjs";
 import {
   cardData,
   getParams,

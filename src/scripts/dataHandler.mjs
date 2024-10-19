@@ -59,24 +59,16 @@ async function fetchData(url) {
 }
 
 export async function setIconRetriever(setId) {
-  try {
-    const set = await fetchData(`${baseURL}/sets/${setId}`);
-    return `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
-  } catch (error) {
-    console.log("Error: setIconRetriever function");
-  }
+  const set = await fetchData(`${baseURL}/sets/${setId}`);
+  return `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
 }
 
 export async function symbolsData() {
   const symbolsData = getLocalStorage("symbols");
   if (!dataExpirationCheck("symbols-stamp") || !symbolsData) {
-    try {
-      const data = await fetchData(`${baseURL}/symbology`);
-      setLocalStorage("symbols", data);
-      setLocalStorage("symbols-stamp", Date.now());
-    } catch (error) {
-      console.log("Error: symbolsData function.");
-    }
+    const data = await fetchData(`${baseURL}/symbology`);
+    setLocalStorage("symbols", data);
+    setLocalStorage("symbols-stamp", Date.now());
   }
 }
 
@@ -111,21 +103,21 @@ export function getParams(param) {
   return new URLSearchParams(window.location.search).get(param);
 }
 
-export default class search {
-  execute() {}
+export default class searchData {
+  constructor(params) {
+    this.params = params;
+  }
+  async fetchData() {
+    return await fetchData(`${baseURL}/cards/${this.params}`);
+  }
 }
 
 export class cardData {
   constructor(id) {
     this.id = id;
   }
-
   async fetchData() {
-    try {
-      return await fetchData(`${baseURL}/cards/${this.id}`);
-    } catch (error) {
-      console.log("Error: cardData fetchData");
-    }
+    return await fetchData(`${baseURL}/cards/${this.id}`);
   }
 }
 
@@ -135,10 +127,6 @@ export class setData {
   }
 
   async fetchData() {
-    try {
-      return await fetchData(`${baseURL}/sets/${this.setId}`);
-    } catch (error) {
-      console.log("Error: setData fetchData");
-    }
+    return await fetchData(`${baseURL}/sets/${this.setId}`);
   }
 }
