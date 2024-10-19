@@ -17,13 +17,14 @@ const page = new visualizer("Home");
 
 symbolsData().then(() => {
   updateLinks(); // erase later.
-  const data = retrieve();
-  const cardEntries = Object.entries(data);
-  cardEntries.forEach((card) => {
-    console.log(card);
-    console.log("lol");
-    const info = new CardDetails(card);
-    info.render();
+  retrieve().then(data => {
+    const cardEntries = Object.entries(data);
+    cardEntries.forEach((card) => {
+      console.log(card);
+      console.log("lol");
+      const info = new CardDetails(card);
+      info.render();
+    });
   });
   page.run();
 });
