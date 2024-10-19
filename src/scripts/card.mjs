@@ -1,4 +1,4 @@
-import { setIconRetriever, symbolConverter } from "./dataHandler.mjs";
+import { setIconRetriever, symbolInjector } from "./dataHandler.mjs";
 
 // Generate the desired elements.
 async function elementGenerator(list, object) {
@@ -11,7 +11,7 @@ async function elementGenerator(list, object) {
       root.appendChild(element);
     } else if (property !== "image_uris" && property in object) {
       const element = document.createElement("p");
-      element.innerHTML = symbolConverter(object[property]);
+      element.innerHTML = symbolInjector(object[property]);
       element.setAttribute("id", property);
       root.appendChild(element);
     } else if (property === "image_uris" && property in object) {

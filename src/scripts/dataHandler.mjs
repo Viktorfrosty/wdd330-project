@@ -86,10 +86,14 @@ export async function symbolsData() {
   }
 }
 
+function symbolConverter() {
+
+}
+
 // Convert every text symbol into an image symmbol
-export function symbolConverter(text) {
+export function symbolInjector(text) {
   if (typeof text !== "string") {
-    console.log(`symbolConverter function skipped. ${text} is: ` + typeof text);
+    console.log(`symbolInjector function skipped. ${text} is: ` + typeof text);
     return text;
   } else {
     const symbolsInfo = getLocalStorage("symbols");
