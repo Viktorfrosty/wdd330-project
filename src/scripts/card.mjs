@@ -1,8 +1,14 @@
 import { setIconRetriever, symbolInjector } from "./dataHandler.mjs";
 
 // Generate the desired elements.
-async function elementGenerator(list, object) {
+async function elementGenerator(list, object, face = false) {
   const root = document.getElementById("root");
+  if (face != false) {
+    const name = document.createElement("h2");
+    name.setAttribute("class", "f_name");
+    name.textContent = object["name"];
+    root.appendChild(name);
+  }
   for (const property of list) {
     if (property === "set_id" && object.set_id) {
       const element = document.createElement("p");
@@ -24,6 +30,16 @@ async function elementGenerator(list, object) {
       }
     }
   }
+  if ("legalities" in object) {
+    const list = document.createElement("ul");
+    const ruleEntries = Object.entries(object["legalities"]);
+    ruleEntries.forEach(([game_mode, legality]) => {
+      let block = document.createElement("li");
+      block.innerHTML = `<p class="game_mode">${game_mode}</p><p class="legality">${legality}</p>`;
+      list.appendChild(block);
+    });
+    root.appendChild(list);
+  }
 }
 
 // Organize the card details.
@@ -36,7 +52,6 @@ export default class CardDetails {
   }
   cardInfoOrganizer(card) {
     const valuesList = [
-      "name",
       "type",
       "color_identity",
       "color_indicator",
@@ -67,15 +82,12 @@ export default class CardDetails {
       "image_uris",
     ];
     if (!card.card_faces) {
-      console.log(`${card.name} has one face.`);
       elementGenerator(valuesList, card);
     } else {
-      console.log(`The card has ${card.card_faces.length} faces.`);
       elementGenerator(valuesList, card).then(() => {
         card.card_faces.forEach((face) => {
-            console.log(face);
-            elementGenerator(valuesList, face);
-          });
+          elementGenerator(valuesList, face, true);
+        });
       });
     }
   }

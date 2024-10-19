@@ -15,8 +15,6 @@ symbolsData().then(() => {
     const misc = `${cardInfo.set_name} (${cardInfo.set.toUpperCase()})`;
     const page = new Visualizer(cardInfo.name, cardInfo.object, misc);
     const info = new cardDetails(cardInfo);
-    console.log(`Retrieved info:`);
-    console.log(cardInfo);
     page.run();
     info.render();
   });

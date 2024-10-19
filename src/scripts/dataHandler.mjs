@@ -8,6 +8,21 @@ const accept = "application/json";
 // function requeirements.
 const regex = /\{.*?\}/g;
 
+
+// Function to update the links with query parameters
+export function updateLinks() {
+  const cardLink = document.getElementById("card-link");
+  const setLink = document.getElementById("set-link");
+  if (cardLink) {
+    cardLink.href = "card.html?id=bc140950-d7d0-46d3-98a0-8d1453f4b0cf";
+    console.log("cardlink success!");
+  }
+  if (setLink) {
+    setLink.href = "set.html?name=aer";
+    console.log("setLink success!");
+  }
+}
+
 // Required API fetch delay.
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -29,14 +44,11 @@ function dataExpirationCheck(key) {
   const timeDifference = Date.now() - storedTime;
   if (storedTime) {
     if (timeDifference >= 86400000) {
-      console.log("Stamp found; it is expired.");
       return false;
     } else {
-      console.log("Stamp found; it is not expired.");
       return true;
     }
   } else {
-    console.log("Stamp not found.");
     return false;
   }
 }
@@ -63,7 +75,6 @@ export async function setIconRetriever(setId) {
 export async function symbolsData() {
   const symbolsData = getLocalStorage("symbols");
   const isValid = dataExpirationCheck("symbols-stamp");
-  console.log(`Symbols are valid: ${isValid}`);
   if (isValid === false || (isValid === true && !symbolsData)) {
     const symbolsLink = `${baseURL}/symbology`;
     await delay(50);
@@ -77,58 +88,46 @@ export async function symbolsData() {
       const data = await response.json();
       setLocalStorage("symbols", data);
       setLocalStorage("symbols-stamp", Date.now());
-      console.log("symbols and symbols-stamp saved in the local storage.");
     } else {
       console.log("Error: symbolData function.");
     }
-  } else {
-    console.log("symbolsData function skipped.");
   }
 }
 
-function symbolConverter() {
-
+function symbolConverter(text) {
+  const symbolsInfo = getLocalStorage("symbols");
+  const symbolslisted = [];
+  const matches = text.match(regex);
+  if (matches) {
+    symbolslisted.push(...matches);
+  }
+  if (symbolslisted.length >= 1) {
+    symbolslisted.forEach((textSymbol) => {
+      symbolsInfo.data.forEach((retrievedSymbol) => {
+        if (textSymbol === retrievedSymbol.symbol) {
+          const imgElement = `<img loading="eager" src="${retrievedSymbol.svg_uri}" alt="${retrievedSymbol.english}" width="15">`;
+          text = text.replace(textSymbol, imgElement);
+        }
+      });
+    });
+    return text;
+  } else {
+    return text;
+  }
 }
 
 // Convert every text symbol into an image symmbol
 export function symbolInjector(text) {
-  if (typeof text !== "string") {
-    console.log(`symbolInjector function skipped. ${text} is: ` + typeof text);
+  if (typeof text !== "string" && typeof text !== "object") {
     return text;
+  } else if (Array.isArray(text)) {
+    let reworkedSymbols = text.map((textSymbol) => {
+      textSymbol = `{${textSymbol}}`;
+      return symbolConverter(textSymbol);
+    });
+    return reworkedSymbols.join(", ");
   } else {
-    const symbolsInfo = getLocalStorage("symbols");
-    const symbolslisted = [];
-    const matches = text.match(regex);
-    if (matches) {
-      symbolslisted.push(...matches);
-    }
-    if (symbolslisted.length >= 1) {
-      symbolslisted.forEach((textSymbol) => {
-        symbolsInfo.data.forEach((retrievedSymbol) => {
-          if (textSymbol === retrievedSymbol.symbol) {
-            const imgElement = `<img loading="eager" src="${retrievedSymbol.svg_uri}" alt="${retrievedSymbol.english}" width="15">`;
-            text = text.replace(textSymbol, imgElement);
-          }
-        });
-      });
-      return text;
-    } else {
-      return text;
-    }
-  }
-}
-
-// Function to update the links with query parameters
-export function updateLinks() {
-  const cardLink = document.getElementById("card-link");
-  const setLink = document.getElementById("set-link");
-  if (cardLink) {
-    cardLink.href = "card.html?id=359d1b13-6156-43b0-a9a7-6bfff36c1a91";
-    console.log("cardlink success!");
-  }
-  if (setLink) {
-    setLink.href = "set.html?name=aer";
-    console.log("setLink success!");
+    return symbolConverter(text);
   }
 }
 
