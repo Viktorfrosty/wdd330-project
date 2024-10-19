@@ -8,7 +8,6 @@ const accept = "application/json";
 // function requeirements.
 const regex = /\{.*?\}/g;
 
-
 // Function to update the links with query parameters
 export function updateLinks() {
   const cardLink = document.getElementById("card-link");
@@ -140,7 +139,10 @@ export function getParams(param) {
 }
 
 // list data retriever.
-export default class listData {}
+export default class search {
+  constructor() {}
+  execute() {}
+}
 
 // card data retriever.
 export class cardData {
@@ -165,12 +167,12 @@ export class cardData {
 
 // set data retriever.
 export class setData {
-  constructor(setName) {
-    this.setName = setName;
+  constructor(setId) {
+    this.setId = setId;
   }
 
   async fetchData() {
-    const requestedUrl = `${baseURL}/sets/${this.setName}`;
+    const requestedUrl = `${baseURL}/sets/${this.setId}`;
     console.log(`API link: ${requestedUrl}`);
     await delay(100);
     const response = await fetch(requestedUrl, {
