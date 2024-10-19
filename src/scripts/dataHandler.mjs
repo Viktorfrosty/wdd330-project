@@ -99,7 +99,9 @@ function symbolConverter(text) {
 }
 
 export function symbolInjector(text) {
-  if (Array.isArray(text)) {
+  if (typeof text !== "string" && typeof text !== "object") {
+    return text;
+  } else if (Array.isArray(text)) {
     return text.map((symbol) => symbolConverter(`{${symbol}}`)).join(", ");
   }
   return symbolConverter(text);
