@@ -55,7 +55,7 @@ export default class cardGlimpse {
         imageSnippet.appendChild(img);
       });
       const button = document.createElement("button");
-      button.setAttribute("class", "rotate_button")
+      button.setAttribute("class", "rotate_button");
       button.textContent = "↻";
       button.addEventListener("click", () => {
         console.log("test");

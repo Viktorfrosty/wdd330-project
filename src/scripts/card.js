@@ -1,9 +1,5 @@
 import { cardDetails } from "./card.mjs";
-import {
-  cardData,
-  getParams,
-  symbolsData,
-} from "./dataHandler.mjs";
+import { cardData, getParams, symbolsData } from "./dataHandler.mjs";
 import Visualizer from "./dataVisualization.mjs";
 
 symbolsData().then(() => {
