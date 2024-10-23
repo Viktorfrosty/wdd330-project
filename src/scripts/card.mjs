@@ -39,12 +39,12 @@ export class cardDetails {
       "artist",
       "image_uris",
     ];
-    if (!card.card_conditions) {
+    if (!card.card_faces) {
       this.elementGenerator(valuesList, card, true);
     } else {
-      this.elementGenerator(valuesList, card).then(() => {
-        card.card_conditions.forEach((condition) => {
-          this.elementGenerator(valuesList, condition, true);
+      this.elementGenerator(valuesList, card, true).then(() => {
+        card.card_faces.forEach((face) => {
+          this.elementGenerator(valuesList, face, true);
         });
       });
     }

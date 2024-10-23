@@ -31,7 +31,10 @@ export function updateLinks() {
       id: "card-link",
       url: "card.html?id=bc140950-d7d0-46d3-98a0-8d1453f4b0cf",
     },
-    { id: "set-link", url: "set.html?name=aer" },
+    {
+      id: "result-link",
+      url: "result.html?q=c%3Awhite+mv%3D1",
+    },
   ];
   links.forEach((link) => {
     const element = document.getElementById(link.id);
@@ -99,8 +102,13 @@ export function symbolInjector(text) {
   return symbolConverter(text);
 }
 
-export function getParams(param) {
-  return new URLSearchParams(window.location.search).get(param);
+export function getParams(param, decoded = true) {
+  if (decoded === true) {
+    return new URLSearchParams(window.location.search).get(param);
+  } else {
+    const value = new URLSearchParams(window.location.search).get(param);
+    return encodeURIComponent(value);
+  }
 }
 
 export default class searchData {
@@ -108,7 +116,7 @@ export default class searchData {
     this.params = params;
   }
   async fetchData() {
-    return await fetchData(`${baseURL}/cards/${this.params}`);
+    return await fetchData(`${baseURL}/cards/search?q=${this.params}`);
   }
 }
 
