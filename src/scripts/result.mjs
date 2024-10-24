@@ -15,53 +15,104 @@ export default class cardGlimpse {
   cardSnippet(card) {
     const root = document.getElementById("card_box");
     if ("image_uris" in card) {
-      console.log("rearm later.");
-      // const img = document.createElement("img");
-      // img.setAttribute("loading", "lazy");
-      // img.setAttribute("src", card["image_uris"]["normal"]);
-      // img.setAttribute("alt", `${card["name"]} image.`);
-      // img.setAttribute("width", "250"); // remove later.
-      // img.addEventListener("click", () => {
-      //   window.location.href = `card.html?id=${card.id}`;
-      // });
-      // img.addEventListener("mouseover", (event) => {
-      //   const cardName = document.createElement("div");
-      //   cardName.textContent = card.name;
-      //   cardName.style.position = "absolute";
-      //   cardName.style.left = `${event.pageX}px`;
-      //   cardName.style.top = `${event.pageY}px`;
-      //   cardName.id = "cardName";
-      //   document.body.appendChild(cardName);
-      // });
-      // img.addEventListener("mouseout", () => {
-      //     const cardName = document.getElementById("cardName");
-      //     if (cardName) {
-      //         cardName.remove();
-      //     }
-      // });
-      // root.appendChild(img);
-    } else if ("card_faces" in card) {
-      const imageSnippet = document.createElement("div");
-      imageSnippet.setAttribute("class", "image_snippet");
-      imageSnippet.addEventListener("click", () => {
+      const box = document.createElement("div");
+      const img = document.createElement("img");
+      img.setAttribute("loading", "lazy");
+      img.setAttribute("src", card["image_uris"]["normal"]);
+      img.setAttribute("alt", `${card["name"]} image.`);
+      img.addEventListener("click", () => {
         window.location.href = `card.html?id=${card.id}`;
       });
-      card["card_faces"].forEach((face) => {
+      img.addEventListener("mouseover", (event) => {
+        const cardName = document.createElement("div");
+        cardName.innerHTML = `${card.name}<br>(${card.set_name} #${card.collector_number})`;
+        cardName.style.position = "absolute";
+        cardName.style.left = `${event.pageX}px`;
+        cardName.style.top = `${event.pageY}px`;
+        cardName.setAttribute("id", "hover_name");
+        document.body.appendChild(cardName);
+        img.addEventListener("mousemove", (event) => {
+          cardName.style.left = `${event.pageX + 20}px`;
+          cardName.style.top = `${event.pageY + 20}px`;
+        });
+      });
+      img.addEventListener("mouseout", () => {
+        const cardName = document.getElementById("hover_name");
+        if (cardName) {
+          cardName.remove();
+        }
+      });
+      if (card.layout === "flip") {
+        const button = document.createElement("button");
+        button.setAttribute("class", "flip_button");
+        button.textContent = "↻";
+        button.addEventListener("click", () => {
+          img.classList.toggle("rotate-180");
+        });
+        box.appendChild(img);
+        box.appendChild(button);
+        root.appendChild(box);
+      } else {
+        box.appendChild(img);
+        root.appendChild(box);
+      }
+    } else if ("card_faces" in card) {
+      if (card.layout === "transform") {
+        const imageSnippet = document.createElement("div");
         const img = document.createElement("img");
-        img.setAttribute("loading", "lazy");
-        img.setAttribute("src", face["image_uris"]["normal"]);
-        img.setAttribute("alt", `${face["name"]} image.`);
-        img.setAttribute("width", "250");
+        img.setAttribute("loading", "eager");
+        img.setAttribute("src", card["card_faces"][0]["image_uris"]["normal"]);
+        img.setAttribute("alt", `${card["card_faces"][0]["name"]} image.`);
+        img.classList.add("fade");
+        img.addEventListener("click", () => {
+          window.location.href = `card.html?id=${card.id}`;
+        });
+        img.addEventListener("mouseover", (event) => {
+          const cardName = document.createElement("div");
+          cardName.innerHTML = `${card.name}<br>(${card.set_name} #${card.collector_number})`;
+          cardName.style.position = "absolute";
+          cardName.style.left = `${event.pageX}px`;
+          cardName.style.top = `${event.pageY}px`;
+          cardName.setAttribute("id", "hover_name");
+          document.body.appendChild(cardName);
+          img.addEventListener("mousemove", (event) => {
+            cardName.style.left = `${event.pageX + 20}px`;
+            cardName.style.top = `${event.pageY + 20}px`;
+          });
+        });
+        img.addEventListener("mouseout", () => {
+          const cardName = document.getElementById("hover_name");
+          if (cardName) {
+            cardName.remove();
+          }
+        });
         imageSnippet.appendChild(img);
-      });
-      const button = document.createElement("button");
-      button.setAttribute("class", "rotate_button");
-      button.textContent = "↻";
-      button.addEventListener("click", () => {
-        console.log("test");
-      });
-      root.appendChild(imageSnippet);
-      root.appendChild(button);
+        const button = document.createElement("button");
+        button.setAttribute("class", "rotate_button");
+        button.textContent = "←";
+        let currentFaceIndex = 0;
+        button.addEventListener("click", () => {
+          img.classList.remove("fade-in");
+          img.classList.add("fade-out");
+          setTimeout(() => {
+            currentFaceIndex =
+              (currentFaceIndex + 1) % card["card_faces"].length;
+            img.setAttribute("loading", "eager");
+            img.setAttribute(
+              "src",
+              card["card_faces"][currentFaceIndex]["image_uris"]["normal"],
+            );
+            img.setAttribute(
+              "alt",
+              `${card["card_faces"][currentFaceIndex]["name"]} image.`,
+            );
+            img.classList.remove("fade-out");
+            img.classList.add("fade-in");
+          }, 250);
+        });
+        imageSnippet.appendChild(button);
+        root.appendChild(imageSnippet);
+      }
     }
   }
 }

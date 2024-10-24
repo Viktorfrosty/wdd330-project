@@ -33,7 +33,7 @@ export function updateLinks() {
     },
     {
       id: "result-link",
-      url: "result.html?q=c%3Awhite+mv%3D1",
+      url: "result.html?q=bushi&type=color&order=desc",
     },
   ];
   links.forEach((link) => {
@@ -116,7 +116,17 @@ export default class searchData {
     this.params = params;
   }
   async fetchData() {
-    return await fetchData(`${baseURL}/cards/search?q=${this.params}`);
+    let list = [];
+    let nextPage = `${baseURL}/cards/search?q=${this.params}&unique=prints`;
+    while (nextPage) {
+      const response = await fetch(nextPage);
+      const info = await response.json();
+      info.data.forEach((cardData) => {
+        list.push(cardData);
+      });
+      nextPage = info.next_page || null;
+    }
+    return list;
   }
 }
 

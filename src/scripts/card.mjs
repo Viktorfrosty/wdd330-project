@@ -88,6 +88,10 @@ export class cardDetails {
       });
       cardBox.appendChild(list);
     }
+    const button = document.createElement("button");
+    button.setAttribute("id", "add_to_deck_button");
+    button.textContent = "Add to the deck";
+    cardBox.append(button);
     root.append(cardBox);
   }
 }
