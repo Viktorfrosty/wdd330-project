@@ -25,7 +25,11 @@ export default class cardGlimpse {
       });
       img.addEventListener("mouseover", (event) => {
         const cardName = document.createElement("div");
-        cardName.innerHTML = `${card.name}<br>(${card.set_name} #${card.collector_number})`;
+        if (!card.flavor_name) {
+          cardName.innerHTML = `${card.name}<br>(${card.set_name} #${card.collector_number})`;
+        } else {
+          cardName.innerHTML = `${card.flavor_name}<br>(${card.name} variant)<br>(${card.set_name} #${card.collector_number})`;
+        }
         cardName.style.position = "absolute";
         cardName.style.left = `${event.pageX}px`;
         cardName.style.top = `${event.pageY}px`;
@@ -69,7 +73,11 @@ export default class cardGlimpse {
         });
         img.addEventListener("mouseover", (event) => {
           const cardName = document.createElement("div");
-          cardName.innerHTML = `${card.name}<br>(${card.set_name} #${card.collector_number})`;
+          if (!card.flavor_name) {
+            cardName.innerHTML = `${card.name}<br>(${card.set_name} #${card.collector_number})`;
+          } else {
+            cardName.innerHTML = `${card.flavor_name}<br>(${card.name} variant)<br>(${card.set_name} #${card.collector_number})`;
+          }
           cardName.style.position = "absolute";
           cardName.style.left = `${event.pageX}px`;
           cardName.style.top = `${event.pageY}px`;
@@ -95,17 +103,10 @@ export default class cardGlimpse {
           img.classList.remove("fade-in");
           img.classList.add("fade-out");
           setTimeout(() => {
-            currentFaceIndex =
-              (currentFaceIndex + 1) % card["card_faces"].length;
+            currentFaceIndex = (currentFaceIndex + 1) % card["card_faces"].length;
             img.setAttribute("loading", "eager");
-            img.setAttribute(
-              "src",
-              card["card_faces"][currentFaceIndex]["image_uris"]["normal"],
-            );
-            img.setAttribute(
-              "alt",
-              `${card["card_faces"][currentFaceIndex]["name"]} image.`,
-            );
+            img.setAttribute("src", card["card_faces"][currentFaceIndex]["image_uris"]["normal"]);
+            img.setAttribute("alt", `${card["card_faces"][currentFaceIndex]["name"]} image.`);
             img.classList.remove("fade-out");
             img.classList.add("fade-in");
           }, 250);

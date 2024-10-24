@@ -12,11 +12,7 @@
   --headers-fonts: Kanit, serif, arial;
   --paragraphs-fonts: Syne, sans-serif, garamond;
   /* others elements */
-  --background: linear-gradient(
-    to right,
-    var(--main-color),
-    var(--secondary-color)
-  );
+  --background: linear-gradient(to right, var(--main-color), var(--secondary-color));
 }
 
 body {

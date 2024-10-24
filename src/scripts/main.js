@@ -1,4 +1,5 @@
-import { symbolsData, updateLinks } from "./dataHandler.mjs";
+import { updateLinks } from "./main.mjs";
+import { symbolsData } from "./dataHandler.mjs";
 import visualizer from "./dataVisualization.mjs";
 
 symbolsData().then(() => {

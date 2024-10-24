@@ -6,10 +6,8 @@ export function createSelector(param) {
   const selector = document.createElement("div");
   selector.setAttribute("class", "selector");
   selector.setAttribute("id", param);
-
   const urlParams = new URLSearchParams(window.location.search);
   const selectedValue = urlParams.get(param);
-
   if (param === "type") {
     selector.innerHTML = `<label for="options">Sort by:</label>  
                           <select id="options">      
@@ -22,24 +20,21 @@ export function createSelector(param) {
                             <option value="released" ${selectedValue === "released" ? "selected" : ""}>Released</option>  
                           </select>`;
   } else if (param === "order") {
-    selector.innerHTML = `<label for="options">Sort by:</label>  
+    selector.innerHTML = `<label for="options">Sort by:</label>
                           <select id="options">    
                             <option value="auto" ${selectedValue === "auto" ? "selected" : ""}>auto</option>    
                             <option value="asce" ${selectedValue === "asce" ? "selected" : ""}>asce</option>    
                             <option value="desc" ${selectedValue === "desc" ? "selected" : ""}>desc</option>  
                           </select>`;
   }
-
   const selectElement = selector.querySelector("select");
   selectElement.addEventListener("change", function () {
     const newValue = this.value;
-
     if (selectedValue !== newValue) {
       urlParams.set(param, newValue);
       window.location.search = urlParams.toString();
     }
   });
-
   root.appendChild(selector);
 }
 
@@ -89,28 +84,16 @@ export class arrangement {
         break;
       case "color":
         if (this.misc === "asce" || this.misc === "auto") {
-          this.list.sort((a, b) =>
-            a.color_identity
-              .join(", ")
-              .localeCompare(b.color_identity.join(", ")),
-          );
+          this.list.sort((a, b) => a.color_identity.join(", ").localeCompare(b.color_identity.join(", ")));
         } else if (this.misc === "desc") {
-          this.list.sort((a, b) =>
-            b.color_identity
-              .join(", ")
-              .localeCompare(a.color_identity.join(", ")),
-          );
+          this.list.sort((a, b) => b.color_identity.join(", ").localeCompare(a.color_identity.join(", ")));
         }
         break;
       case "released":
         if (this.misc === "asce" || this.misc === "auto") {
-          this.list.sort(
-            (a, b) => new Date(a.released_at) - new Date(b.released_at),
-          );
+          this.list.sort((a, b) => new Date(a.released_at) - new Date(b.released_at));
         } else if (this.misc === "desc") {
-          this.list.sort(
-            (a, b) => new Date(b.released_at) - new Date(a.released_at),
-          );
+          this.list.sort((a, b) => new Date(b.released_at) - new Date(a.released_at));
         }
         break;
     }
@@ -127,12 +110,9 @@ export default class Visualizer {
     this.number = number;
   }
   run() {
-    // Execute the functions.
     this.headTitleChanger(this.title, this.type, this.misc, this.number);
-    // this.pageTitleChanger(this.title);
   }
   headTitleChanger(title, type, misc, number) {
-    // Customize the page title and meta title.
     const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
     const metaTitle = document.getElementById("head-title");
     if (type !== "") {
@@ -145,12 +125,5 @@ export default class Visualizer {
       number = `(#${number})`;
     }
     metaTitle.textContent = `${capitalize(type)} ${title} ${number} ${misc} | Trading Cards Info Tracker`;
-  }
-  pageTitleChanger(title) {
-    // customize the title of the page.
-    const header = document.querySelector("header");
-    const testBox = document.createElement("h1");
-    testBox.textContent = title;
-    header.appendChild(testBox);
   }
 }

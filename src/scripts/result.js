@@ -1,9 +1,6 @@
 import searchData, { getParams } from "./dataHandler.mjs";
 import { symbolsData } from "./dataHandler.mjs";
-import visualizer, {
-  arrangement,
-  createSelector,
-} from "./dataVisualization.mjs";
+import visualizer, { arrangement, createSelector } from "./dataVisualization.mjs";
 import cardGlimpse, { resultsBox } from "./result.mjs";
 
 symbolsData().then(() => {

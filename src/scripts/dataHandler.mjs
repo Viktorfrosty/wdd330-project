@@ -3,49 +3,24 @@ const baseURL = "https://api.scryfall.com";
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";
 const regex = /\{.*?\}/g;
-
 // Fetch delay function
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
-// Local storage functions
+// Local storage functions.
 function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
-
 function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
-
+// data expiration check.
 function dataExpirationCheck(key) {
   const storedTime = getLocalStorage(key);
   const timeDifference = Date.now() - storedTime;
   return storedTime && timeDifference < 86400000;
 }
-
-// Function to update links with query parameters
-export function updateLinks() {
-  const links = [
-    {
-      id: "card-link",
-      url: "card.html?id=bc140950-d7d0-46d3-98a0-8d1453f4b0cf",
-    },
-    {
-      id: "result-link",
-      url: "result.html?q=bushi&type=color&order=desc",
-    },
-  ];
-  links.forEach((link) => {
-    const element = document.getElementById(link.id);
-    if (element) {
-      element.href = link.url;
-      console.log(`${link.id} success!`);
-    }
-  });
-}
-
-// Function to fetch data from API
+// Function to fetch data from API.
 async function fetchData(url) {
   await delay(100);
   const response = await fetch(url, {
@@ -60,12 +35,12 @@ async function fetchData(url) {
     throw new Error(`Error fetching data from ${url}`);
   }
 }
-
+// Icons retriever function.
 export async function setIconRetriever(setId) {
   const set = await fetchData(`${baseURL}/sets/${setId}`);
   return `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
 }
-
+// Symbols utilitarian functions.
 export async function symbolsData() {
   const symbolsData = getLocalStorage("symbols");
   if (!dataExpirationCheck("symbols-stamp") || !symbolsData) {
@@ -74,7 +49,6 @@ export async function symbolsData() {
     setLocalStorage("symbols-stamp", Date.now());
   }
 }
-
 function symbolConverter(text) {
   const symbolsInfo = getLocalStorage("symbols");
   const matches = text.match(regex);
@@ -92,7 +66,6 @@ function symbolConverter(text) {
   }
   return text;
 }
-
 export function symbolInjector(text) {
   if (typeof text !== "string" && typeof text !== "object") {
     return text;
@@ -101,7 +74,7 @@ export function symbolInjector(text) {
   }
   return symbolConverter(text);
 }
-
+// Get the parameters from the windown URL.
 export function getParams(param, decoded = true) {
   if (decoded === true) {
     return new URLSearchParams(window.location.search).get(param);
@@ -110,7 +83,6 @@ export function getParams(param, decoded = true) {
     return encodeURIComponent(value);
   }
 }
-
 export default class searchData {
   constructor(params) {
     this.params = params;
@@ -129,7 +101,6 @@ export default class searchData {
     return list;
   }
 }
-
 export class cardData {
   constructor(id) {
     this.id = id;
@@ -138,12 +109,10 @@ export class cardData {
     return await fetchData(`${baseURL}/cards/${this.id}`);
   }
 }
-
 export class setData {
   constructor(setId) {
     this.setId = setId;
   }
-
   async fetchData() {
     return await fetchData(`${baseURL}/sets/${this.setId}`);
   }
