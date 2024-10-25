@@ -21,7 +21,7 @@ function dataExpirationCheck(key) {
   return storedTime && timeDifference < 86400000;
 }
 // Function to fetch data from API.
-async function fetchData(url) {
+export async function fetchData(url) {
   await delay(100);
   const response = await fetch(url, {
     headers: {
@@ -31,12 +31,20 @@ async function fetchData(url) {
   });
   if (response.ok) {
     return response.json();
+  } else {
+    window.location.href = "result.html?element=error";
   }
 }
 // Icons retriever function.
 export async function setIconRetriever(setId) {
-  const set = await fetchData(`${baseURL}/sets/${setId}`);
-  return `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
+  const setList = getLocalStorage("sets");
+  let result = null;
+  setList.data.forEach((set) => {
+    if (setId === set.id) {
+      result = `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
+    }
+  });
+  return result;
 }
 // Information stored to make the loading faster.
 export async function storedData() {
@@ -94,14 +102,17 @@ export default class search {
   }
   async getSearchData() {
     let list = [];
-    let nextPage = `${baseURL}/cards/search?q=${this.params}&unique=prints`;
+    let nextPage = `${baseURL}/cards/search?q=${this.params}&extras=true&unique=prints`;
+    console.log(nextPage);
     while (nextPage) {
-      const response = await fetch(nextPage);
-      const info = await response.json();
+      const info = await fetchData(nextPage);
+      console.log(info);
       info.data.forEach((cardData) => {
         list.push(cardData);
       });
-      nextPage = info.next_page || null;
+      // nextPage = info.next_page || null;
+      console.log(info.next_page);
+      nextPage = null;
     }
     return list;
   }
@@ -111,12 +122,14 @@ export default class search {
   async getSetData() {
     const setData = await fetchData(`${baseURL}/sets/${this.params}`);
     const setCards = [];
-    let nextPage = setData.search_uri;
+    // let nextPage = setData.search_uri;
+    let nextPage = null;
+    console.log(setData);
     while (nextPage) {
-      const response = await fetch(nextPage);
-      const info = await response.json();
+      const info = await fetchData(nextPage);
       setCards.push(...info.data);
-      nextPage = info.next_page || null;
+      // nextPage = info.next_page || null;
+      nextPage = null;
     }
     return { setData, setCards };
   }

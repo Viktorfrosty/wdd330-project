@@ -22,6 +22,7 @@ export default class setsCatalog {
                               <img class="set_icon" loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">
                               <p class="set_cards">${set.card_count}</p>
                               <p class="set_date">${set.released_at}</p>
+                              <p class="set_type">${set.set_type}</p>
                            </a>
                            <ul></ul>`;
       list.appendChild(element);
@@ -43,6 +44,7 @@ export default class setsCatalog {
                                   <img class="set_icon" loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">
                                   <p class="set_cards">${set.card_count}</p>
                                   <p class="set_date">${set.released_at}</p>
+                                  <p class="set_type">${set.set_type}</p>
                                </a>
                                <ul></ul>`;
           parentElement.appendChild(element);

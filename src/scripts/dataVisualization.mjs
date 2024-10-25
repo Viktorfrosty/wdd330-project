@@ -123,6 +123,9 @@ export default class Visualizer {
   }
   run() {
     this.headTitleChanger(this.title, this.type, this.misc, this.number);
+    if (this.title === "Information not found") {
+      this.errorPage();
+    }
   }
   headTitleChanger(title, type, misc, number) {
     const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
@@ -137,5 +140,15 @@ export default class Visualizer {
       number = `(#${number})`;
     }
     metaTitle.textContent = `${capitalize(type)} ${title} ${number} ${misc} | Trading Cards Info Tracker`;
+  }
+  errorPage() {
+    const root = document.getElementById("root");
+    const messageTitle = document.createElement("h1");
+    messageTitle.textContent = "Sorry, the information was not found";
+    const messageParaph = document.createElement("h3");
+    messageParaph.innerHTML =
+      "Go back to <a href='index.html'>Home</a> and try again with other search parameters.";
+    root.appendChild(messageTitle);
+    root.appendChild(messageParaph);
   }
 }

@@ -6,8 +6,14 @@ storedData().then(() => {
   const card = new search(getParams("s"));
   card.getCardData().then((cardInfo) => {
     const misc = `${cardInfo.set_name} (${cardInfo.set.toUpperCase()})`;
+    let cardName = "";
+    if (!cardInfo.flavor_name) {
+      cardName = cardInfo.name;
+    } else {
+      cardName = cardInfo.flavor_name;
+    }
     const page = new Visualizer(
-      cardInfo.name,
+      cardName,
       cardInfo.object,
       misc,
       cardInfo.collector_number,
