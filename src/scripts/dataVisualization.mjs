@@ -39,8 +39,8 @@ export function createSelector(param) {
 }
 
 // Search results organizer.
-export class arrangement {
-  constructor(list, arrangement, misc = "auto") {
+export class cardArrangement {
+  constructor(list, arrangement, misc) {
     this.list = list;
     this.arrangement = arrangement;
     this.misc = misc;
@@ -84,16 +84,28 @@ export class arrangement {
         break;
       case "color":
         if (this.misc === "asce" || this.misc === "auto") {
-          this.list.sort((a, b) => a.color_identity.join(", ").localeCompare(b.color_identity.join(", ")));
+          this.list.sort((a, b) =>
+            a.color_identity
+              .join(", ")
+              .localeCompare(b.color_identity.join(", ")),
+          );
         } else if (this.misc === "desc") {
-          this.list.sort((a, b) => b.color_identity.join(", ").localeCompare(a.color_identity.join(", ")));
+          this.list.sort((a, b) =>
+            b.color_identity
+              .join(", ")
+              .localeCompare(a.color_identity.join(", ")),
+          );
         }
         break;
       case "released":
         if (this.misc === "asce" || this.misc === "auto") {
-          this.list.sort((a, b) => new Date(a.released_at) - new Date(b.released_at));
+          this.list.sort(
+            (a, b) => new Date(a.released_at) - new Date(b.released_at),
+          );
         } else if (this.misc === "desc") {
-          this.list.sort((a, b) => new Date(b.released_at) - new Date(a.released_at));
+          this.list.sort(
+            (a, b) => new Date(b.released_at) - new Date(a.released_at),
+          );
         }
         break;
     }

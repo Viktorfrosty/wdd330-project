@@ -1,8 +1,8 @@
 import { updateLinks } from "./main.mjs";
-import { symbolsData } from "./dataHandler.mjs";
+import { storedData } from "./dataHandler.mjs";
 import visualizer from "./dataVisualization.mjs";
 
-symbolsData().then(() => {
+storedData().then(() => {
   updateLinks(); // Rework is necessary.
   const page = new visualizer("Home");
   page.run();

@@ -11,7 +11,7 @@ async function delay(ms) {
 function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
-function getLocalStorage(key) {
+export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 // data expiration check.
@@ -31,8 +31,6 @@ async function fetchData(url) {
   });
   if (response.ok) {
     return response.json();
-  } else {
-    throw new Error(`Error fetching data from ${url}`);
   }
 }
 // Icons retriever function.
@@ -40,15 +38,22 @@ export async function setIconRetriever(setId) {
   const set = await fetchData(`${baseURL}/sets/${setId}`);
   return `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
 }
-// Symbols utilitarian functions.
-export async function symbolsData() {
+// Information stored to make the loading faster.
+export async function storedData() {
   const symbolsData = getLocalStorage("symbols");
+  const SetsData = getLocalStorage("sets");
   if (!dataExpirationCheck("symbols-stamp") || !symbolsData) {
     const data = await fetchData(`${baseURL}/symbology`);
     setLocalStorage("symbols", data);
     setLocalStorage("symbols-stamp", Date.now());
   }
+  if (!dataExpirationCheck("sets-stamp") || !SetsData) {
+    const data = await fetchData(`${baseURL}/sets`);
+    setLocalStorage("sets", data);
+    setLocalStorage("sets-stamp", Date.now());
+  }
 }
+// Symbols utilitarian functions.
 function symbolConverter(text) {
   const symbolsInfo = getLocalStorage("symbols");
   const matches = text.match(regex);
@@ -83,11 +88,11 @@ export function getParams(param, decoded = true) {
     return encodeURIComponent(value);
   }
 }
-export default class searchData {
+export default class search {
   constructor(params) {
     this.params = params;
   }
-  async fetchData() {
+  async getSearchData() {
     let list = [];
     let nextPage = `${baseURL}/cards/search?q=${this.params}&unique=prints`;
     while (nextPage) {
@@ -100,20 +105,19 @@ export default class searchData {
     }
     return list;
   }
-}
-export class cardData {
-  constructor(id) {
-    this.id = id;
+  async getCardData() {
+    return await fetchData(`${baseURL}/cards/${this.params}`);
   }
-  async fetchData() {
-    return await fetchData(`${baseURL}/cards/${this.id}`);
-  }
-}
-export class setData {
-  constructor(setId) {
-    this.setId = setId;
-  }
-  async fetchData() {
-    return await fetchData(`${baseURL}/sets/${this.setId}`);
+  async getSetData() {
+    const setData = await fetchData(`${baseURL}/sets/${this.params}`);
+    const setCards = [];
+    let nextPage = setData.search_uri;
+    while (nextPage) {
+      const response = await fetch(nextPage);
+      const info = await response.json();
+      setCards.push(...info.data);
+      nextPage = info.next_page || null;
+    }
+    return { setData, setCards };
   }
 }
