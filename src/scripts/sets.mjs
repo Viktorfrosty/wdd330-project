@@ -56,6 +56,5 @@ export default class setsCatalog {
     } while (addedCount > 0 && unresolvedSets.length > 0);
     fragment.appendChild(list);
     root.appendChild(fragment);
-    console.log("done");
   }
 }

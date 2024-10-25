@@ -1,3 +1,5 @@
+import search from "./dataHandler.mjs";
+
 const root = document.getElementById("root");
 
 // generate the main page.
@@ -5,6 +7,8 @@ export default class dialer {
   constructor() {}
   generate() {
     this.searchBox();
+    this.wildCardButton();
+    this.favoritesButton();
   }
   searchBox() {
     const syntax = [
@@ -67,5 +71,25 @@ export default class dialer {
     inputField.appendChild(input);
     inputField.appendChild(button);
     root.appendChild(inputField);
+  }
+  wildCardButton() {
+    const button = document.createElement("button");
+    button.textContent = "wild card";
+    button.onclick = () => {
+      const call = new search();
+      call.getWildCard().then((card) => {
+        window.location.href = `card.html?s=${card.id}`;
+      });
+    };
+    root.appendChild(button);
+  }
+  favoritesButton() {
+    const button = document.createElement("button");
+    button.textContent = "Favorites";
+    button.onclick = () => {
+      window.location.href =
+        "result.html?element=favorites&type=alphabetical&order=auto";
+    };
+    root.appendChild(button);
   }
 }

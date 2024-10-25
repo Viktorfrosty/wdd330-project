@@ -58,14 +58,27 @@ body {
 
 .rotate_button,
 .flip_button {
-  position: relative;
   bottom: 300px;
   left: 201px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+
+.erase_button, .add_button {
+  bottom: 54.5px;
+  left: 200px;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 10px;
+}
+
+.rotate_button,
+.flip_button, .erase_button, .add_button {
+  position: relative;
+  width: 50px;
+  height: 50px;
   z-index: 1;
   width: 50px;
   height: 50px;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
   opacity: 0.75;
 }
 
@@ -74,4 +87,5 @@ body {
   color: var(--detail1-color);
   padding: 10px;
   border-radius: 15px;
+  z-index: 2;
 }

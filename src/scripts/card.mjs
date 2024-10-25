@@ -1,4 +1,10 @@
-import { fetchData, setIconRetriever, symbolInjector } from "./dataHandler.mjs";
+import {
+  checkFavorite,
+  fetchData,
+  saveFavorite,
+  setIconRetriever,
+  symbolInjector,
+} from "./dataHandler.mjs";
 
 let root;
 let cardBox;
@@ -53,10 +59,8 @@ export class cardDetails {
       root = document.getElementById("root");
       cardBox = document.createElement("div");
       cardBox.setAttribute("class", "card_box");
-      console.log("root - id");
     } else {
       root = document.getElementsByClassName("card_box")[0];
-      console.log("root - class");
     }
     if (condition != false) {
       if (!object.flavor_name) {
@@ -132,10 +136,21 @@ export class cardDetails {
         fragment.appendChild(box);
       }
     }
-    if (!document.getElementById("add_to_deck_button")) {
+    if (!document.getElementById("favorites_button")) {
       const button = document.createElement("button");
-      button.setAttribute("id", "add_to_deck_button");
-      button.textContent = "Add to favorites";
+      button.setAttribute("id", "favorites_button");
+      let inList = checkFavorite(object);
+      if (inList === true) {
+        button.textContent = "In favorites ❤️";
+      } else {
+        button.textContent = "Add to favorites";
+        button.onclick = () => {
+          if (button.textContent !== "In favorites ❤️") {
+            saveFavorite(object);
+            button.textContent = "In favorites ❤️";
+          }
+        };
+      }
       fragment.appendChild(button);
     }
     if (document.getElementsByClassName("card_box").length === 0) {

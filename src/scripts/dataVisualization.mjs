@@ -2,7 +2,7 @@
 
 // type and misc selector
 export function createSelector(param) {
-  const root = document.getElementById("root");
+  const root = document.querySelector("header");
   const selector = document.createElement("div");
   selector.setAttribute("class", "selector");
   selector.setAttribute("id", param);
@@ -148,6 +148,16 @@ export default class Visualizer {
     const messageParaph = document.createElement("h3");
     messageParaph.innerHTML =
       "Go back to <a href='index.html'>Home</a> and try again with other search parameters.";
+    root.appendChild(messageTitle);
+    root.appendChild(messageParaph);
+  }
+  noFavorites() {
+    const root = document.getElementById("root");
+    const messageTitle = document.createElement("h1");
+    messageTitle.textContent = "Sorry, there are not favorites saved";
+    const messageParaph = document.createElement("h3");
+    messageParaph.innerHTML =
+      "Go back to <a href='index.html'>Home</a> and search for a card that you like.";
     root.appendChild(messageTitle);
     root.appendChild(messageParaph);
   }

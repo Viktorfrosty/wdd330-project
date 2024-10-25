@@ -9,8 +9,10 @@ import cardGlimpse, { resultsBox } from "./result.mjs";
 storedData().then(() => {
   const infoType = getParams("element");
   if (infoType !== "error") {
-    createSelector("type");
-    createSelector("order");
+    if (infoType === "list" || infoType === "set") {
+      createSelector("type");
+      createSelector("order");
+    }
     resultsBox();
     let info = null;
     let page = null;
@@ -23,6 +25,7 @@ storedData().then(() => {
         const arrangedList = new cardArrangement(retrievedInfo, type, order);
         const list = arrangedList.organize();
         list.forEach((card) => {
+          console.warn("cards in this page.");
           const snippet = new cardGlimpse(card);
           snippet.render();
         });
@@ -40,11 +43,30 @@ storedData().then(() => {
         );
         const list = arrangedList.organize();
         list.forEach((card) => {
+          console.warn("cards in this page.");
           const snippet = new cardGlimpse(card);
           snippet.render();
         });
         page.run();
       });
+    } else if (infoType === "favorites") {
+      const page = new visualizer(infoType);
+      const infoInstance = new search();
+      const info = infoInstance.getFavorites();
+      if (info === null) {
+        page.noFavorites();
+      } else {
+        createSelector("type");
+        createSelector("order");
+        const arrangedList = new cardArrangement(info, type, order);
+        const list = arrangedList.organize();
+        list.forEach((card) => {
+          console.warn("cards in this page.");
+          const snippet = new cardGlimpse(card, true);
+          snippet.render();
+        });
+      }
+      page.run();
     }
   } else {
     const page = new visualizer("Information not found");

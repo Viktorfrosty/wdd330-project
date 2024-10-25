@@ -8,7 +8,7 @@ async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 // Local storage functions.
-function setLocalStorage(key, data) {
+export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 export function getLocalStorage(key) {
@@ -33,6 +33,24 @@ export async function fetchData(url) {
     return response.json();
   } else {
     window.location.href = "result.html?element=error";
+  }
+}
+// save favorite funcion.
+export function saveFavorite(card) {
+  let favorites = getLocalStorage("favorites");
+  if (!favorites) {
+    favorites = [];
+  }
+  favorites.push(card);
+  setLocalStorage("favorites", favorites);
+}
+// check if in favorite function.
+export function checkFavorite(card) {
+  const favorites = getLocalStorage("favorites");
+  if (favorites) {
+    return favorites.some((object) => card.id === object.id);
+  } else {
+    return false;
   }
 }
 // Icons retriever function.
@@ -96,40 +114,42 @@ export function getParams(param, decoded = true) {
     return encodeURIComponent(value);
   }
 }
+// rework:search fetching system.
 export default class search {
   constructor(params) {
     this.params = params;
   }
-  async getSearchData() {
-    let list = [];
-    let nextPage = `${baseURL}/cards/search?q=${this.params}&extras=true&unique=prints`;
-    console.log(nextPage);
-    while (nextPage) {
-      const info = await fetchData(nextPage);
-      console.log(info);
-      info.data.forEach((cardData) => {
-        list.push(cardData);
-      });
-      // nextPage = info.next_page || null;
-      console.log(info.next_page);
-      nextPage = null;
+  getFavorites() {
+    const favorites = getLocalStorage("favorites");
+    if (favorites && Object.keys(favorites).length !== 0) {
+      return favorites;
+    } else {
+      return null;
     }
-    return list;
   }
   async getCardData() {
     return await fetchData(`${baseURL}/cards/${this.params}`);
   }
-  async getSetData() {
-    const setData = await fetchData(`${baseURL}/sets/${this.params}`);
+  async getWildCard() {
+    return await fetchData(`${baseURL}/cards/random`);
+  }
+  async getSearchData(
+    url = `${baseURL}/cards/search?q=${this.params}&extras=true&unique=prints`,
+  ) {
+    const list = [];
+    const info = await fetchData(url);
+    this.nextPage = info.next_page;
+    info.data.forEach((cardData) => list.push(cardData));
+    return list;
+  }
+  async getSetData(url = `${baseURL}/sets/${this.params}`) {
+    const setData = await fetchData(url);
     const setCards = [];
-    // let nextPage = setData.search_uri;
-    let nextPage = null;
-    console.log(setData);
+    let nextPage = setData.search_uri;
     while (nextPage) {
       const info = await fetchData(nextPage);
       setCards.push(...info.data);
-      // nextPage = info.next_page || null;
-      nextPage = null;
+      nextPage = info.next_page;
     }
     return { setData, setCards };
   }

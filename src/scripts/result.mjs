@@ -1,3 +1,10 @@
+import {
+  checkFavorite,
+  getLocalStorage,
+  saveFavorite,
+  setLocalStorage,
+} from "./dataHandler.mjs";
+
 export function resultsBox() {
   const root = document.getElementById("root");
   const searchResults = document.createElement("div");
@@ -6,15 +13,17 @@ export function resultsBox() {
 }
 
 export default class CardGlimpse {
-  constructor(card) {
+  constructor(card, inFavorites = false) {
     this.card = card;
+    this.inFavorites = inFavorites;
   }
   render() {
-    this.cardSnippet(this.card);
+    this.cardSnippet(this.card, this.inFavorites);
   }
-  cardSnippet(card) {
+  cardSnippet(card, inFavorites) {
     const root = document.getElementById("card_box");
     const box = document.createElement("div");
+    box.setAttribute("id", `card-${card.id}`);
     const img = this.createImageElement(card);
     if (card.layout === "flip") {
       const button = this.createFlipButton(img);
@@ -25,6 +34,13 @@ export default class CardGlimpse {
       box.appendChild(transformSection);
     } else {
       box.appendChild(img);
+    }
+    if (inFavorites !== false) {
+      const remove = this.createEraseButton(card);
+      box.appendChild(remove);
+    } else {
+      const add = this.createFavoriteButton(card);
+      box.appendChild(add);
     }
     root.appendChild(box);
   }
@@ -106,5 +122,38 @@ export default class CardGlimpse {
     transformSection.appendChild(img);
     transformSection.appendChild(button);
     return transformSection;
+  }
+  createEraseButton(card) {
+    const favorites = getLocalStorage("favorites");
+    const snippet = document.getElementById(`card-${card.id}`);
+    const button = document.createElement("button");
+    button.setAttribute("class", "erase_button");
+    button.textContent = "❌";
+    button.onclick = () => {
+      const updatedFavorites = favorites.filter((fav) => fav.id !== card.id);
+      setLocalStorage("favorites", updatedFavorites);
+      if (snippet) {
+        snippet.remove();
+      }
+      window.location.reload();
+    };
+    return button;
+  }
+  createFavoriteButton(card) {
+    const button = document.createElement("button");
+    button.setAttribute("class", "add_button");
+    let inList = checkFavorite(card);
+    if (inList === true) {
+      button.textContent = "❤️";
+    } else {
+      button.textContent = "🖤";
+      button.onclick = () => {
+        if (button.textContent !== "❤️") {
+          saveFavorite(card);
+          button.textContent = "❤️";
+        }
+      };
+    }
+    return button;
   }
 }
