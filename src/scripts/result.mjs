@@ -20,7 +20,7 @@ export default class CardGlimpse {
       const button = this.createFlipButton(img);
       box.appendChild(img);
       box.appendChild(button);
-    } else if (card.layout === "transform" && "card_faces" in card) {
+    } else if (card.layout !== "flip" && "card_faces" in card) {
       const transformSection = this.createTransformSection(card, img);
       box.appendChild(transformSection);
     } else {

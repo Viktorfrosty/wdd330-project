@@ -1,5 +1,9 @@
 import { fetchData, setIconRetriever, symbolInjector } from "./dataHandler.mjs";
 
+let root;
+let cardBox;
+const fragment = document.createDocumentFragment();
+
 // Generate elements and organize the card details.
 export class cardDetails {
   constructor(card) {
@@ -45,52 +49,60 @@ export class cardDetails {
     }
   }
   async elementGenerator(list, object, condition = false) {
-    const root = document.getElementById("root");
-    const cardBox = document.createElement("div");
-    cardBox.setAttribute("class", "card_box");
+    if (document.getElementsByClassName("card_box").length === 0) {
+      root = document.getElementById("root");
+      cardBox = document.createElement("div");
+      cardBox.setAttribute("class", "card_box");
+      console.log("root - id");
+    } else {
+      root = document.getElementsByClassName("card_box")[0];
+      console.log("root - class");
+    }
     if (condition != false) {
       if (!object.flavor_name) {
         const name = document.createElement("h2");
         name.setAttribute("class", "name");
         name.textContent = object.name;
-        cardBox.appendChild(name);
+        fragment.appendChild(name);
       } else {
         const flavorName = document.createElement("h2");
         flavorName.setAttribute("class", "name");
         flavorName.textContent = object.flavor_name;
-        cardBox.appendChild(flavorName);
+        fragment.appendChild(flavorName);
         const name = document.createElement("h3");
         name.setAttribute("class", "name");
         name.textContent = `(${object.name})`;
-        cardBox.appendChild(name);
+        fragment.appendChild(name);
       }
       const type = document.createElement("h3");
       type.setAttribute("class", "type");
       type.textContent = object.type_line;
-      cardBox.appendChild(type);
+      fragment.appendChild(type);
     }
     for (const property of list) {
       if (property !== "image_uris" && property in object) {
         const element = document.createElement("p");
         element.innerHTML = symbolInjector(object[property]);
         element.setAttribute("class", property);
-        cardBox.appendChild(element);
+        fragment.appendChild(element);
       } else if (property === "image_uris" && property in object) {
         const img = document.createElement("img");
         img.setAttribute("loading", "lazy");
         img.setAttribute("src", object[property]["large"]);
         img.setAttribute("alt", `${object.name} image.`);
-        cardBox.appendChild(img);
+        fragment.appendChild(img);
       }
     }
-    const setElement = document.createElement("a");
-    const icon = await setIconRetriever(object.set_id);
-    setElement.setAttribute(
-      "href",
-      `result.html?element=set&s=${object.set_id}&type=alphabetical&order=auto`,
-    );
-    setElement.innerHTML = `${object.set_name} (${object.set.toUpperCase()}) ${icon}`;
-    cardBox.appendChild(setElement);
+    if (object.set_id && object.set_name && object.set) {
+      const setElement = document.createElement("a");
+      const icon = await setIconRetriever(object.set_id);
+      setElement.setAttribute(
+        "href",
+        `result.html?element=set&s=${object.set_id}&type=alphabetical&order=auto`,
+      );
+      setElement.innerHTML = `${object.set_name} (${object.set.toUpperCase()}) ${icon}`;
+      fragment.appendChild(setElement);
+    }
     if ("legalities" in object) {
       const box = document.createElement("div");
       box.innerHTML = "<p>Legalities</p>";
@@ -102,7 +114,7 @@ export class cardDetails {
         list.appendChild(block);
       });
       box.appendChild(list);
-      cardBox.appendChild(box);
+      fragment.appendChild(box);
     }
     if ("rulings_uri" in object) {
       const info = await fetchData(object.rulings_uri);
@@ -117,15 +129,20 @@ export class cardDetails {
           rulingBox.appendChild(rule);
         });
         box.appendChild(rulingBox);
-        cardBox.appendChild(box);
+        fragment.appendChild(box);
       }
     }
     if (!document.getElementById("add_to_deck_button")) {
       const button = document.createElement("button");
       button.setAttribute("id", "add_to_deck_button");
       button.textContent = "Add to favorites";
-      cardBox.append(button);
+      fragment.appendChild(button);
     }
-    root.append(cardBox);
+    if (document.getElementsByClassName("card_box").length === 0) {
+      cardBox.appendChild(fragment);
+      root.appendChild(cardBox);
+    } else {
+      cardBox.appendChild(fragment);
+    }
   }
 }

@@ -19,6 +19,7 @@ storedData().then(() => {
       cardInfo.collector_number,
     );
     const info = new cardDetails(cardInfo);
+    console.log(info);
     page.run();
     info.render();
   });
