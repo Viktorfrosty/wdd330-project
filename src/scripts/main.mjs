@@ -79,7 +79,6 @@ export default class dialer {
     button.onclick = () => {
       const selectedValue = select.value;
       const inputValue = input.value;
-      // window.location.href = `search.html?parameter=${selectedValue}&query=${inputValue}`;
       if (selectedValue !== "name") {
         window.location.href = `result.html?element=list&s=${selectedValue}%3A${inputValue}&type=alphabetical&order=auto`;
       } else {
