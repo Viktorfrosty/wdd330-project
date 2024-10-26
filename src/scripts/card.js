@@ -24,5 +24,3 @@ storedData().then(() => {
     info.render();
   });
 });
-
-// a.

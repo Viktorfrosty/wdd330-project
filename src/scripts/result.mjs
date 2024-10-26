@@ -17,9 +17,11 @@ export default class CardGlimpse {
     this.card = card;
     this.inFavorites = inFavorites;
   }
+
   render() {
     this.cardSnippet(this.card, this.inFavorites);
   }
+
   cardSnippet(card, inFavorites) {
     const root = document.getElementById("card_box");
     const box = document.createElement("div");
@@ -30,8 +32,9 @@ export default class CardGlimpse {
       box.appendChild(img);
       box.appendChild(button);
     } else if (card.layout !== "flip" && "card_faces" in card) {
-      const transformSection = this.createTransformSection(card, img);
-      box.appendChild(transformSection);
+      const button = this.createRotateButton(card, img);
+      box.appendChild(img);
+      box.appendChild(button);
     } else {
       box.appendChild(img);
     }
@@ -44,6 +47,7 @@ export default class CardGlimpse {
     }
     root.appendChild(box);
   }
+
   createImageElement(card) {
     const img = document.createElement("img");
     img.setAttribute("loading", "lazy");
@@ -52,16 +56,19 @@ export default class CardGlimpse {
     this.addImageEventListeners(img, card);
     return img;
   }
+
   getCardImageUrl(card) {
     return "image_uris" in card
       ? card.image_uris.normal
       : card.card_faces[0].image_uris.normal;
   }
+
   getCardName(card) {
     return card.flavor_name
       ? `(${card.name} - variant)<br>${card.flavor_name}`
       : card.name;
   }
+
   addImageEventListeners(img, card) {
     img.addEventListener("click", () => {
       window.location.href = `card.html?s=${card.id}`;
@@ -81,6 +88,7 @@ export default class CardGlimpse {
       }
     });
   }
+
   createCardNameElement(card, event) {
     const cardName = document.createElement("div");
     cardName.innerHTML =
@@ -92,6 +100,7 @@ export default class CardGlimpse {
     cardName.setAttribute("id", "hover_name");
     return cardName;
   }
+
   createFlipButton(img) {
     const button = document.createElement("button");
     button.setAttribute("class", "flip_button");
@@ -101,8 +110,8 @@ export default class CardGlimpse {
     });
     return button;
   }
-  createTransformSection(card, img) {
-    const transformSection = document.createElement("div");
+
+  createRotateButton(card, img) {
     const button = document.createElement("button");
     button.setAttribute("class", "rotate_button");
     button.textContent = "←";
@@ -119,10 +128,9 @@ export default class CardGlimpse {
         `${card.card_faces[currentFaceIndex].name} image.`,
       );
     });
-    transformSection.appendChild(img);
-    transformSection.appendChild(button);
-    return transformSection;
+    return button;
   }
+
   createEraseButton(card) {
     const favorites = getLocalStorage("favorites");
     const snippet = document.getElementById(`card-${card.id}`);
@@ -139,6 +147,7 @@ export default class CardGlimpse {
     };
     return button;
   }
+
   createFavoriteButton(card) {
     const button = document.createElement("button");
     button.setAttribute("class", "add_button");
