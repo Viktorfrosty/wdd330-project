@@ -12,6 +12,16 @@ export default class setsCatalog {
     const fragment = document.createDocumentFragment();
     const list = document.createElement("ul");
     list.setAttribute("id", "set_list");
+    const header = document.createElement("li");
+    header.innerHTML = `<span>
+    <p class="set_name">Set Name</p>
+    <p class="set_code">Code</p>
+    <p class="set_icon">Icon</p>
+    <p class="set_cards">Cards</p>
+    <p class="set_date">Released At</p>
+    <p class="set_type">Type</p>
+ </span>`;
+    list.appendChild(header);
     const parentSets = data.filter((set) => !set.parent_set_code);
     parentSets.forEach((set) => {
       const element = document.createElement("li");
@@ -56,5 +66,11 @@ export default class setsCatalog {
     } while (addedCount > 0 && unresolvedSets.length > 0);
     fragment.appendChild(list);
     root.appendChild(fragment);
+    let trashBin = document.querySelectorAll("li > ul");
+    trashBin.forEach((element) => {
+      if (element.children.length === 0) {
+        element.remove();
+      }
+    });
   }
 }

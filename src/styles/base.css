@@ -13,13 +13,56 @@
   --paragraphs-fonts: Syne, sans-serif, garamond;
   /* others elements */
   --background: linear-gradient(to right, var(--main-color), var(--secondary-color));
+  --background-upper: linear-gradient(to bottom, var(--detail2-color), var(--main-color));
+  --background-lower: linear-gradient(to top, var(--detail2-color), var(--main-color));
 }
 
+
 body {
-  max-width: 1400px;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
+  font-family: var(--paragraphs-fonts);
+}
+
+a, h1, h2, h3 {
+  font-family: var(--headers-fonts);
+  color: var(--detail2-color);
+  text-decoration: none;
+}
+
+header,footer {
+  width: 100%;
+  height: 75px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--detail1-color);
+}
+
+header {
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  background-image: var(--background-upper);
+  border-bottom: 5px solid var(--detail2-color);
+}
+
+footer {
+  bottom: 0px;
+  border-top: 5px solid var(--detail2-color);
+  background-image: var(--background-lower);
+}
+
+header a {
+  margin-left: 25px;
+}
+
+main {
+  background-color: var(--detail1-color);
+  margin-top: 100px;
+  margin-bottom: 50px;
+  min-height: 554px;
 }
 
 .hidden {
@@ -31,21 +74,109 @@ body {
 /* -----------↓---------- */
 
 /* -----------x---------- */
+/* - sets Page Elements - */
+/* -----------↓---------- */
+
+#set_list {
+  width: 95%;
+}
+
+#set_list li{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: 50px, 1fr
+}
+
+#set_list a, #set_list span {
+  grid-row: 1/2;
+  display: flex;
+  gap: 5px;
+  text-align: center;
+  align-items: center;
+}
+
+#set_list a:hover {
+  background-color: #E2A76F;
+  opacity: 1;
+  filter: invert(100%);
+}
+
+span p {
+  font-weight: bold;
+}
+
+span .set_name {
+  margin-left: 75px;
+}
+
+a .set_name {
+  margin-left: 10px;
+}
+
+a .set_code {
+  padding-right: 15px;
+}
+
+li .set_code {
+  margin-left: auto;
+}
+
+li .set_type {
+  margin-right: 25px;
+}
+
+li .set_type, li .set_code, li .set_cards, li .set_date {
+  width: 150px;
+}
+
+li ul li .set_name::before {
+  content: "└➤ "
+}
+
+/* -----------x---------- */
 /* - Card Page Elements - */
 /* -----------↓---------- */
+
+.card_box {
+  display: grid;
+}
 
 /* -----------x---------- */
 /*  Result Page Elements  */
 /* -----------↓---------- */
 
+label {
+  margin-right: 5px;
+}
+
+#type select, #order select {
+  background-color: var(--secondary-color);
+  color: var(--detail1-color);
+  border-radius: 10px;
+  text-align: center;
+  height: 35px;
+}
+
+#type {
+  margin-left: auto;
+}
+
+#order {
+  margin-right: 25px;
+}
+
 #card_box {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 25px;
 }
 
-#card_box div,
-#card_box img {
+#card_box div, #card_box div div {
+  position: static;
+}
+
+#card_box div, #card_box div div, #card_box img {
   background-color: var(--detail2-color);
   width: 250px;
   height: 350px;
@@ -58,6 +189,7 @@ body {
 
 .rotate_button,
 .flip_button {
+  z-index: 1;
   bottom: 300px;
   left: 201px;
   border-top-left-radius: 50px;
@@ -65,18 +197,17 @@ body {
 }
 
 .erase_button, .add_button {
-  bottom: 54.5px;
-  left: 200px;
-  border-top-left-radius: 30px;
-  border-bottom-right-radius: 10px;
+  z-index: 2;
+  bottom: 53px;
+  left: 0px;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: 10px;
 }
 
-.rotate_button,
-.flip_button, .erase_button, .add_button {
+.rotate_button, .flip_button, .erase_button, .add_button {
   position: relative;
   width: 50px;
   height: 50px;
-  z-index: 1;
   width: 50px;
   height: 50px;
   opacity: 0.75;

@@ -1,4 +1,6 @@
-// API configurations
+// Data handler module.
+
+// API configurations.
 const baseURL = "https://api.scryfall.com";
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";

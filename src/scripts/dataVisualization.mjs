@@ -10,7 +10,7 @@ export function createSelector(param) {
   const selectedValue = urlParams.get(param);
   if (param === "type") {
     selector.innerHTML = `<label for="options">Sort by:</label>  
-                          <select id="options">      
+                          <select class="options">      
                             <option value="alphabetical" ${selectedValue === "alphabetical" ? "selected" : ""}>Alphabetical</option>    
                             <option value="rarity" ${selectedValue === "rarity" ? "selected" : ""}>Rarity</option>    
                             <option value="cmc" ${selectedValue === "cmc" ? "selected" : ""}>CMC</option>    
@@ -20,11 +20,11 @@ export function createSelector(param) {
                             <option value="released" ${selectedValue === "released" ? "selected" : ""}>Released</option>  
                           </select>`;
   } else if (param === "order") {
-    selector.innerHTML = `<label for="options">Sort by:</label>
-                          <select id="options">    
-                            <option value="auto" ${selectedValue === "auto" ? "selected" : ""}>auto</option>    
-                            <option value="asce" ${selectedValue === "asce" ? "selected" : ""}>asce</option>    
-                            <option value="desc" ${selectedValue === "desc" ? "selected" : ""}>desc</option>  
+    selector.innerHTML = `<label for="options">order by:</label>
+                          <select class="options">    
+                            <option value="auto" ${selectedValue === "auto" ? "selected" : ""}>Auto</option>    
+                            <option value="asce" ${selectedValue === "asce" ? "selected" : ""}>Asce</option>    
+                            <option value="desc" ${selectedValue === "desc" ? "selected" : ""}>Desc</option>  
                           </select>`;
   }
   const selectElement = selector.querySelector("select");
