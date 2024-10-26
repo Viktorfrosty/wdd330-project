@@ -8,6 +8,7 @@ import {
 
 let root;
 let cardBox;
+let cardInfo;
 const fragment = document.createDocumentFragment();
 
 // Generate elements and organize the card details.
@@ -67,7 +68,7 @@ export class cardDetails {
         const name = document.createElement("h2");
         name.setAttribute("class", "name");
         name.textContent = object.name;
-        fragment.appendChild(name);
+        cardInfo.appendChild(name);
       } else {
         const flavorName = document.createElement("h2");
         flavorName.setAttribute("class", "name");
@@ -109,6 +110,7 @@ export class cardDetails {
     }
     if ("legalities" in object) {
       const box = document.createElement("div");
+      box.setAttribute("class", "legalities");
       box.innerHTML = "<p>Legalities</p>";
       const list = document.createElement("ul");
       const ruleEntries = Object.entries(object["legalities"]);
@@ -124,6 +126,7 @@ export class cardDetails {
       const info = await fetchData(object.rulings_uri);
       if (info.data.length > 0) {
         const box = document.createElement("div");
+        box.setAttribute("class", "rulings");
         box.innerHTML = `<h3>${object.name} Notes and Rules</h3>`;
         const rulingBox = document.createElement("ul");
         rulingBox.setAttribute("class", "rules_list");
