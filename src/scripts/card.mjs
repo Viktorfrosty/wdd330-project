@@ -1,14 +1,8 @@
-import {
-  checkFavorite,
-  fetchData,
-  saveFavorite,
-  setIconRetriever,
-  symbolInjector,
-} from "./dataHandler.mjs";
+import { checkFavorite, fetchData, saveFavorite, setIconRetriever, symbolInjector } from "./dataHandler.mjs";
 
 let root;
 let cardBox;
-let cardInfo;
+// let cardInfo;
 const fragment = document.createDocumentFragment();
 
 // Generate elements and organize the card details.
@@ -68,7 +62,7 @@ export class cardDetails {
         const name = document.createElement("h2");
         name.setAttribute("class", "name");
         name.textContent = object.name;
-        cardInfo.appendChild(name);
+        fragment.appendChild(name);
       } else {
         const flavorName = document.createElement("h2");
         flavorName.setAttribute("class", "name");
@@ -101,10 +95,7 @@ export class cardDetails {
     if (object.set_id && object.set_name && object.set) {
       const setElement = document.createElement("a");
       const icon = await setIconRetriever(object.set_id);
-      setElement.setAttribute(
-        "href",
-        `result.html?element=set&s=${object.set_id}&type=alphabetical&order=auto`,
-      );
+      setElement.setAttribute("href", `result.html?element=set&s=${object.set_id}&type=alphabetical&order=auto`);
       setElement.innerHTML = `${object.set_name} (${object.set.toUpperCase()}) ${icon}`;
       fragment.appendChild(setElement);
     }

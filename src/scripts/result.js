@@ -1,10 +1,17 @@
-import search, { getParams } from "./dataHandler.mjs";
+import search, { getParams, getResults, resultRendering } from "./dataHandler.mjs";
 import { storedData } from "./dataHandler.mjs";
-import visualizer, {
-  cardArrangement,
-  createSelector,
-} from "./dataVisualization.mjs";
+import visualizer, { cardArrangement, createNavButtons, createSelector, nightMode } from "./dataVisualization.mjs";
 import cardGlimpse, { resultsBox } from "./result.mjs";
+
+let page;
+let infoInstance;
+let info;
+let arrangedList;
+let list;
+let snippet;
+
+const nm = new nightMode();
+nm.load();
 
 storedData().then(() => {
   const infoType = getParams("element");
@@ -14,19 +21,18 @@ storedData().then(() => {
       createSelector("order");
     }
     resultsBox();
-    let info = null;
-    let page = null;
     const type = getParams("type");
     const order = getParams("order");
     if (infoType === "list") {
-      info = new search(getParams("s", false));
       page = new visualizer("search results");
-      info.getSearchData().then((retrievedInfo) => {
-        const arrangedList = new cardArrangement(retrievedInfo, type, order);
-        const list = arrangedList.organize();
-        list.forEach((card) => {
+      info = new search(getParams("s", false));
+      info.getSearchData().then(() => {
+        list = new cardArrangement(getResults(), type, order);
+        createNavButtons();
+        arrangedList = list.organize();
+        arrangedList.forEach((card) => {
           console.warn("cards in this page.");
-          const snippet = new cardGlimpse(card);
+          snippet = new cardGlimpse(card);
           snippet.render();
         });
       });
@@ -34,42 +40,39 @@ storedData().then(() => {
     } else if (infoType === "set") {
       info = new search(getParams("s"));
       info.getSetData().then((retrievedInfo) => {
-        const name = `${retrievedInfo.setData.name} (${retrievedInfo.setData.code.toUpperCase()})`;
-        const page = new visualizer(name, retrievedInfo.setData.object);
-        const arrangedList = new cardArrangement(
-          retrievedInfo.setCards,
-          type,
-          order,
-        );
-        const list = arrangedList.organize();
-        list.forEach((card) => {
+        page = new visualizer(`${retrievedInfo.name} (${retrievedInfo.code.toUpperCase()})`, retrievedInfo.object);
+        list = new cardArrangement(resultRendering(), type, order);
+        createNavButtons();
+        arrangedList = list.organize();
+        arrangedList.forEach((card) => {
           console.warn("cards in this page.");
-          const snippet = new cardGlimpse(card);
+          snippet = new cardGlimpse(card);
           snippet.render();
         });
         page.run();
       });
     } else if (infoType === "favorites") {
-      const page = new visualizer(infoType);
-      const infoInstance = new search();
-      const info = infoInstance.getFavorites();
+      page = new visualizer(infoType);
+      infoInstance = new search();
+      info = infoInstance.getFavorites();
       if (info === null) {
         page.noFavorites();
       } else {
         createSelector("type");
         createSelector("order");
-        const arrangedList = new cardArrangement(info, type, order);
-        const list = arrangedList.organize();
-        list.forEach((card) => {
+        list = new cardArrangement(resultRendering(), type, order);
+        createNavButtons();
+        arrangedList = list.organize();
+        arrangedList.forEach((card) => {
           console.warn("cards in this page.");
-          const snippet = new cardGlimpse(card, true);
+          snippet = new cardGlimpse(card, true);
           snippet.render();
         });
       }
       page.run();
     }
   } else {
-    const page = new visualizer("Information not found");
+    page = new visualizer("Information not found");
     page.run();
   }
 });

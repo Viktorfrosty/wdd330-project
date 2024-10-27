@@ -1,9 +1,4 @@
-import {
-  checkFavorite,
-  getLocalStorage,
-  saveFavorite,
-  setLocalStorage,
-} from "./dataHandler.mjs";
+import { checkFavorite, getLocalStorage, saveFavorite, setLocalStorage } from "./dataHandler.mjs";
 
 export function resultsBox() {
   const root = document.getElementById("root");
@@ -58,15 +53,11 @@ export default class CardGlimpse {
   }
 
   getCardImageUrl(card) {
-    return "image_uris" in card
-      ? card.image_uris.normal
-      : card.card_faces[0].image_uris.normal;
+    return "image_uris" in card ? card.image_uris.normal : card.card_faces[0].image_uris.normal;
   }
 
   getCardName(card) {
-    return card.flavor_name
-      ? `(${card.name} - variant)<br>${card.flavor_name}`
-      : card.name;
+    return card.flavor_name ? `(${card.name} - variant)<br>${card.flavor_name}` : card.name;
   }
 
   addImageEventListeners(img, card) {
@@ -91,9 +82,7 @@ export default class CardGlimpse {
 
   createCardNameElement(card, event) {
     const cardName = document.createElement("div");
-    cardName.innerHTML =
-      this.getCardName(card) +
-      `<br>(${card.set_name} #${card.collector_number})`;
+    cardName.innerHTML = this.getCardName(card) + `<br>(${card.set_name} #${card.collector_number})`;
     cardName.style.position = "absolute";
     cardName.style.left = `${event.pageX}px`;
     cardName.style.top = `${event.pageY}px`;
@@ -119,14 +108,8 @@ export default class CardGlimpse {
     button.addEventListener("click", () => {
       currentFaceIndex = (currentFaceIndex + 1) % card.card_faces.length;
       img.setAttribute("loading", "eager");
-      img.setAttribute(
-        "src",
-        card.card_faces[currentFaceIndex].image_uris.normal,
-      );
-      img.setAttribute(
-        "alt",
-        `${card.card_faces[currentFaceIndex].name} image.`,
-      );
+      img.setAttribute("src", card.card_faces[currentFaceIndex].image_uris.normal);
+      img.setAttribute("alt", `${card.card_faces[currentFaceIndex].name} image.`);
     });
     return button;
   }

@@ -1,6 +1,9 @@
 import { cardDetails } from "./card.mjs";
 import search, { getParams, storedData } from "./dataHandler.mjs";
-import Visualizer from "./dataVisualization.mjs";
+import Visualizer, { nightMode } from "./dataVisualization.mjs";
+
+const nm = new nightMode();
+nm.load();
 
 storedData().then(() => {
   const card = new search(getParams("s"));
@@ -12,12 +15,7 @@ storedData().then(() => {
     } else {
       cardName = cardInfo.flavor_name;
     }
-    const page = new Visualizer(
-      cardName,
-      cardInfo.object,
-      misc,
-      cardInfo.collector_number,
-    );
+    const page = new Visualizer(cardName, cardInfo.object, misc, cardInfo.collector_number);
     const info = new cardDetails(cardInfo);
     console.log(info);
     page.run();

@@ -2,6 +2,8 @@
 
 // API configurations.
 const baseURL = "https://api.scryfall.com";
+const initialSearchParameter =
+  "&page=1&order=name&dir=asc&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`";
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";
 const regex = /\{.*?\}/g;
@@ -23,8 +25,8 @@ function dataExpirationCheck(key) {
   return storedTime && timeDifference < 86400000;
 }
 // Function to fetch data from API.
-export async function fetchData(url) {
-  await delay(100);
+export async function fetchData(url, search = false) {
+  await delay(50);
   const response = await fetch(url, {
     headers: {
       "User-Agent": userAgent,
@@ -33,6 +35,8 @@ export async function fetchData(url) {
   });
   if (response.ok) {
     return response.json();
+  } else if (search) {
+    return null;
   } else {
     window.location.href = "result.html?element=error";
   }
@@ -116,6 +120,28 @@ export function getParams(param, decoded = true) {
     return encodeURIComponent(value);
   }
 }
+// rework: Get the result saved in the local storage.
+export function resultRendering() {
+  let result = [];
+  const storedData = getLocalStorage("search-result");
+  let searchRange = getLocalStorage("search-range");
+  if (!searchRange || (searchRange[0] > storedData.length && searchRange[1] > storedData.length)) {
+    searchRange = [0, 49];
+    setLocalStorage("search-range", searchRange);
+  }
+  const [start, end] = searchRange;
+  for (let counter = start; counter <= end; counter++) {
+    if (storedData[counter] !== undefined) {
+      result.push(storedData[counter]);
+    }
+  }
+  return result;
+}
+
+export function getResults() {
+  return getLocalStorage("search-result");
+}
+
 // rework:search fetching system.
 export default class search {
   constructor(params) {
@@ -124,7 +150,8 @@ export default class search {
   getFavorites() {
     const favorites = getLocalStorage("favorites");
     if (favorites && Object.keys(favorites).length !== 0) {
-      return favorites;
+      setLocalStorage("search-result", favorites);
+      return getLocalStorage("search-result");
     } else {
       return null;
     }
@@ -135,17 +162,38 @@ export default class search {
   async getWildCard() {
     return await fetchData(`${baseURL}/cards/random`);
   }
-  async getSearchData(
-    url = `${baseURL}/cards/search?q=${this.params}&extras=true&unique=prints`,
-  ) {
-    const list = [];
+  async getSearchData(url = `${baseURL}/cards/search?q=${this.params}${initialSearchParameter}`) {
+    let pageNumber = getParams("page");
+    console.log(pageNumber);
+    let pageCount = 1;
+    let list = [];
     const info = await fetchData(url);
-    this.nextPage = info.next_page;
+    let nextPage = `${baseURL}/cards/search?q=${this.params}&page=${pageCount + 1}&order=name&dir=asc&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`;
+    console.log(nextPage);
     info.data.forEach((cardData) => list.push(cardData));
-    return list;
+    while (nextPage) {
+      const nextPageInfo = await fetchData(nextPage, true);
+      if (nextPage !== null) {
+        pageCount++;
+        console.log("counting");
+      } else {
+        nextPage = nextPageInfo;
+        console.log("finished?");
+      }
+    }
+    setLocalStorage("total-pages", pageCount);
+    setLocalStorage("search-result", list);
   }
-  async getSetData(url = `${baseURL}/sets/${this.params}`) {
-    const setData = await fetchData(url);
+  async getSetData(id = this.params) {
+    let pageCounter;
+    let setData;
+    const setsList = getLocalStorage("sets");
+    for (const object of setsList.data) {
+      if (object.id === id) {
+        setData = object;
+        break;
+      }
+    }
     const setCards = [];
     let nextPage = setData.search_uri;
     while (nextPage) {
@@ -153,6 +201,7 @@ export default class search {
       setCards.push(...info.data);
       nextPage = info.next_page;
     }
-    return { setData, setCards };
+    setLocalStorage("search-result", setCards);
+    return setData;
   }
 }
