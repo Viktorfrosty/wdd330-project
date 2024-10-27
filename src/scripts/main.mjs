@@ -61,9 +61,9 @@ export default class dialer {
       const inputValue = input.value;
       if (inputValue !== "") {
         if (selectedValue !== "name") {
-          window.location.href = `result.html?element=list&s=${selectedValue}%3A${inputValue}&type=alphabetical&order=auto&page=1`;
+          window.location.href = `result.html?element=list&s=${selectedValue}%3A${inputValue}&type=name&order=asc&page=1`;
         } else {
-          window.location.href = `result.html?element=list&s=${inputValue}&type=alphabetical&order=auto&page=1`;
+          window.location.href = `result.html?element=list&s=${inputValue}&type=name&order=asc&page=1`;
         }
       }
     };
@@ -87,7 +87,7 @@ export default class dialer {
     const button = document.createElement("button");
     button.textContent = "Favorites";
     button.onclick = () => {
-      window.location.href = "result.html?element=favorites&type=alphabetical&order=auto";
+      window.location.href = "result.html?element=favorites&type=name&order=asc";
     };
     root.appendChild(button);
   }

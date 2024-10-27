@@ -26,7 +26,7 @@ export default class setsCatalog {
     parentSets.forEach((set) => {
       const element = document.createElement("li");
       element.setAttribute("id", `set-${set.code}`);
-      element.innerHTML = `<a class="set_link" href="result.html?element=set&s=${set.id}&type=alphabetical&order=asc&page=1">
+      element.innerHTML = `<a class="set_link" href="result.html?element=set&s=${set.code}&type=name&order=asc&page=1">
                               <p class="set_name">${set.name}</p>
                               <p class="set_code">${set.code.toUpperCase()}</p>
                               <div class="set_icon">
@@ -48,7 +48,7 @@ export default class setsCatalog {
         if (parentElement) {
           const element = document.createElement("li");
           element.setAttribute("id", `set-${set.code}`);
-          element.innerHTML = `<a class="set_link" href="result.html?element=set&s=${set.id}&type=alphabetical&order=asc&page=1">
+          element.innerHTML = `<a class="set_link" href="result.html?element=set&s=${set.code}&type=name&order=asc&page=1">
                                   <p class="set_name">${set.name}</p>
                                   <p class="set_code">${set.code.toUpperCase()}</p>
                                   <div class="set_icon">

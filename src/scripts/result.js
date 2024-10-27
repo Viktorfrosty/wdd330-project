@@ -27,10 +27,9 @@ storedData().then(() => {
       page = new visualizer("search results");
       info = new search(getParams("s", false));
       info.getSearchData().then(() => {
-        list = new cardArrangement(getResults(), type, order);
         createNavButtons();
-        arrangedList = list.organize();
-        arrangedList.forEach((card) => {
+        list = getResults();
+        list.forEach((card) => {
           console.warn("cards in this page.");
           snippet = new cardGlimpse(card);
           snippet.render();
@@ -38,13 +37,12 @@ storedData().then(() => {
       });
       page.run();
     } else if (infoType === "set") {
-      info = new search(getParams("s"));
+      info = new search(getParams("s", true));
       info.getSetData().then((retrievedInfo) => {
         page = new visualizer(`${retrievedInfo.name} (${retrievedInfo.code.toUpperCase()})`, retrievedInfo.object);
-        list = new cardArrangement(resultRendering(), type, order);
         createNavButtons();
-        arrangedList = list.organize();
-        arrangedList.forEach((card) => {
+        list = getResults();
+        list.forEach((card) => {
           console.warn("cards in this page.");
           snippet = new cardGlimpse(card);
           snippet.render();
@@ -61,7 +59,7 @@ storedData().then(() => {
         createSelector("type");
         createSelector("order");
         list = new cardArrangement(resultRendering(), type, order);
-        createNavButtons();
+        createNavButtons(true);
         arrangedList = list.organize();
         arrangedList.forEach((card) => {
           console.warn("cards in this page.");

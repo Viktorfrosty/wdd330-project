@@ -95,7 +95,7 @@ export class cardDetails {
     if (object.set_id && object.set_name && object.set) {
       const setElement = document.createElement("a");
       const icon = await setIconRetriever(object.set_id);
-      setElement.setAttribute("href", `result.html?element=set&s=${object.set_id}&type=alphabetical&order=auto`);
+      setElement.setAttribute("href", `result.html?element=set&s=${object.set_id}&type=name&order=asc`);
       setElement.innerHTML = `${object.set_name} (${object.set.toUpperCase()}) ${icon}`;
       fragment.appendChild(setElement);
     }

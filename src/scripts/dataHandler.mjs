@@ -25,7 +25,7 @@ function dataExpirationCheck(key) {
   return storedTime && timeDifference < 86400000;
 }
 // Function to fetch data from API.
-export async function fetchData(url, search = false) {
+export async function fetchData(url) {
   await delay(50);
   const response = await fetch(url, {
     headers: {
@@ -35,8 +35,6 @@ export async function fetchData(url, search = false) {
   });
   if (response.ok) {
     return response.json();
-  } else if (search) {
-    return null;
   } else {
     window.location.href = "result.html?element=error";
   }
@@ -120,10 +118,10 @@ export function getParams(param, decoded = true) {
     return encodeURIComponent(value);
   }
 }
-// rework: Get the result saved in the local storage.
+// Get the favorites saved in the local storage.
 export function resultRendering() {
   let result = [];
-  const storedData = getLocalStorage("search-result");
+  const storedData = getLocalStorage("favorites");
   let searchRange = getLocalStorage("search-range");
   if (!searchRange || (searchRange[0] > storedData.length && searchRange[1] > storedData.length)) {
     searchRange = [0, 49];
@@ -137,12 +135,11 @@ export function resultRendering() {
   }
   return result;
 }
-
+// Get the results saved in the local storage.
 export function getResults() {
   return getLocalStorage("search-result");
 }
-
-// rework:search fetching system.
+// search fetching system.
 export default class search {
   constructor(params) {
     this.params = params;
@@ -150,8 +147,7 @@ export default class search {
   getFavorites() {
     const favorites = getLocalStorage("favorites");
     if (favorites && Object.keys(favorites).length !== 0) {
-      setLocalStorage("search-result", favorites);
-      return getLocalStorage("search-result");
+      return favorites;
     } else {
       return null;
     }
@@ -163,45 +159,46 @@ export default class search {
     return await fetchData(`${baseURL}/cards/random`);
   }
   async getSearchData(url = `${baseURL}/cards/search?q=${this.params}${initialSearchParameter}`) {
-    let pageNumber = getParams("page");
-    console.log(pageNumber);
-    let pageCount = 1;
+    let info;
     let list = [];
-    const info = await fetchData(url);
-    let nextPage = `${baseURL}/cards/search?q=${this.params}&page=${pageCount + 1}&order=name&dir=asc&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`;
-    console.log(nextPage);
-    info.data.forEach((cardData) => list.push(cardData));
-    while (nextPage) {
-      const nextPageInfo = await fetchData(nextPage, true);
-      if (nextPage !== null) {
-        pageCount++;
-        console.log("counting");
-      } else {
-        nextPage = nextPageInfo;
-        console.log("finished?");
-      }
+    let pageNumber = getParams("page");
+    let order = getParams("alphabetical");
+    let dir = getParams("order");
+    if (pageNumber !== 1 || dir !== "asc" || order !== "name") {
+      info = await fetchData(
+        `${baseURL}/cards/search?q=${this.params}&page=${pageNumber}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
+      );
+    } else {
+      info = await fetchData(url);
     }
-    setLocalStorage("total-pages", pageCount);
+    info.data.forEach((cardData) => list.push(cardData));
     setLocalStorage("search-result", list);
   }
-  async getSetData(id = this.params) {
-    let pageCounter;
+  async getSetData(code = this.params) {
     let setData;
     const setsList = getLocalStorage("sets");
+    let info;
+    let list = [];
+    let pageNumber = getParams("page");
+    let order = getParams("alphabetical");
+    let dir = getParams("order");
     for (const object of setsList.data) {
-      if (object.id === id) {
+      if (object.code === code) {
         setData = object;
         break;
       }
     }
-    const setCards = [];
-    let nextPage = setData.search_uri;
-    while (nextPage) {
-      const info = await fetchData(nextPage);
-      setCards.push(...info.data);
-      nextPage = info.next_page;
+    if (pageNumber !== 1 || dir !== "asc" || order !== "name") {
+      info = await fetchData(
+        `${baseURL}/cards/search?q=e%3A${this.params}&page=${pageNumber}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
+      );
+    } else {
+      info = await fetchData(
+        `${baseURL}/cards/search?q=e%3A${this.params}&page=1&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
+      );
     }
-    setLocalStorage("search-result", setCards);
+    info.data.forEach((cardData) => list.push(cardData));
+    setLocalStorage("search-result", list);
     return setData;
   }
 }

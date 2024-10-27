@@ -41,13 +41,11 @@ export class nightMode {
     setLocalStorage("night-mode", true);
     background.style.backgroundColor = "var(--secondary-color)";
     background.style.color = "var(--detail1-color)";
-    // Body background color detail2 Body color detail2
   }
   modeOff() {
     setLocalStorage("night-mode", false);
     background.style.backgroundColor = "var(--detail1-color)";
     background.style.color = "var(--detail2-color)";
-    // Body background color detail2 Body color detail2
   }
   createNmButton() {
     const root = document.querySelector("header");
@@ -86,7 +84,7 @@ export function createSelector(param) {
   if (param === "type") {
     selector.innerHTML = `<label for="options">Sort by:</label>  
                           <select class="options">      
-                            <option value="alphabetical" ${selectedValue === "alphabetical" ? "selected" : ""}>Alphabetical</option>    
+                            <option value="name" ${selectedValue === "name" ? "selected" : ""}>Name</option>    
                             <option value="rarity" ${selectedValue === "rarity" ? "selected" : ""}>Rarity</option>    
                             <option value="cmc" ${selectedValue === "cmc" ? "selected" : ""}>CMC</option>    
                             <option value="power" ${selectedValue === "power" ? "selected" : ""}>Power</option>    
@@ -97,8 +95,7 @@ export function createSelector(param) {
   } else if (param === "order") {
     selector.innerHTML = `<label for="options">order by:</label>
                           <select class="options">    
-                            <option value="auto" ${selectedValue === "auto" ? "selected" : ""}>Auto</option>    
-                            <option value="asce" ${selectedValue === "asce" ? "selected" : ""}>Asce</option>    
+                            <option value="asc" ${selectedValue === "asc" ? "selected" : ""}>Asc</option>    
                             <option value="desc" ${selectedValue === "desc" ? "selected" : ""}>Desc</option>  
                           </select>`;
   }
@@ -120,7 +117,7 @@ export function createNavButtons(inFavorite = false) {
   display.setAttribute("id", "display");
   if (inFavorite) {
     const searchRange = getLocalStorage("search-range");
-    const totalResults = getLocalStorage("search-result").length;
+    const totalResults = getLocalStorage("favorites").length;
     const calculateLastRange = (total) => {
       const lastStart = Math.floor((total - 1) / 50) * 50;
       return [lastStart, total - 1];
