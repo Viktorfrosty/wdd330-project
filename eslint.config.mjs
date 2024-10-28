@@ -35,7 +35,7 @@ export default [
       //   { blankLine: "never", prev: "*", next: "return" },
       //   { blankLine: "never", prev: "*", next: "while" },
       // ],
-      "no-warning-comments": [1, { "terms": ["rework"], "location": "start" }]
+      "no-warning-comments": [1, { terms: ["rework"], location: "start" }],
     },
   },
 ];

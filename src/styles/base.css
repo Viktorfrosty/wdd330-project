@@ -24,7 +24,10 @@ body {
   font-family: var(--paragraphs-fonts);
 }
 
-body a, body h1, body h2, body h3 {
+body a,
+body h1,
+body h2,
+body h3 {
   font-family: var(--headers-fonts);
   color: inherit;
   text-decoration: none;
@@ -34,13 +37,16 @@ body a, body h1, body h2, body h3 {
   width: 95%;
 }
 
-#page-header, header, footer {
+#page-header,
+header,
+footer {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-header,footer {
+header,
+footer {
   width: 100%;
   height: 75px;
   color: var(--detail1-color);
@@ -100,13 +106,14 @@ main {
   width: 95%;
 }
 
-#set_list li{
+#set_list li {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: 50px, 1fr
+  grid-template-rows: 50px, 1fr;
 }
 
-#set_list a, #set_list span {
+#set_list a,
+#set_list span {
   color: inherit;
   grid-row: 1/2;
   display: flex;
@@ -168,12 +175,16 @@ li .set_type {
   margin-right: 25px;
 }
 
-li .set_type, li .set_code, li .set_icon, li .set_cards, li .set_date {
+li .set_type,
+li .set_code,
+li .set_icon,
+li .set_cards,
+li .set_date {
   width: 125px;
 }
 
 li ul li .set_name::before {
-  content: "└➤ "
+  content: "└➤ ";
 }
 
 /* -----------x---------- */
@@ -193,7 +204,8 @@ li ul li .set_name::before {
   height: 750px;
 }
 
-.card_box .name, .card_box .flavor_name {
+.card_box .name,
+.card_box .flavor_name {
   grid-column: 2/3;
   grid-row: 1/2;
 }
@@ -223,12 +235,16 @@ li ul li .set_name::before {
   grid-row: 6/7;
 }
 
-.card_box .loyalty, .card_box .toughness, .card_box .power, .card_box .defence {
+.card_box .loyalty,
+.card_box .toughness,
+.card_box .power,
+.card_box .defence {
   grid-column: 2/3;
   grid-row: 7/8;
 }
 
-.card_box .oracle_text, .card_box .flavor_text {
+.card_box .oracle_text,
+.card_box .flavor_text {
   grid-column: 2/3;
   grid-row: 8/9;
 }
@@ -261,7 +277,7 @@ li ul li .set_name::before {
 /*  Result Page Elements  */
 /* -----------↓---------- */
 
-.error{
+.error {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -295,7 +311,8 @@ label {
   margin-right: 5px;
 }
 
-#type select, #order select {
+#type select,
+#order select {
   background-color: var(--secondary-color);
   color: var(--detail1-color);
   border-radius: 10px;
@@ -315,7 +332,7 @@ label {
   width: 125px;
 }
 
-#order select{
+#order select {
   width: 75px;
 }
 
@@ -365,7 +382,8 @@ label {
   border-bottom-left-radius: 50px;
 }
 
-.erase_button, .add_button {
+.erase_button,
+.add_button {
   position: relative;
   top: 3px;
   right: 3px;
@@ -376,7 +394,10 @@ label {
   border-bottom-left-radius: 15px;
 }
 
-.rotate_button, .flip_button, .erase_button, .add_button {
+.rotate_button,
+.flip_button,
+.erase_button,
+.add_button {
   width: 50px;
   height: 50px;
   width: 50px;

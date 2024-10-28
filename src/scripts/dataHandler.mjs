@@ -42,6 +42,7 @@ export async function fetchData(url, returnNull = false) {
     return response.json();
   } else {
     if (returnNull) {
+      // console do not log the response status error.
       return null;
     } else {
       window.location.href = "result.html?element=error";
@@ -169,10 +170,30 @@ export default class search {
   }
   // rework: getSearchData.
   async getSearchData(url = `${baseURL}/cards/search?q=${this.params}${initialSearchParameter}`) {
+    let countInfo = getLocalStorage("search-page-count");
+    let pageCount = 1;
+    let countPageNumber = 1;
+    let nextPage;
+    let value = getParams("s");
     list = [];
     pageNumber = getParams("page");
     order = getParams("alphabetical");
     dir = getParams("order");
+    if (countInfo.value !== value || countInfo == null) {
+      do {
+        nextPage = await fetchData(
+          `${baseURL}/cards/search?q=${this.params}&page=${countPageNumber + 1}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
+          true,
+        );
+        if (nextPage !== null) {
+          countPageNumber++;
+          pageCount++;
+        } else {
+          setLocalStorage("search-page-count", { value, pageCount });
+          nextPage = null;
+        }
+      } while (nextPage !== null);
+    }
     if (pageNumber !== 1 || dir !== "asc" || order !== "name") {
       info = await fetchData(
         `${baseURL}/cards/search?q=${this.params}&page=${pageNumber}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
@@ -186,10 +207,10 @@ export default class search {
   // rework: getSetData.
   async getSetData(code = this.params) {
     let countInfo = getLocalStorage("search-page-count");
-    console.log(countInfo);
     let pageCount = 1;
     let countPageNumber = 1;
     let nextPage;
+    let value;
     let setData;
     const setsList = getLocalStorage("sets");
     list = [];
@@ -202,10 +223,8 @@ export default class search {
         break;
       }
     }
-    if (countInfo.code !== code || countInfo == null) {
-      console.warn("count initiated");
+    if (countInfo.value !== code || countInfo == null) {
       do {
-        console.warn("counting");
         nextPage = await fetchData(
           `${baseURL}/cards/search?q=e%3A${this.params}&page=${countPageNumber + 1}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
           true,
@@ -214,9 +233,8 @@ export default class search {
           countPageNumber++;
           pageCount++;
         } else {
-          console.warn("counting finished");
-          setLocalStorage("search-page-count", { code, pageCount });
-          console.warn(getLocalStorage("search-page-count"));
+          value = code;
+          setLocalStorage("search-page-count", { value, pageCount });
           nextPage = null;
         }
       } while (nextPage !== null);
