@@ -30,7 +30,7 @@ function dataExpirationCheck(key) {
   return storedTime && timeDifference < 86400000;
 }
 // Function to fetch data from API.
-export async function fetchData(url) {
+export async function fetchData(url, returnNull = false) {
   await delay(50);
   const response = await fetch(url, {
     headers: {
@@ -41,7 +41,11 @@ export async function fetchData(url) {
   if (response.ok) {
     return response.json();
   } else {
-    window.location.href = "result.html?element=error";
+    if (returnNull) {
+      return null;
+    } else {
+      window.location.href = "result.html?element=error";
+    }
   }
 }
 // save favorite funcion.
@@ -181,6 +185,11 @@ export default class search {
   }
   // rework: getSetData.
   async getSetData(code = this.params) {
+    let countInfo = getLocalStorage("search-page-count");
+    console.log(countInfo);
+    let pageCount = 1;
+    let countPageNumber = 1;
+    let nextPage;
     let setData;
     const setsList = getLocalStorage("sets");
     list = [];
@@ -192,6 +201,25 @@ export default class search {
         setData = object;
         break;
       }
+    }
+    if (countInfo.code !== code || countInfo == null) {
+      console.warn("count initiated");
+      do {
+        console.warn("counting");
+        nextPage = await fetchData(
+          `${baseURL}/cards/search?q=e%3A${this.params}&page=${countPageNumber + 1}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
+          true,
+        );
+        if (nextPage !== null) {
+          countPageNumber++;
+          pageCount++;
+        } else {
+          console.warn("counting finished");
+          setLocalStorage("search-page-count", { code, pageCount });
+          console.warn(getLocalStorage("search-page-count"));
+          nextPage = null;
+        }
+      } while (nextPage !== null);
     }
     if (pageNumber !== 1 || dir !== "asc" || order !== "name") {
       info = await fetchData(
