@@ -1,4 +1,4 @@
-// rework: optimize main page module.
+// Main page module.
 import search from "./dataHandler.mjs";
 // Module configurations.
 const root = document.getElementById("root");

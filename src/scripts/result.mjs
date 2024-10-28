@@ -1,8 +1,10 @@
-// rework: optimize results page module.
+// Results page module.
 import { checkFavorite, getLocalStorage, saveFavorite, setLocalStorage } from "./dataHandler.mjs";
+// Module config.
+let root;
 // result box generator.
 export function resultsBox() {
-  const root = document.getElementById("root");
+  root = document.getElementById("root");
   const searchResults = document.createElement("div");
   searchResults.setAttribute("id", "card_box");
   root.appendChild(searchResults);
@@ -17,7 +19,7 @@ export default class CardGlimpse {
     this.cardSnippet(this.card, this.inFavorites);
   }
   cardSnippet(card, inFavorites) {
-    const root = document.getElementById("card_box");
+    root = document.getElementById("card_box");
     const box = document.createElement("div");
     box.setAttribute("id", `card-${card.id}`);
     const img = this.createImageElement(card);
@@ -60,11 +62,11 @@ export default class CardGlimpse {
       window.location.href = `card.html?s=${card.id}`;
     });
     img.addEventListener("mouseover", (event) => {
-      const cardName = this.createCardNameElement(card, event);
-      document.body.appendChild(cardName);
+      const cardNameVisualizer = this.createCardNameElement(card, event);
+      document.body.appendChild(cardNameVisualizer);
       img.addEventListener("mousemove", (event) => {
-        cardName.style.left = `${event.pageX + 20}px`;
-        cardName.style.top = `${event.pageY + 20}px`;
+        cardNameVisualizer.style.left = `${event.pageX + 20}px`;
+        cardNameVisualizer.style.top = `${event.pageY + 20}px`;
       });
     });
     img.addEventListener("mouseout", () => {

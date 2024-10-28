@@ -47,10 +47,10 @@ export async function fetchData(url, returnNull = false) {
     return response.json();
   } else {
     if (returnNull) {
-      // rework: add console.clear();
+      console.clear();
       return null;
     } else {
-      // rework: add console.clear();
+      console.clear();
       window.location.href = "result.html?element=error";
     }
   }

@@ -1,4 +1,4 @@
-// rework: optimize main page module.
+// rework: optimize Card page module.
 import { checkFavorite, fetchData, saveFavorite, setIconRetriever, symbolInjector } from "./dataHandler.mjs";
 
 let root;
