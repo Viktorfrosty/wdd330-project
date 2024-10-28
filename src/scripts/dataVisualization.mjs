@@ -1,12 +1,10 @@
 // Data visualization module.
-
 import { getLocalStorage, setLocalStorage } from "./dataHandler.mjs";
-
 // Module configurations.
+const textRegex = /(?<=[a-z])_(?=[a-z])/g;
+let background = document.querySelector("body");
 let active;
 let loaded;
-let background = document.querySelector("body");
-
 // Night mode.
 export class nightMode {
   constructor() {}
@@ -42,13 +40,13 @@ export class nightMode {
     setLocalStorage("night-mode", true);
     background.style.backgroundColor = "var(--secondary-color)";
     background.style.color = "var(--detail1-color)";
-    background.classList.toggle("dark");
+    background.classList.toggle("dark", true);
   }
   modeOff() {
     setLocalStorage("night-mode", false);
     background.style.backgroundColor = "var(--detail1-color)";
     background.style.color = "var(--detail2-color)";
-    background.classList.toggle("dark");
+    background.classList.toggle("dark", false);
   }
   createNmButton() {
     const root = document.querySelector("header");
@@ -75,7 +73,16 @@ export class nightMode {
     root.appendChild(button);
   }
 }
-
+// type text converter.
+export function specialCharacterConverter(text) {
+  const matches = text.match(textRegex);
+  if (matches) {
+    matches.forEach((specialCharacter) => {
+      text = text.replace(specialCharacter, " ");
+    });
+  }
+  return text;
+}
 // type and misc selector
 export function createSelector(param) {
   const root = document.getElementById("page-header");
@@ -112,7 +119,6 @@ export function createSelector(param) {
   });
   root.appendChild(selector);
 }
-
 // create result page navigations buttons.
 export function createNavButtons(inFavorite = false) {
   const root = document.getElementById("root");
@@ -157,7 +163,6 @@ export function createNavButtons(inFavorite = false) {
   }
   root.appendChild(display);
 }
-
 // Search results organizer.
 export class cardArrangement {
   constructor(list, arrangement, misc) {
@@ -220,7 +225,6 @@ export class cardArrangement {
     return this.list;
   }
 }
-
 // page info modifier.
 export default class Visualizer {
   constructor(title = "Default", type = "", misc = "", number = "") {

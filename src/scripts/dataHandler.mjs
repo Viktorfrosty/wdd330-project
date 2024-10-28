@@ -1,5 +1,4 @@
 // Data handler module.
-
 // API configurations.
 const baseURL = "https://api.scryfall.com";
 const initialSearchParameter =
@@ -7,7 +6,7 @@ const initialSearchParameter =
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";
 // Module configurations.
-const regex = /\{.*?\}/g;
+const symbolRegex = /\{.*?\}/g;
 let info;
 let list;
 let pageNumber;
@@ -92,7 +91,7 @@ export async function storedData() {
 // Symbols utilitarian functions.
 function symbolConverter(text) {
   const symbolsInfo = getLocalStorage("symbols");
-  const matches = text.match(regex);
+  const matches = text.match(symbolRegex);
   if (matches) {
     matches.forEach((textSymbol) => {
       symbolsInfo.data.forEach((retrievedSymbol) => {
@@ -164,6 +163,7 @@ export default class search {
   async getWildCard() {
     return await fetchData(`${baseURL}/cards/random`);
   }
+  // rework: getSearchData.
   async getSearchData(url = `${baseURL}/cards/search?q=${this.params}${initialSearchParameter}`) {
     list = [];
     pageNumber = getParams("page");
@@ -179,6 +179,7 @@ export default class search {
     info.data.forEach((cardData) => list.push(cardData));
     setLocalStorage("search-result", list);
   }
+  // rework: getSetData.
   async getSetData(code = this.params) {
     let setData;
     const setsList = getLocalStorage("sets");

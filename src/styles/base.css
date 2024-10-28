@@ -26,7 +26,7 @@ body {
 
 body a, body h1, body h2, body h3 {
   font-family: var(--headers-fonts);
-  color: var(--detail2-color);
+  color: inherit;
   text-decoration: none;
 }
 
