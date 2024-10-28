@@ -1,6 +1,6 @@
+// sets page module.
 import { getLocalStorage } from "./dataHandler.mjs";
 import { specialCharacterConverter } from "./dataVisualization.mjs";
-
 // create the set list.
 export default class setsCatalog {
   constructor() {}

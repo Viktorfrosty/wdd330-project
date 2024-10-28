@@ -12,6 +12,11 @@ let list;
 let pageNumber;
 let order;
 let dir;
+let countInfo;
+let pageCount;
+let countPageNumber;
+let nextPage;
+let value;
 // Fetch delay function
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -42,9 +47,10 @@ export async function fetchData(url, returnNull = false) {
     return response.json();
   } else {
     if (returnNull) {
-      // console do not log the response status error.
+      // rework: add console.clear();
       return null;
     } else {
+      // rework: add console.clear();
       window.location.href = "result.html?element=error";
     }
   }
@@ -168,13 +174,13 @@ export default class search {
   async getWildCard() {
     return await fetchData(`${baseURL}/cards/random`);
   }
-  // rework: getSearchData.
+  // getSearchData.
   async getSearchData(url = `${baseURL}/cards/search?q=${this.params}${initialSearchParameter}`) {
-    let countInfo = getLocalStorage("search-page-count");
-    let pageCount = 1;
-    let countPageNumber = 1;
-    let nextPage;
-    let value = getParams("s");
+    countInfo = getLocalStorage("search-page-count");
+    pageCount = 1;
+    countPageNumber = 1;
+    nextPage;
+    value = getParams("s");
     list = [];
     pageNumber = getParams("page");
     order = getParams("alphabetical");
@@ -204,13 +210,13 @@ export default class search {
     info.data.forEach((cardData) => list.push(cardData));
     setLocalStorage("search-result", list);
   }
-  // rework: getSetData.
+  // getSetData.
   async getSetData(code = this.params) {
-    let countInfo = getLocalStorage("search-page-count");
-    let pageCount = 1;
-    let countPageNumber = 1;
-    let nextPage;
-    let value;
+    countInfo = getLocalStorage("search-page-count");
+    pageCount = 1;
+    countPageNumber = 1;
+    nextPage;
+    value;
     let setData;
     const setsList = getLocalStorage("sets");
     list = [];

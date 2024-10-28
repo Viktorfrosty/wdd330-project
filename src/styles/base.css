@@ -1,7 +1,6 @@
 /* ---------------------- */
 /* -- General Elements -- */
 /* -----------↓---------- */
-
 :root {
   /* Color palette (page) */
   --main-color: #1d5890;
@@ -16,14 +15,12 @@
   --background-upper: linear-gradient(to bottom, var(--detail2-color), var(--main-color));
   --background-lower: linear-gradient(to top, var(--detail2-color), var(--main-color));
 }
-
 body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: var(--paragraphs-fonts);
 }
-
 body a,
 body h1,
 body h2,
@@ -32,11 +29,9 @@ body h3 {
   color: inherit;
   text-decoration: none;
 }
-
 #page-header {
   width: 95%;
 }
-
 #page-header,
 header,
 footer {
@@ -44,14 +39,12 @@ footer {
   gap: 10px;
   align-items: center;
 }
-
 header,
 footer {
   width: 100%;
   height: 75px;
   color: var(--detail1-color);
 }
-
 header {
   position: fixed;
   top: 0;
@@ -59,32 +52,26 @@ header {
   background-image: var(--background-upper);
   border-bottom: 5px solid var(--detail2-color);
 }
-
 footer {
   bottom: 0px;
   border-top: 5px solid var(--detail2-color);
   background-image: var(--background-lower);
 }
-
 header a {
   margin-left: 25px;
   color: var(--detail1-color);
 }
-
 header a:hover {
   background: var(--secondary-color);
 }
-
 main {
   margin-top: 125px;
   margin-bottom: 50px;
   min-height: 529px;
 }
-
 .hidden {
   display: none;
 }
-
 #night_mode {
   background-color: var(--secondary-color);
   margin-right: auto;
@@ -93,7 +80,6 @@ main {
   border-radius: 50px;
   text-align: center;
 }
-
 /* -----------x---------- */
 /* - Home Page Elements - */
 /* -----------↓---------- */
@@ -101,17 +87,14 @@ main {
 /* -----------x---------- */
 /* - sets Page Elements - */
 /* -----------↓---------- */
-
 #set_list {
   width: 95%;
 }
-
 #set_list li {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-template-rows: 50px, 1fr;
 }
-
 #set_list a,
 #set_list span {
   color: inherit;
@@ -121,60 +104,47 @@ main {
   text-align: center;
   align-items: center;
 }
-
 #set_list a:hover {
   background-color: var(--main-color);
   opacity: 1;
   color: var(--detail1-color);
   border-radius: 5px;
 }
-
 #set_list a:hover div {
   filter: invert(100%);
   opacity: 1;
 }
-
 .dark #set_list a:hover div {
   filter: invert(0%);
   opacity: 1;
 }
-
 span p {
   font-weight: bold;
 }
-
 span .set_name {
   margin-left: 75px;
 }
-
 p.set_icon {
   padding-left: 15px;
 }
-
 a .set_icon img {
   width: 20px;
 }
-
 .dark .set_icon img {
   filter: invert(100%);
 }
-
 a .set_name {
   margin-left: 10px;
 }
-
 a .set_code {
   padding-right: 15px;
 }
-
 li .set_code {
   margin-left: auto;
 }
-
 li .set_type {
   margin-right: 25px;
 }
-
 li .set_type,
 li .set_code,
 li .set_icon,
@@ -182,107 +152,21 @@ li .set_cards,
 li .set_date {
   width: 125px;
 }
-
 li ul li .set_name::before {
   content: "└➤ ";
 }
-
 /* -----------x---------- */
 /* - Card Page Elements - */
 /* -----------↓---------- */
 
-.card_box {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(10, 50px);
-  gap: 5px;
-}
-
-.card_box img {
-  grid-column: 1/2;
-  grid-row: 1/16;
-  height: 750px;
-}
-
-.card_box .name,
-.card_box .flavor_name {
-  grid-column: 2/3;
-  grid-row: 1/2;
-}
-
-.card_box .type {
-  grid-column: 2/3;
-  grid-row: 2/3;
-}
-
-.card_box .color_identity {
-  grid-column: 2/3;
-  grid-row: 3/4;
-}
-
-.card_box .colors {
-  grid-column: 2/3;
-  grid-row: 4/5;
-}
-
-.card_box .mana_cost {
-  grid-column: 2/3;
-  grid-row: 5/6;
-}
-
-.card_box .cmc {
-  grid-column: 2/3;
-  grid-row: 6/7;
-}
-
-.card_box .loyalty,
-.card_box .toughness,
-.card_box .power,
-.card_box .defence {
-  grid-column: 2/3;
-  grid-row: 7/8;
-}
-
-.card_box .oracle_text,
-.card_box .flavor_text {
-  grid-column: 2/3;
-  grid-row: 8/9;
-}
-
-/* .card_box h2, .card_box h3, .card_box p, .card_box button {
-  grid-column: 2/3;
-  grid-row: 1/2;
-}
-
-.rulings {
-  grid-column: 1/2;
-  grid-row: 2/3;
-}
-
-.legalities {
-  grid-column: 3/4;
-  grid-row: 2/3;
-}
-
-.card_box button {
-  width: 200px;
-  height: 50px;
-}
-
-.card_box li {
-  display: flex;
-} */
-
 /* -----------x---------- */
 /*  Result Page Elements  */
 /* -----------↓---------- */
-
 .error {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 #display {
   z-index: 5;
   position: fixed;
@@ -300,17 +184,14 @@ li ul li .set_name::before {
   padding-top: 10px;
   align-items: center;
 }
-
 .nav {
   width: 45px;
   height: 45px;
   border-radius: 50px;
 }
-
 label {
   margin-right: 5px;
 }
-
 #type select,
 #order select {
   background-color: var(--secondary-color);
@@ -319,30 +200,24 @@ label {
   text-align: center;
   height: 35px;
 }
-
 #type {
   margin-left: auto;
 }
-
 #order {
   margin-right: 25px;
 }
-
 #type select {
   width: 125px;
 }
-
 #order select {
   width: 75px;
 }
-
 #card_box {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 25px;
 }
-
 #card_box div {
   display: grid;
   grid-template-columns: repeat(5, 50px);
@@ -359,7 +234,6 @@ label {
   width: 250px;
   height: 350px;
 }
-
 #card_box img {
   width: 100%;
   height: 100%;
@@ -368,11 +242,9 @@ label {
   grid-column: 1/6;
   grid-row: 1/8;
 }
-
 .rotate-180 {
   transform: rotate(180deg);
 }
-
 .rotate_button,
 .flip_button {
   z-index: 1;
@@ -381,7 +253,6 @@ label {
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
 }
-
 .erase_button,
 .add_button {
   position: relative;
@@ -393,7 +264,6 @@ label {
   border-top-right-radius: 30px;
   border-bottom-left-radius: 15px;
 }
-
 .rotate_button,
 .flip_button,
 .erase_button,
@@ -404,7 +274,6 @@ label {
   height: 50px;
   opacity: 0.75;
 }
-
 #hover_name {
   background-color: var(--secondary-color);
   color: var(--detail1-color);

@@ -30,7 +30,6 @@ storedData().then(() => {
         createNavButtons();
         list = getResults();
         list.forEach((card) => {
-          console.warn("cards in this page.");
           snippet = new cardGlimpse(card);
           snippet.render();
         });
@@ -43,7 +42,6 @@ storedData().then(() => {
         createNavButtons();
         list = getResults();
         list.forEach((card) => {
-          console.warn("cards in this page.");
           snippet = new cardGlimpse(card);
           snippet.render();
         });
@@ -62,7 +60,6 @@ storedData().then(() => {
         createNavButtons(true);
         arrangedList = list.organize();
         arrangedList.forEach((card) => {
-          console.warn("cards in this page.");
           snippet = new cardGlimpse(card, true);
           snippet.render();
         });

@@ -1,7 +1,7 @@
+// rework: optimize main page module.
 import search from "./dataHandler.mjs";
-
+// Module configurations.
 const root = document.getElementById("root");
-
 // generate the main page.
 export default class dialer {
   constructor() {}
@@ -41,11 +41,7 @@ export default class dialer {
     const select = document.createElement("select");
     syntax.forEach((element) => {
       const option = document.createElement("option");
-      if (element !== "mana value") {
-        option.setAttribute("value", element);
-      } else {
-        option.setAttribute("value", "manavalue");
-      }
+      option.setAttribute("value", element !== "mana value" ? element : "manavalue");
       if (element === "name") {
         option.setAttribute("selected", "selected");
       }
@@ -54,19 +50,22 @@ export default class dialer {
     });
     const input = document.createElement("input");
     input.setAttribute("placeholder", "search by...");
-    const button = document.createElement("button");
-    button.textContent = "🔍";
-    button.onclick = () => {
+    const executeSearch = () => {
       const selectedValue = select.value;
       const inputValue = input.value;
       if (inputValue !== "") {
-        if (selectedValue !== "name") {
-          window.location.href = `result.html?element=list&s=${selectedValue}%3A${inputValue}&type=name&order=asc&page=1`;
-        } else {
-          window.location.href = `result.html?element=list&s=${inputValue}&type=name&order=asc&page=1`;
-        }
+        const query = selectedValue !== "name" ? `${selectedValue}%3A${inputValue}` : inputValue;
+        window.location.href = `result.html?element=list&s=${query}&type=name&order=asc&page=1`;
       }
     };
+    const button = document.createElement("button");
+    button.textContent = "🔍";
+    button.onclick = executeSearch;
+    input.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        executeSearch();
+      }
+    });
     inputField.appendChild(select);
     inputField.appendChild(input);
     inputField.appendChild(button);

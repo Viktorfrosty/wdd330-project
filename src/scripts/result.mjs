@@ -1,22 +1,21 @@
+// rework: optimize results page module.
 import { checkFavorite, getLocalStorage, saveFavorite, setLocalStorage } from "./dataHandler.mjs";
-
+// result box generator.
 export function resultsBox() {
   const root = document.getElementById("root");
   const searchResults = document.createElement("div");
   searchResults.setAttribute("id", "card_box");
   root.appendChild(searchResults);
 }
-
+// generate a card preview.
 export default class CardGlimpse {
   constructor(card, inFavorites = false) {
     this.card = card;
     this.inFavorites = inFavorites;
   }
-
   render() {
     this.cardSnippet(this.card, this.inFavorites);
   }
-
   cardSnippet(card, inFavorites) {
     const root = document.getElementById("card_box");
     const box = document.createElement("div");
@@ -42,7 +41,6 @@ export default class CardGlimpse {
     }
     root.appendChild(box);
   }
-
   createImageElement(card) {
     const img = document.createElement("img");
     img.setAttribute("loading", "lazy");
@@ -51,15 +49,12 @@ export default class CardGlimpse {
     this.addImageEventListeners(img, card);
     return img;
   }
-
   getCardImageUrl(card) {
     return "image_uris" in card ? card.image_uris.normal : card.card_faces[0].image_uris.normal;
   }
-
   getCardName(card) {
     return card.flavor_name ? `(${card.name} - variant)<br>${card.flavor_name}` : card.name;
   }
-
   addImageEventListeners(img, card) {
     img.addEventListener("click", () => {
       window.location.href = `card.html?s=${card.id}`;
@@ -79,7 +74,6 @@ export default class CardGlimpse {
       }
     });
   }
-
   createCardNameElement(card, event) {
     const cardName = document.createElement("div");
     cardName.innerHTML = this.getCardName(card) + `<br>(${card.set_name} #${card.collector_number})`;
@@ -89,7 +83,6 @@ export default class CardGlimpse {
     cardName.setAttribute("id", "hover_name");
     return cardName;
   }
-
   createFlipButton(img) {
     const button = document.createElement("button");
     button.setAttribute("class", "flip_button");
@@ -99,7 +92,6 @@ export default class CardGlimpse {
     });
     return button;
   }
-
   createRotateButton(card, img) {
     const button = document.createElement("button");
     button.setAttribute("class", "rotate_button");
@@ -113,7 +105,6 @@ export default class CardGlimpse {
     });
     return button;
   }
-
   createEraseButton(card) {
     const favorites = getLocalStorage("favorites");
     const snippet = document.getElementById(`card-${card.id}`);
@@ -130,7 +121,6 @@ export default class CardGlimpse {
     };
     return button;
   }
-
   createFavoriteButton(card) {
     const button = document.createElement("button");
     button.setAttribute("class", "add_button");

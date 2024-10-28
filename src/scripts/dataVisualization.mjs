@@ -1,10 +1,23 @@
 // Data visualization module.
-import { getLocalStorage, setLocalStorage } from "./dataHandler.mjs";
+import { getLocalStorage, getParams, setLocalStorage } from "./dataHandler.mjs";
 // Module configurations.
 const textRegex = /(?<=[a-z])_(?=[a-z])/g;
+const root = document.getElementById("root");
 let background = document.querySelector("body");
+let urlParams;
 let active;
 let loaded;
+let messageTitle = document.createElement("h1");
+let messageParaph = document.createElement("h3");
+let header;
+let lastPage;
+// let buttonsValues;
+let buttonsValues = [
+  ["<<", "f_page"],
+  ["<", "b_page"],
+  [">", "n_page"],
+  [">>", "l_page"],
+];
 // Night mode.
 export class nightMode {
   constructor() {}
@@ -49,8 +62,8 @@ export class nightMode {
     background.classList.toggle("dark", false);
   }
   createNmButton() {
-    const root = document.querySelector("header");
     const button = document.createElement("button");
+    header = document.querySelector("header");
     loaded = this.check(false);
     if (loaded) {
       button.textContent = "⚪️";
@@ -70,7 +83,7 @@ export class nightMode {
           break;
       }
     };
-    root.appendChild(button);
+    header.appendChild(button);
   }
 }
 // type text converter.
@@ -85,11 +98,11 @@ export function specialCharacterConverter(text) {
 }
 // type and misc selector
 export function createSelector(param) {
-  const root = document.getElementById("page-header");
   const selector = document.createElement("div");
+  header = document.getElementById("page-header");
   selector.setAttribute("class", "selector");
   selector.setAttribute("id", param);
-  const urlParams = new URLSearchParams(window.location.search);
+  urlParams = new URLSearchParams(window.location.search);
   const selectedValue = urlParams.get(param);
   if (param === "type") {
     selector.innerHTML = `<label for="options">Sort by:</label>  
@@ -117,37 +130,27 @@ export function createSelector(param) {
       window.location.search = urlParams.toString();
     }
   });
-  root.appendChild(selector);
+  header.appendChild(selector);
 }
 // create result page navigations buttons.
 export function createNavButtons(inFavorite = false) {
-  const root = document.getElementById("root");
   const display = document.createElement("div");
   display.setAttribute("id", "display");
   if (inFavorite) {
     const searchRange = getLocalStorage("search-range");
-    const totalResults = getLocalStorage("favorites").length;
-    const calculateLastRange = (total) => {
-      const lastStart = Math.floor((total - 1) / 50) * 50;
-      return [lastStart, total - 1];
-    };
-    const lastRange = calculateLastRange(totalResults);
-    const nextRange = [Math.min(searchRange[0] + 50, lastRange[0]), Math.min(searchRange[1] + 50, totalResults - 1)];
-    const buttonsValues = [
-      ["<<", "f_page", [0, 49]],
-      ["<", "b_page", [Math.max(searchRange[0] - 50, 0), Math.max(searchRange[1] - 50, 49)]],
-      [">", "n_page", nextRange],
-      [">>", "l_page", lastRange],
-    ];
+    const favoritesLength = getLocalStorage("favorites").length;
+    lastPage = Math.floor((favoritesLength - 1) / 50) * 50;
+    buttonsValues[0][2] = [0, 49];
+    buttonsValues[1][2] = [Math.max(searchRange[0] - 50, 0), Math.max(searchRange[1] - 50, 49)];
+    buttonsValues[2][2] = [Math.min(searchRange[0] + 50, lastPage), Math.min(searchRange[1] + 50, favoritesLength - 1)];
+    buttonsValues[3][2] = [lastPage, favoritesLength - 1];
     buttonsValues.forEach((value) => {
       const button = document.createElement("button");
       button.setAttribute("class", "nav");
       button.setAttribute("id", value[1]);
-      if (totalResults > 50) {
-        console.log(totalResults);
+      if (favoritesLength > 50) {
         button.textContent = value[2][0] === searchRange[0] && value[2][1] === searchRange[1] ? "✖️" : value[0];
       } else {
-        console.log(totalResults);
         button.textContent = "✖️";
       }
       if (button.textContent !== "✖️") {
@@ -159,7 +162,33 @@ export function createNavButtons(inFavorite = false) {
       display.appendChild(button);
     });
   } else {
-    // rework: buttons.
+    urlParams = new URLSearchParams(window.location.search);
+    const storedInfo = getLocalStorage("search-page-count");
+    const actualPage = parseInt(getParams("page"), 10);
+    lastPage = storedInfo.pageCount;
+    buttonsValues[0][2] = 1;
+    buttonsValues[1][2] = actualPage - 1;
+    buttonsValues[2][2] = actualPage + 1;
+    buttonsValues[3][2] = lastPage;
+    buttonsValues.forEach((value) => {
+      const button = document.createElement("button");
+      button.setAttribute("class", "nav");
+      button.setAttribute("id", value[1]);
+      if (
+        lastPage === 1 ||
+        (actualPage === 1 && value[1] !== "n_page" && value[1] !== "l_page") ||
+        (actualPage === lastPage && value[1] !== "b_page" && value[1] !== "f_page")
+      ) {
+        button.textContent = "✖️";
+      } else {
+        button.textContent = value[0];
+        button.onclick = () => {
+          urlParams.set("page", value[2]);
+          window.location.search = urlParams.toString();
+        };
+      }
+      display.appendChild(button);
+    });
   }
   root.appendChild(display);
 }
@@ -254,21 +283,15 @@ export default class Visualizer {
     metaTitle.textContent = `${capitalize(type)} ${title} ${number} ${misc} | Trading Cards Info Tracker`;
   }
   errorPage() {
-    const root = document.getElementById("root");
     root.setAttribute("class", "error");
-    const messageTitle = document.createElement("h1");
     messageTitle.textContent = "Sorry, the information was not found";
-    const messageParaph = document.createElement("h3");
     messageParaph.innerHTML = "Go back to <a href='index.html'>Home</a> and try again with other search parameters.";
     root.appendChild(messageTitle);
     root.appendChild(messageParaph);
   }
   noFavorites() {
-    const root = document.getElementById("root");
     root.setAttribute("class", "error");
-    const messageTitle = document.createElement("h1");
     messageTitle.textContent = "Sorry, there are not favorites saved";
-    const messageParaph = document.createElement("h3");
     messageParaph.innerHTML = "Go back to <a href='index.html'>Home</a> and search for a card that you like.";
     root.appendChild(messageTitle);
     root.appendChild(messageParaph);
