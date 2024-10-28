@@ -185,7 +185,7 @@ export default class search {
     pageNumber = getParams("page");
     order = getParams("alphabetical");
     dir = getParams("order");
-    if (countInfo.value !== value || countInfo == null) {
+    if (countInfo == null || countInfo.value !== value) {
       do {
         nextPage = await fetchData(
           `${baseURL}/cards/search?q=${this.params}&page=${countPageNumber + 1}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
@@ -229,7 +229,8 @@ export default class search {
         break;
       }
     }
-    if (countInfo.value !== code || countInfo == null) {
+    console.log(countInfo);
+    if (countInfo == null || countInfo.value !== code) {
       do {
         nextPage = await fetchData(
           `${baseURL}/cards/search?q=e%3A${this.params}&page=${countPageNumber + 1}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
