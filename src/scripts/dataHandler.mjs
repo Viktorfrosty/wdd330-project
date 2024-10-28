@@ -6,7 +6,13 @@ const initialSearchParameter =
   "&page=1&order=name&dir=asc&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`";
 const userAgent = "TradingCardsInfoTracker/0.0.1";
 const accept = "application/json";
+// Module configurations.
 const regex = /\{.*?\}/g;
+let info;
+let list;
+let pageNumber;
+let order;
+let dir;
 // Fetch delay function
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -41,45 +47,45 @@ export async function fetchData(url) {
 }
 // save favorite funcion.
 export function saveFavorite(card) {
-  let favorites = getLocalStorage("favorites");
-  if (!favorites) {
-    favorites = [];
+  list = getLocalStorage("favorites");
+  if (!list) {
+    list = [];
   }
-  favorites.push(card);
-  setLocalStorage("favorites", favorites);
+  list.push(card);
+  setLocalStorage("favorites", list);
 }
 // check if in favorite function.
 export function checkFavorite(card) {
-  const favorites = getLocalStorage("favorites");
-  if (favorites) {
-    return favorites.some((object) => card.id === object.id);
+  list = getLocalStorage("favorites");
+  if (list) {
+    return list.some((object) => card.id === object.id);
   } else {
     return false;
   }
 }
 // Icons retriever function.
 export async function setIconRetriever(setId) {
-  const setList = getLocalStorage("sets");
-  let result = null;
-  setList.data.forEach((set) => {
+  list = getLocalStorage("sets");
+  info = null;
+  list.data.forEach((set) => {
     if (setId === set.id) {
-      result = `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
+      info = `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
     }
   });
-  return result;
+  return info;
 }
 // Information stored to make the loading faster.
 export async function storedData() {
   const symbolsData = getLocalStorage("symbols");
   const SetsData = getLocalStorage("sets");
   if (!dataExpirationCheck("symbols-stamp") || !symbolsData) {
-    const data = await fetchData(`${baseURL}/symbology`);
-    setLocalStorage("symbols", data);
+    info = await fetchData(`${baseURL}/symbology`);
+    setLocalStorage("symbols", info);
     setLocalStorage("symbols-stamp", Date.now());
   }
   if (!dataExpirationCheck("sets-stamp") || !SetsData) {
-    const data = await fetchData(`${baseURL}/sets`);
-    setLocalStorage("sets", data);
+    info = await fetchData(`${baseURL}/sets`);
+    setLocalStorage("sets", info);
     setLocalStorage("sets-stamp", Date.now());
   }
 }
@@ -120,7 +126,7 @@ export function getParams(param, decoded = true) {
 }
 // Get the favorites saved in the local storage.
 export function resultRendering() {
-  let result = [];
+  list = [];
   const storedData = getLocalStorage("favorites");
   let searchRange = getLocalStorage("search-range");
   if (!searchRange || (searchRange[0] > storedData.length && searchRange[1] > storedData.length)) {
@@ -130,10 +136,10 @@ export function resultRendering() {
   const [start, end] = searchRange;
   for (let counter = start; counter <= end; counter++) {
     if (storedData[counter] !== undefined) {
-      result.push(storedData[counter]);
+      list.push(storedData[counter]);
     }
   }
-  return result;
+  return list;
 }
 // Get the results saved in the local storage.
 export function getResults() {
@@ -145,9 +151,9 @@ export default class search {
     this.params = params;
   }
   getFavorites() {
-    const favorites = getLocalStorage("favorites");
-    if (favorites && Object.keys(favorites).length !== 0) {
-      return favorites;
+    list = getLocalStorage("favorites");
+    if (list && Object.keys(list).length !== 0) {
+      return list;
     } else {
       return null;
     }
@@ -159,11 +165,10 @@ export default class search {
     return await fetchData(`${baseURL}/cards/random`);
   }
   async getSearchData(url = `${baseURL}/cards/search?q=${this.params}${initialSearchParameter}`) {
-    let info;
-    let list = [];
-    let pageNumber = getParams("page");
-    let order = getParams("alphabetical");
-    let dir = getParams("order");
+    list = [];
+    pageNumber = getParams("page");
+    order = getParams("alphabetical");
+    dir = getParams("order");
     if (pageNumber !== 1 || dir !== "asc" || order !== "name") {
       info = await fetchData(
         `${baseURL}/cards/search?q=${this.params}&page=${pageNumber}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
@@ -177,11 +182,10 @@ export default class search {
   async getSetData(code = this.params) {
     let setData;
     const setsList = getLocalStorage("sets");
-    let info;
-    let list = [];
-    let pageNumber = getParams("page");
-    let order = getParams("alphabetical");
-    let dir = getParams("order");
+    list = [];
+    pageNumber = getParams("page");
+    order = getParams("alphabetical");
+    dir = getParams("order");
     for (const object of setsList.data) {
       if (object.code === code) {
         setData = object;

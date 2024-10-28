@@ -2,6 +2,7 @@
 
 import { getLocalStorage, setLocalStorage } from "./dataHandler.mjs";
 
+// Module configurations.
 let active;
 let loaded;
 let background = document.querySelector("body");
@@ -41,11 +42,13 @@ export class nightMode {
     setLocalStorage("night-mode", true);
     background.style.backgroundColor = "var(--secondary-color)";
     background.style.color = "var(--detail1-color)";
+    background.classList.toggle("dark");
   }
   modeOff() {
     setLocalStorage("night-mode", false);
     background.style.backgroundColor = "var(--detail1-color)";
     background.style.color = "var(--detail2-color)";
+    background.classList.toggle("dark");
   }
   createNmButton() {
     const root = document.querySelector("header");

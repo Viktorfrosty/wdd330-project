@@ -127,6 +127,11 @@ main {
   opacity: 1;
 }
 
+.dark #set_list a:hover div {
+  filter: invert(0%);
+  opacity: 1;
+}
+
 span p {
   font-weight: bold;
 }
@@ -139,12 +144,12 @@ p.set_icon {
   padding-left: 15px;
 }
 
-/* a .set_icon {
-  filter: invert(100%);
-} */
-
 a .set_icon img {
   width: 20px;
+}
+
+.dark .set_icon img {
+  filter: invert(100%);
 }
 
 a .set_name {
@@ -329,8 +334,8 @@ label {
     45deg,
     var(--detail2-color),
     var(--detail2-color) 10px,
-    var(--secondary-color) 10px,
-    var(--secondary-color) 20px
+    var(--main-color) 10px,
+    var(--main-color) 20px
   );
   border: 2px solid var(--detail2-color);
   border-radius: 15px;
@@ -361,6 +366,9 @@ label {
 }
 
 .erase_button, .add_button {
+  position: relative;
+  top: 3px;
+  right: 3px;
   z-index: 2;
   grid-column: 1/2;
   grid-row: 7/8;
