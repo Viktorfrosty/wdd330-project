@@ -1,11 +1,11 @@
-// rework: optimize Card page module.
+// Card page module.
 import { checkFavorite, fetchData, saveFavorite, setIconRetriever, symbolInjector } from "./dataHandler.mjs";
-
-let root;
-let cardBox;
-// let cardInfo;
-const fragment = document.createDocumentFragment();
-
+import { specialCharacterConverter } from "./dataVisualization.mjs";
+// Module configurations.
+const usRegex = /(?<=[a-z])_(?=[a-z])/g;
+const usReplace = " ";
+const bracketRegex = /[{}]/g;
+const bracketReplace = "";
 // Generate elements and organize the card details.
 export class cardDetails {
   constructor(card) {
@@ -41,84 +41,131 @@ export class cardDetails {
       "image_uris",
     ];
     if (!card.card_faces) {
-      this.elementGenerator(valuesList, card, true);
+      this.elementGenerator(valuesList, card);
     } else {
-      this.elementGenerator(valuesList, card).then(() => {
+      this.elementGenerator(valuesList, card, false).then(() => {
         card.card_faces.forEach((face) => {
-          this.elementGenerator(valuesList, face, true);
+          this.elementGenerator(valuesList, face, true, true);
         });
       });
     }
   }
-  async elementGenerator(list, object, condition = false) {
-    if (document.getElementsByClassName("card_box").length === 0) {
-      root = document.getElementById("root");
-      cardBox = document.createElement("div");
-      cardBox.setAttribute("class", "card_box");
+  async elementGenerator(list, object, name = true, face = false) {
+    const root = document.getElementById("root");
+    let mainBox;
+    if (!face) {
+      mainBox = document.createElement("div");
+      mainBox.setAttribute("id", "card_visualizer");
     } else {
-      root = document.getElementsByClassName("card_box")[0];
+      mainBox = document.getElementById("card_visualizer");
     }
-    if (condition != false) {
+    let textBox = document.createElement("div");
+    if (!document.getElementById("card_data")) {
+      textBox = document.createElement("div");
+      textBox.setAttribute("id", "card_data");
+    } else {
+      textBox = document.getElementById("card_data");
+    }
+    const cardMainData = document.createElement("div");
+    if (face) {
+      cardMainData.setAttribute("class", "face_data");
+      const faceElements = document.getElementsByClassName("face_data");
+      if (faceElements.length === 0) {
+        cardMainData.classList.toggle("front", true);
+        cardMainData.classList.toggle("back", false);
+      } else {
+        cardMainData.classList.toggle("front", false);
+        cardMainData.classList.toggle("back", true);
+      }
+    } else {
+      cardMainData.setAttribute("id", "main_data");
+      cardMainData.removeAttribute("class");
+    }
+    if (name) {
       if (!object.flavor_name) {
         const name = document.createElement("h2");
         name.setAttribute("class", "name");
         name.textContent = object.name;
-        fragment.appendChild(name);
+        cardMainData.appendChild(name);
       } else {
         const flavorName = document.createElement("h2");
         flavorName.setAttribute("class", "name");
         flavorName.textContent = object.flavor_name;
-        fragment.appendChild(flavorName);
+        cardMainData.appendChild(flavorName);
         const name = document.createElement("h3");
         name.setAttribute("class", "name");
         name.textContent = `(${object.name})`;
-        fragment.appendChild(name);
+        cardMainData.appendChild(name);
       }
       const type = document.createElement("h3");
       type.setAttribute("class", "type");
       type.textContent = object.type_line;
-      fragment.appendChild(type);
+      cardMainData.appendChild(type);
+    } else {
+      const indicator = document.createElement("h3");
+      indicator.setAttribute("class", "name");
+      indicator.textContent = "General Card Information";
+      cardMainData.appendChild(indicator);
     }
     for (const property of list) {
       if (property !== "image_uris" && property in object) {
+        const label = specialCharacterConverter(property, usRegex, usReplace);
         const element = document.createElement("p");
-        element.innerHTML = symbolInjector(object[property]);
-        element.setAttribute("class", property);
-        fragment.appendChild(element);
+        const modifiedText = symbolInjector(object[property]);
+        if (modifiedText.length > 0) {
+          element.innerHTML = `${label}: ${specialCharacterConverter(modifiedText, bracketRegex, bracketReplace)}`;
+          element.setAttribute("class", property);
+          cardMainData.appendChild(element);
+        }
       } else if (property === "image_uris" && property in object) {
         const img = document.createElement("img");
+        img.setAttribute("class", "card_img");
         img.setAttribute("loading", "lazy");
         img.setAttribute("src", object[property]["large"]);
         img.setAttribute("alt", `${object.name} image.`);
-        fragment.appendChild(img);
+        mainBox.appendChild(img);
       }
     }
     if (object.set_id && object.set_name && object.set) {
       const setElement = document.createElement("a");
       const icon = await setIconRetriever(object.set_id);
-      setElement.setAttribute("href", `result.html?element=set&s=${object.set_id}&type=name&order=asc`);
-      setElement.innerHTML = `${object.set_name} (${object.set.toUpperCase()}) ${icon}`;
-      fragment.appendChild(setElement);
+      setElement.setAttribute("href", `result.html?element=set&s=${object.set}&type=name&order=asc`);
+      setElement.innerHTML = `Set: ${object.set_name} (${object.set.toUpperCase()}) ${icon}`;
+      cardMainData.appendChild(setElement);
     }
-    if ("legalities" in object) {
+    if ("legalities" in object && !document.getElementById("legalities")) {
       const box = document.createElement("div");
-      box.setAttribute("class", "legalities");
+      box.setAttribute("id", "legalities");
       box.innerHTML = "<p>Legalities</p>";
       const list = document.createElement("ul");
       const ruleEntries = Object.entries(object["legalities"]);
       ruleEntries.forEach(([game_mode, legality]) => {
+        switch (game_mode) {
+          case "standardbrawl":
+            game_mode = "standard brawl";
+            break;
+          case "paupercommander":
+            game_mode = "pauper commander";
+            break;
+          case "predh":
+            game_mode = "pre edh";
+            break;
+          case "oldschool":
+            game_mode = "old school";
+            break;
+        }
         let block = document.createElement("li");
-        block.innerHTML = `<p class="game_mode">${game_mode}</p><p class="legality">${legality}</p>`;
+        block.innerHTML = `<p class="game_mode">${game_mode}:</p><p class="legality ${legality}">${specialCharacterConverter(legality, usRegex, usReplace)}</p>`;
         list.appendChild(block);
       });
       box.appendChild(list);
-      fragment.appendChild(box);
+      mainBox.appendChild(box);
     }
-    if ("rulings_uri" in object) {
+    if ("rulings_uri" in object && !document.getElementById("rulings")) {
       const info = await fetchData(object.rulings_uri);
       if (info.data.length > 0) {
         const box = document.createElement("div");
-        box.setAttribute("class", "rulings");
+        box.setAttribute("id", "rulings");
         box.innerHTML = `<h3>${object.name} Notes and Rules</h3>`;
         const rulingBox = document.createElement("ul");
         rulingBox.setAttribute("class", "rules_list");
@@ -128,7 +175,7 @@ export class cardDetails {
           rulingBox.appendChild(rule);
         });
         box.appendChild(rulingBox);
-        fragment.appendChild(box);
+        mainBox.appendChild(box);
       }
     }
     if (!document.getElementById("favorites_button")) {
@@ -146,13 +193,30 @@ export class cardDetails {
           }
         };
       }
-      fragment.appendChild(button);
+      cardMainData.appendChild(button);
     }
-    if (document.getElementsByClassName("card_box").length === 0) {
-      cardBox.appendChild(fragment);
-      root.appendChild(cardBox);
-    } else {
-      cardBox.appendChild(fragment);
+    if (document.getElementById("main_data")) {
+      const firstBox = document.getElementById("main_data");
+      firstBox.setAttribute("class", "multi");
     }
+    let imageList = document.getElementsByClassName("card_img");
+    if (imageList.length >= 2) {
+      imageList[0].classList.toggle("hidden", false);
+      imageList[1].classList.toggle("hidden", true);
+    }
+    const altButton = document.createElement("button");
+    altButton.setAttribute("id", "alt_button");
+    altButton.textContent = "change";
+    altButton.onclick = () => {
+      imageList[0].classList.toggle("hidden");
+      imageList[1].classList.toggle("hidden");
+    };
+    altButton.setAttribute("id", "alt_button");
+    if (!document.getElementById("alt_button") && imageList.length >= 2) {
+      mainBox.append(altButton);
+    }
+    textBox.appendChild(cardMainData);
+    mainBox.appendChild(textBox);
+    root.appendChild(mainBox);
   }
 }

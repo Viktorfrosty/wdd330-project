@@ -1,7 +1,6 @@
 // Data visualization module.
 import { getLocalStorage, getParams, setLocalStorage } from "./dataHandler.mjs";
 // Module configurations.
-const textRegex = /(?<=[a-z])_(?=[a-z])/g;
 const root = document.getElementById("root");
 let background = document.querySelector("body");
 let urlParams;
@@ -87,11 +86,11 @@ export class nightMode {
   }
 }
 // type text converter.
-export function specialCharacterConverter(text) {
-  const matches = text.match(textRegex);
+export function specialCharacterConverter(text, regex, replace) {
+  const matches = text.match(regex);
   if (matches) {
     matches.forEach((specialCharacter) => {
-      text = text.replace(specialCharacter, " ");
+      text = text.replace(specialCharacter, replace);
     });
   }
   return text;

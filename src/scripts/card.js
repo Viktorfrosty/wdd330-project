@@ -17,7 +17,6 @@ storedData().then(() => {
     }
     const page = new Visualizer(cardName, cardInfo.object, misc, cardInfo.collector_number);
     const info = new cardDetails(cardInfo);
-    console.log(info);
     page.run();
     info.render();
   });

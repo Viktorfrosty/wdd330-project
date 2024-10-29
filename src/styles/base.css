@@ -11,7 +11,7 @@
   --headers-fonts: Kanit, serif, arial;
   --paragraphs-fonts: Syne, sans-serif, garamond;
   /* others elements */
-  --background: linear-gradient(to left, var(--main-color), var(--secondary-color));
+  --background: linear-gradient(to left, var(--main-color), var(--secondary-color), var(--detail2-color));
   --background-upper: linear-gradient(to bottom, var(--detail2-color), var(--main-color));
   --background-lower: linear-gradient(to top, var(--detail2-color), var(--main-color));
 }
@@ -58,11 +58,15 @@ footer {
   background-image: var(--background-lower);
 }
 header a {
+  padding: 27px;
+  margin-top: 2px;
   margin-left: 25px;
   color: var(--detail1-color);
+  box-sizing: border-box;
 }
 header a:hover {
   background: var(--secondary-color);
+  border-radius: 15px;
 }
 main {
   margin-top: 125px;
@@ -74,7 +78,8 @@ main {
 }
 #night_mode {
   background-color: var(--secondary-color);
-  margin-right: auto;
+  margin-left: auto;
+  margin-right: 25px;
   height: 50px;
   width: 50px;
   border-radius: 50px;
@@ -158,7 +163,164 @@ li ul li .set_name::before {
 /* -----------x---------- */
 /* - Card Page Elements - */
 /* -----------↓---------- */
-
+#card_visualizer {
+  width: 90%;
+  padding: 20px;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  gap: 25px;
+  overflow-wrap: break-word;
+}
+.card_img {
+  grid-row: 1/2;
+  grid-column: 1/2;
+  width: 350px;
+  border-radius: 22px;
+  box-shadow: 15px 10px 5px var(--detail2-color);
+}
+#legalities {
+  grid-row: 1/2;
+  grid-column: 3/4;
+  width: 300px;
+  height: 1600px;
+}
+#legalities ul li {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+#rulings {
+  grid-row: 1/3;
+  grid-column: 1/2;
+  text-align: center;
+  margin-top: 700px;
+}
+#rulings ul,
+#legalities ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#rulings li {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 5px;
+  width: 375;
+  margin-bottom: -75px;
+}
+.rule_text {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  text-align: left;
+  padding: 10px;
+  margin-bottom: -5px;
+  background-color: var(--main-color);
+  color: var(--detail1-color);
+}
+.rule_source {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  margin-left: auto;
+}
+.rule_source::before {
+  content: "└➤ ";
+}
+.rule_published {
+  grid-column: 2/3;
+  grid-row: 2/3;
+  margin-right: auto;
+}
+#card_data div,
+#legalities, 
+.rule_text {
+  border: 3px solid var(--detail2-color);
+  box-shadow: 15px 10px 5px var(--detail2-color);
+}
+#card_data div,
+#legalities,
+#rulings,
+.rule_text {
+  border-radius: 25px;
+  padding: 25px;
+}
+#card_data {
+  grid-row: 1/3;
+  grid-column: 2/3;
+  display: grid;
+  grid-template-rows: repeat(3, 350px);
+  gap: 150px;
+  height: 1700px;
+}
+#card_data button {
+  margin-top: 15px;
+  border-radius: 25px;
+  padding: 20px;
+  width: 200px;
+  align-self: center;
+}
+.face_data.front {
+  grid-row: 1/2;
+}
+.face_data.back {
+  grid-row: 2/3;
+}
+#main_data.multi {
+  grid-row: 3/4;
+  height: 575px;
+}
+.face_data {
+  height: 400px;
+}
+#main_data {
+  height: 950px;
+}
+#main_data {
+  display: flex;
+  flex-direction: column;
+}
+#main_data a {
+  text-align: center;
+  padding: 20px;
+}
+.dark #main_data a img {
+  filter: invert(100%);
+}
+#main_data a:hover {
+  background-color: var(--main-color);
+  border-radius: 25px;
+  color: var(--detail1-color);
+}
+#main_data a:hover img {
+  filter: invert(100%);
+}
+.legal {
+  background-color: yellowgreen;
+}
+.restricted {
+  background-color: yellow;
+}
+.not_legal {
+  background-color: red;
+}
+.legality {
+  border-radius: 10px;
+  color: var(--detail2-color);
+  width: 100px;
+  text-align: center;
+}
+.game_mode, .legality {
+  padding: 10px;
+}
+#alt_button {
+  grid-column: 1/2;
+  grid-row: 1/3;
+  width: 100px;
+  height: 50px;
+  margin-top: 550px;
+}
 /* -----------x---------- */
 /*  Result Page Elements  */
 /* -----------↓---------- */

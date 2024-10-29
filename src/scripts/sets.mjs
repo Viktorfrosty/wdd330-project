@@ -1,6 +1,9 @@
 // sets page module.
 import { getLocalStorage } from "./dataHandler.mjs";
 import { specialCharacterConverter } from "./dataVisualization.mjs";
+// Module configurations.
+const regex = /(?<=[a-z])_(?=[a-z])/g;
+const replace = " ";
 // create the set list.
 export default class setsCatalog {
   constructor() {}
@@ -35,7 +38,7 @@ export default class setsCatalog {
                               </div>
                               <p class="set_cards">${set.card_count}</p>
                               <p class="set_date">${set.released_at}</p>
-                              <p class="set_type">${specialCharacterConverter(set.set_type)}</p>
+                              <p class="set_type">${specialCharacterConverter(set.set_type, regex, replace)}</p>
                            </a>
                            <ul></ul>`;
       list.appendChild(element);
@@ -57,7 +60,7 @@ export default class setsCatalog {
                               </div>
                                   <p class="set_cards">${set.card_count}</p>
                                   <p class="set_date">${set.released_at}</p>
-                                  <p class="set_type">${specialCharacterConverter(set.set_type)}</p>
+                                  <p class="set_type">${specialCharacterConverter(set.set_type, regex, replace)}</p>
                                </a>
                                <ul></ul>`;
           parentElement.appendChild(element);
