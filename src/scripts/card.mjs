@@ -153,6 +153,9 @@ export class cardDetails {
           case "oldschool":
             game_mode = "old school";
             break;
+          case "premodern":
+            game_mode = "pre modern";
+            break;
         }
         let block = document.createElement("li");
         block.innerHTML = `<p class="game_mode">${game_mode}:</p><p class="legality ${legality}">${specialCharacterConverter(legality, usRegex, usReplace)}</p>`;
@@ -171,7 +174,7 @@ export class cardDetails {
         rulingBox.setAttribute("class", "rules_list");
         info.data.forEach((ruleElement) => {
           const rule = document.createElement("li");
-          rule.innerHTML = `<p class="rule_text">${ruleElement.comment}</p><p class="rule_source">${ruleElement.source}</p><p class="rule_published">${ruleElement.published_at}</p>`;
+          rule.innerHTML = `<p class="rule_text">${symbolInjector(ruleElement.comment)}</p><p class="rule_source">${ruleElement.source}</p><p class="rule_published">(${ruleElement.published_at})</p>`;
           rulingBox.appendChild(rule);
         });
         box.appendChild(rulingBox);
@@ -206,7 +209,7 @@ export class cardDetails {
     }
     const altButton = document.createElement("button");
     altButton.setAttribute("id", "alt_button");
-    altButton.textContent = "change";
+    altButton.textContent = "Change Face";
     altButton.onclick = () => {
       imageList[0].classList.toggle("hidden");
       imageList[1].classList.toggle("hidden");
