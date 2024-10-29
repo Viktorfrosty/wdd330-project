@@ -11,15 +11,16 @@ export function resultsBox() {
 }
 // generate a card preview.
 export default class CardGlimpse {
-  constructor(card, inFavorites = false) {
+  constructor(card, inFavorites = false, base = "card_box") {
     this.card = card;
     this.inFavorites = inFavorites;
+    this.base = base;
   }
   render() {
-    this.cardSnippet(this.card, this.inFavorites);
+    this.cardSnippet(this.card, this.inFavorites, this.base);
   }
-  cardSnippet(card, inFavorites) {
-    root = document.getElementById("card_box");
+  cardSnippet(card, inFavorites, base) {
+    root = document.getElementById(base);
     const box = document.createElement("div");
     box.setAttribute("id", `card-${card.id}`);
     const img = this.createImageElement(card);

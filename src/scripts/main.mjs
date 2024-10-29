@@ -1,5 +1,6 @@
 // Main page module.
-import search from "./dataHandler.mjs";
+import search, { setLocalStorage, getLocalStorage, dataExpirationCheck } from "./dataHandler.mjs";
+import CardGlimpse from "./result.mjs";
 // Module configurations.
 let workBox;
 // generate the main page.
@@ -10,14 +11,22 @@ export default class dialer {
     this.searchBox();
     this.wildCardButton();
     this.favoritesButton();
+    this.dayRenderer();
   }
   createPageSections() {
     const root = document.getElementById("root");
-    const sections = ["main", "card", "set"];
-    sections.foreach((section) => {
-      const section = document.createElement("div");
-      section.setAttribute("id", `${section[0]}_section`);
-      root.appendchild(section);
+    root.setAttribute("class", "main_page");
+    const sections = ["main", "card"];
+    const title = document.createElement("h1");
+    title.textContent = "Trading Cards Info Tracker";
+    const slogan = document.createElement("h2");
+    slogan.textContent = "The place where you can find information about every card of Magic the Gathering.";
+    root.appendChild(title);
+    root.appendChild(slogan);
+    sections.forEach((section) => {
+      const workBox = document.createElement("div");
+      workBox.setAttribute("id", `${section}_section`);
+      root.appendChild(workBox);
     });
   }
   searchBox() {
@@ -49,6 +58,7 @@ export default class dialer {
       "is",
     ];
     const inputField = document.createElement("div");
+    inputField.setAttribute("id", "input_field");
     const select = document.createElement("select");
     syntax.forEach((element) => {
       const option = document.createElement("option");
@@ -60,7 +70,7 @@ export default class dialer {
       select.appendChild(option);
     });
     const input = document.createElement("input");
-    input.setAttribute("placeholder", "search by...");
+    input.setAttribute("placeholder", "what are you looking for?");
     const executeSearch = () => {
       const selectedValue = select.value;
       const inputValue = input.value;
@@ -77,6 +87,9 @@ export default class dialer {
         executeSearch();
       }
     });
+    const inputHeader = document.createElement("h3");
+    inputHeader.textContent = "Search by...";
+    inputField.appendChild(inputHeader);
     inputField.appendChild(select);
     inputField.appendChild(input);
     inputField.appendChild(button);
@@ -84,6 +97,10 @@ export default class dialer {
   }
   wildCardButton() {
     workBox = document.getElementById("main_section");
+    const buttonBox = document.createElement("div");
+    buttonBox.setAttribute("id", "wild_button");
+    const buttonLabel = document.createElement("h3");
+    buttonLabel.textContent = "Or better get a...";
     const button = document.createElement("button");
     button.textContent = "wild card";
     button.onclick = () => {
@@ -92,20 +109,44 @@ export default class dialer {
         window.location.href = `card.html?s=${card.id}`;
       });
     };
-    workBox.appendChild(button);
+    buttonBox.appendChild(buttonLabel);
+    buttonBox.appendChild(button);
+    workBox.appendChild(buttonBox);
   }
   favoritesButton() {
     workBox = document.getElementById("main_section");
+    const buttonLabel = document.createElement("h3");
+    buttonLabel.innerHTML = "Did you pick any card?<br>Then go to...";
+    const buttonBox = document.createElement("div");
+    buttonBox.setAttribute("id", "fav_button");
     const button = document.createElement("button");
     button.textContent = "Favorites";
     button.onclick = () => {
       window.location.href = "result.html?element=favorites&type=name&order=asc";
     };
-    workBox.appendChild(button);
+    buttonBox.appendChild(buttonLabel);
+    buttonBox.appendChild(button);
+    workBox.appendChild(buttonBox);
   }
-  cardOfToday() {
-  
-  }
-  setOfToday() {
+  dayRenderer() {
+    let searchData;
+    const section = "card_section";
+    workBox = document.getElementById(section);
+    const storedInfo = getLocalStorage("front-card");
+    const label = document.createElement("h3");
+    label.textContent = "Today's random card pick:";
+    workBox.append(label);
+    if (!storedInfo || !dataExpirationCheck(storedInfo.date, false)) {
+      searchData = new search();
+      searchData.getWildCard().then((card) => {
+        const newDate = new Date();
+        let date = newDate.getTime();
+        setLocalStorage("front-card", { card, date });
+      });
+    } else {
+      searchData = storedInfo.card;
+      const glimpse = new CardGlimpse(searchData, false, section);
+      glimpse.render();
+    }
   }
 }

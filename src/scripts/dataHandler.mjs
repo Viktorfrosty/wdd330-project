@@ -29,19 +29,18 @@ export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 // data expiration check.
-function dataExpirationCheck(key, standarCheck = true) {
-  if (standarCheck) {
+export function dataExpirationCheck(key, standardCheck = true) {
+  let timeDifference;
+  if (standardCheck) {
     const storedTime = getLocalStorage(key);
-    const timeDifference = Date.now() - storedTime;
+    timeDifference = Date.now() - storedTime;
     return storedTime && timeDifference < 86400000;
   } else {
     const now = new Date();
     const nextMidnight = new Date(now);
-nextMidnight.setHours(24, 0, 0, 0);
-    const timeUntilMidnight = nextMidnight - now;
-    setTimeout(() => {
-      return deprecated
-  }, timeUntilMidnight);
+    nextMidnight.setHours(24, 0, 0, 0);
+    timeDifference = nextMidnight - now;
+    return nextMidnight && timeDifference < 86400000;
   }
 }
 // Function to fetch data from API.
@@ -89,7 +88,13 @@ export async function setIconRetriever(setId) {
   info = null;
   list.data.forEach((set) => {
     if (setId === set.id) {
-      info = `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
+      let icon;
+      if (set.code == "j25" || set.code == "fj25") {
+        icon = "https://svgs.scryfall.io/sets/default.svg?1730088000";
+      } else {
+        icon = set.icon_svg_uri;
+      }
+      info = `<img loading="lazy" src="${icon}" alt="${set.name} icon" width="20">`;
     }
   });
   return info;
@@ -184,7 +189,6 @@ export default class search {
   async getWildCard() {
     return await fetchData(`${baseURL}/cards/random`);
   }
-  // getSearchData.
   async getSearchData(url = `${baseURL}/cards/search?q=${this.params}${initialSearchParameter}`) {
     countInfo = getLocalStorage("search-page-count");
     pageCount = 1;
@@ -196,6 +200,12 @@ export default class search {
     order = getParams("alphabetical");
     dir = getParams("order");
     if (countInfo == null || countInfo.value !== value) {
+      const root = document.getElementById("root");
+      const waitLabel = document.createElement("h1");
+      waitLabel.setAttribute("id", "awaiting");
+      waitLabel.classList.add("loading-spinner");
+      waitLabel.textContent = "Loading...";
+      root.appendChild(waitLabel);
       do {
         nextPage = await fetchData(
           `${baseURL}/cards/search?q=${this.params}&page=${countPageNumber + 1}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
@@ -207,6 +217,8 @@ export default class search {
         } else {
           setLocalStorage("search-page-count", { value, pageCount });
           nextPage = null;
+          const label = document.getElementById("awaiting");
+          label.remove();
         }
       } while (nextPage !== null);
     }
@@ -220,7 +232,6 @@ export default class search {
     info.data.forEach((cardData) => list.push(cardData));
     setLocalStorage("search-result", list);
   }
-  // getSetData.
   async getSetData(code = this.params) {
     countInfo = getLocalStorage("search-page-count");
     pageCount = 1;
@@ -239,8 +250,13 @@ export default class search {
         break;
       }
     }
-    console.log(countInfo);
     if (countInfo == null || countInfo.value !== code) {
+      const root = document.getElementById("root");
+      const waitLabel = document.createElement("h1");
+      waitLabel.setAttribute("id", "awaiting");
+      waitLabel.classList.add("loading-spinner");
+      waitLabel.textContent = "Loading...";
+      root.appendChild(waitLabel);
       do {
         nextPage = await fetchData(
           `${baseURL}/cards/search?q=e%3A${this.params}&page=${countPageNumber + 1}&order=${order}&dir=${dir}&format=json&include_extras=true&include_multilingual=false&include_variations=false&unique=prints`,
@@ -253,6 +269,8 @@ export default class search {
           value = code;
           setLocalStorage("search-page-count", { value, pageCount });
           nextPage = null;
+          const label = document.getElementById("awaiting");
+          label.remove();
         }
       } while (nextPage !== null);
     }
