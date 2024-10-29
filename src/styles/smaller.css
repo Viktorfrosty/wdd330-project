@@ -1,0 +1,8 @@
+@media (max-width: 1000px) {
+  /*main page*/
+  /*card page*/
+  #card_data {
+    display: flex;
+    flex-direction: column;
+  }
+}
