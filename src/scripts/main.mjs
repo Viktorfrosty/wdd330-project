@@ -1,16 +1,27 @@
 // Main page module.
 import search from "./dataHandler.mjs";
 // Module configurations.
-const root = document.getElementById("root");
+let workBox;
 // generate the main page.
 export default class dialer {
   constructor() {}
   generate() {
+    this.createPageSections();
     this.searchBox();
     this.wildCardButton();
     this.favoritesButton();
   }
+  createPageSections() {
+    const root = document.getElementById("root");
+    const sections = ["main", "card", "set"];
+    sections.foreach((section) => {
+      const section = document.createElement("div");
+      section.setAttribute("id", `${section[0]}_section`);
+      root.appendchild(section);
+    });
+  }
   searchBox() {
+    workBox = document.getElementById("main_section");
     const syntax = [
       "name",
       "color",
@@ -69,9 +80,10 @@ export default class dialer {
     inputField.appendChild(select);
     inputField.appendChild(input);
     inputField.appendChild(button);
-    root.appendChild(inputField);
+    workBox.appendChild(inputField);
   }
   wildCardButton() {
+    workBox = document.getElementById("main_section");
     const button = document.createElement("button");
     button.textContent = "wild card";
     button.onclick = () => {
@@ -80,14 +92,20 @@ export default class dialer {
         window.location.href = `card.html?s=${card.id}`;
       });
     };
-    root.appendChild(button);
+    workBox.appendChild(button);
   }
   favoritesButton() {
+    workBox = document.getElementById("main_section");
     const button = document.createElement("button");
     button.textContent = "Favorites";
     button.onclick = () => {
       window.location.href = "result.html?element=favorites&type=name&order=asc";
     };
-    root.appendChild(button);
+    workBox.appendChild(button);
+  }
+  cardOfToday() {
+  
+  }
+  setOfToday() {
   }
 }
