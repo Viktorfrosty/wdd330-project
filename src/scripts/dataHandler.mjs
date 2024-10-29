@@ -29,10 +29,20 @@ export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 // data expiration check.
-function dataExpirationCheck(key) {
-  const storedTime = getLocalStorage(key);
-  const timeDifference = Date.now() - storedTime;
-  return storedTime && timeDifference < 86400000;
+function dataExpirationCheck(key, standarCheck = true) {
+  if (standarCheck) {
+    const storedTime = getLocalStorage(key);
+    const timeDifference = Date.now() - storedTime;
+    return storedTime && timeDifference < 86400000;
+  } else {
+    const now = new Date();
+    const nextMidnight = new Date(now);
+nextMidnight.setHours(24, 0, 0, 0);
+    const timeUntilMidnight = nextMidnight - now;
+    setTimeout(() => {
+      return deprecated
+  }, timeUntilMidnight);
+  }
 }
 // Function to fetch data from API.
 export async function fetchData(url, returnNull = false) {
