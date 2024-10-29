@@ -179,32 +179,46 @@ li ul li .set_name::before {
   overflow: hidden;
   box-sizing: border-box;
 }
-.card_img, #rulings, #card_data, #legalities, #card_data div {
+.card_img,
+#rulings,
+#card_data,
+#legalities,
+#card_data div {
   max-width: 100%;
   overflow-wrap: inherit;
   overflow: inherit;
   box-sizing: inherit;
   border-radius: 30px;
 }
-#rulings, #card_data, #legalities {
-min-height: inherit;
+#rulings,
+#card_data,
+#legalities {
+  min-height: inherit;
 }
-.rule_text, #legalities li, #card_data div {
+.rule_text,
+#legalities li,
+#card_data div {
   background-color: var(--main-color);
   color: var(--detail1-color);
   border: 5px solid var(--detail2-color);
 }
-#alt_button , .rule_text, #legalities li, #card_data div, .card_img {
+#alt_button,
+.rule_text,
+#legalities li,
+#card_data div,
+.card_img {
   box-shadow: 15px 10px 5px var(--detail2-color);
 }
-#rulings, #legalities {
+#rulings,
+#legalities {
   text-align: center;
   min-width: 100%;
 }
 .card_img {
   grid-area: 1/1/2/2;
+  margin-right: 25px;
 }
-#card_data{
+#card_data {
   grid-area: 1/2/2/3;
   display: grid;
   grid-template-rows: repeat(3, auto);
@@ -241,7 +255,8 @@ min-height: inherit;
 #main_data.multi {
   grid-row: 3/4;
 }
-#main_data, .face_data {
+#main_data,
+.face_data {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -251,11 +266,14 @@ min-height: inherit;
   padding: 20px;
   margin-right: 20px;
 }
-#main_data p, .face_data p {
-flex: 1;
-justify-self: center;
+#main_data p,
+.face_data p {
+  flex: 1;
+  justify-self: center;
 }
-#card_data a, #card_data h2, #card_data h3 {
+#card_data a,
+#card_data h2,
+#card_data h3 {
   text-align: center;
 }
 #card_data a {
@@ -286,13 +304,13 @@ justify-self: center;
   display: grid;
 }
 #rulings li {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(2, auto);
-  width: 85%;
+  width: 50%;
   align-self: center;
 }
 #legalities li {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, auto);
   border-radius: 10px;
   width: 65%;
   align-self: center;
@@ -309,8 +327,7 @@ justify-self: center;
   grid-column: 1/3;
   grid-row: 1/2;
   text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px;
   border-radius: 10px;
 }
 .rule_source {
@@ -328,14 +345,18 @@ justify-self: center;
   margin-right: auto;
   margin-left: 5px;
 }
-.rule_source, .rule_published {
+.rule_source,
+.rule_published {
   margin-top: -5px;
+  font-weight: bolder;
+  font-size: 20px;
 }
 .game_mode {
   text-align: left;
   margin-left: 10px;
 }
-.game_mode, .legality {
+.game_mode,
+.legality {
   padding-top: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -475,4 +496,21 @@ label {
   padding: 10px;
   border-radius: 15px;
   z-index: 2;
+}
+/* -----------x---------- */
+/*      Other Elements    */
+/* -----------↓---------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.loading {
+  animation: fadeIn .5s forwards;
+}
+.fade-out {
+  animation: fadeOut .5s forwards;
 }

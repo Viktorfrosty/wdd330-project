@@ -136,7 +136,7 @@ export class cardDetails {
     if ("legalities" in object && !document.getElementById("legalities")) {
       const box = document.createElement("div");
       box.setAttribute("id", "legalities");
-      box.innerHTML = "<p>Legalities</p>";
+      box.innerHTML = "<h2>Legalities</h2>";
       const list = document.createElement("ul");
       const ruleEntries = Object.entries(object["legalities"]);
       ruleEntries.forEach(([game_mode, legality]) => {
@@ -169,7 +169,7 @@ export class cardDetails {
       if (info.data.length > 0) {
         const box = document.createElement("div");
         box.setAttribute("id", "rulings");
-        box.innerHTML = `<h3>${object.name} Notes and Rules</h3>`;
+        box.innerHTML = `<h2>${object.name} Notes and Rules</h2>`;
         const rulingBox = document.createElement("ul");
         rulingBox.setAttribute("class", "rules_list");
         info.data.forEach((ruleElement) => {
