@@ -142,6 +142,8 @@ export default class dialer {
         const newDate = new Date();
         let date = newDate.getTime();
         setLocalStorage("front-card", { card, date });
+        const glimpse = new CardGlimpse(card, false, section);
+        glimpse.render();
       });
     } else {
       searchData = storedInfo.card;
