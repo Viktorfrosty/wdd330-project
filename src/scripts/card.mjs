@@ -189,12 +189,12 @@ export class cardDetails {
         button.textContent = "In favorites ❤️";
       } else {
         button.textContent = "Add to favorites";
-        button.onclick = () => {
+        button.addEventListener("click", () => {
           if (button.textContent !== "In favorites ❤️") {
             saveFavorite(object);
             button.textContent = "In favorites ❤️";
           }
-        };
+        });
       }
       cardMainData.appendChild(button);
     }
@@ -210,10 +210,10 @@ export class cardDetails {
     const altButton = document.createElement("button");
     altButton.setAttribute("id", "alt_button");
     altButton.textContent = "Change Face";
-    altButton.onclick = () => {
+    altButton.addEventListener("click", () => {
       imageList[0].classList.toggle("hidden");
       imageList[1].classList.toggle("hidden");
-    };
+    });
     altButton.setAttribute("id", "alt_button");
     if (!document.getElementById("alt_button") && imageList.length >= 2) {
       mainBox.append(altButton);
