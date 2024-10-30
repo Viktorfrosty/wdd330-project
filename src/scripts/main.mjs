@@ -73,7 +73,7 @@ export default class dialer {
       select.appendChild(option);
     });
     const input = document.createElement("input");
-    input.setAttribute("placeholder", "what are you looking for?");
+    input.setAttribute("placeholder", "search...");
     const executeSearch = () => {
       const selectedValue = select.value;
       const inputValue = input.value;

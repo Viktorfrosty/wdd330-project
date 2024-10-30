@@ -1,6 +1,9 @@
 /* ---------------------- */
 /* -- General Elements -- */
 /* -----------↓---------- */
+button {
+  font-family: var(--paragraphs-fonts);
+}
 :root {
   /* Color palette (page) */
   --main-color: #1d5890;
@@ -105,6 +108,18 @@ main {
 #main_section {
   display: grid;
   grid-template-rows: repeat(4, auto);
+}
+#wild_button button, #fav_button button {
+  border-radius: 15px;
+}
+#input_field button {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+#input_field select {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  text-align: center;
 }
 #main_section,
 #card_section {
