@@ -198,6 +198,9 @@ li ul li .set_name::before {
   overflow: hidden;
   box-sizing: border-box;
 }
+.card_img.rotate-180 {
+  box-shadow: -15px -10px 5px var(--detail2-color);
+}
 .card_img,
 #rulings,
 #card_data,
@@ -253,7 +256,7 @@ li ul li .set_name::before {
   grid-area: 1/1/2/2;
   width: 150px;
   height: 75px;
-  margin-top: 525px;
+  margin-top: 550px;
   background-color: var(--main-color);
   color: var(--detail1-color);
   border-radius: 15px;

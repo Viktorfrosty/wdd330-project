@@ -209,13 +209,24 @@ export class cardDetails {
     }
     const altButton = document.createElement("button");
     altButton.setAttribute("id", "alt_button");
-    altButton.textContent = "Change Face";
-    altButton.addEventListener("click", () => {
-      imageList[0].classList.toggle("hidden");
-      imageList[1].classList.toggle("hidden");
-    });
+    if (object.layout == "flip") {
+      altButton.textContent = "flip";
+      altButton.addEventListener("click", () => {
+        const flipImg = document.querySelector("#card_visualizer img");
+        flipImg.classList.toggle("rotate-180");
+      });
+    } else {
+      altButton.textContent = "Change Face";
+      altButton.addEventListener("click", () => {
+        imageList[0].classList.toggle("hidden");
+        imageList[1].classList.toggle("hidden");
+      });
+    }
     altButton.setAttribute("id", "alt_button");
-    if (!document.getElementById("alt_button") && imageList.length >= 2) {
+    if (
+      (!document.getElementById("alt_button") && imageList.length >= 2) ||
+      (!document.getElementById("alt_button") && object.layout == "flip")
+    ) {
       mainBox.append(altButton);
     }
     textBox.appendChild(cardMainData);
