@@ -100,7 +100,7 @@
   }
   #set_list p {
     margin: 0;
-    padding: 0;
+    padding: 20px 0px;
     justify-self: center;
   }
   #set_list li {
