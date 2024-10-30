@@ -40,6 +40,14 @@
     display: flex;
     flex-direction: column;
   }
+  #input_field select {
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 5px;
+  }
+  #input_field button {
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 0px;
+  }
   .card_img {
     grid-row: 1/2;
     border-radius: 5px;
