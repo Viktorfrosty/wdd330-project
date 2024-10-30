@@ -1,5 +1,21 @@
 @media (max-width: 1000px) {
+  header {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
   /*main page*/
+  #root {
+    margin-top: 175px;
+    max-width: 80%;
+    text-align: center;
+  }
+  #root.main_page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   /*card page*/
   #card_data {
     display: flex;
