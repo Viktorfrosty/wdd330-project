@@ -6,13 +6,16 @@
   }
   #page-header {
     flex-direction: row;
-    height: 150px;
+    height: auto;
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
   }
-  #page-header div{
+  #page-header div, header a {
   margin: 0;
+  }
+  header a {
+    padding: 20px;
   }
   /*main page*/
   #root {
