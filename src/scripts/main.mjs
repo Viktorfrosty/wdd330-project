@@ -93,7 +93,7 @@ export default class dialer {
       }
     });
     const inputHeader = document.createElement("h3");
-    inputHeader.textContent = "Search by...";
+    inputHeader.textContent = "Find cards by...";
     inputField.appendChild(inputHeader);
     inputField.appendChild(select);
     inputField.appendChild(input);
