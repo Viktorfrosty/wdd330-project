@@ -70,7 +70,7 @@ export class nightMode {
       button.textContent = "";
     }
     button.setAttribute("id", "night_mode");
-    button.onclick = () => {
+    button.addEventListener("click", () => {
       switch (button.textContent) {
         case "⚪️":
           this.modeOff();
@@ -81,7 +81,7 @@ export class nightMode {
           button.textContent = "⚪️";
           break;
       }
-    };
+    });
     header.appendChild(button);
   }
 }
@@ -153,10 +153,10 @@ export function createNavButtons(inFavorite = false) {
         button.textContent = "✖️";
       }
       if (button.textContent !== "✖️") {
-        button.onclick = () => {
+        button.addEventListener("click", () => {
           setLocalStorage("search-range", value[2]);
           window.location.reload();
-        };
+        });
       }
       display.appendChild(button);
     });
@@ -181,10 +181,10 @@ export function createNavButtons(inFavorite = false) {
         button.textContent = "✖️";
       } else {
         button.textContent = value[0];
-        button.onclick = () => {
+        button.addEventListener("click", () => {
           urlParams.set("page", value[2]);
           window.location.search = urlParams.toString();
-        };
+        });
       }
       display.appendChild(button);
     });

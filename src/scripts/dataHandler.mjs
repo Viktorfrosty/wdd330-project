@@ -88,13 +88,7 @@ export async function setIconRetriever(setId) {
   info = null;
   list.data.forEach((set) => {
     if (setId === set.id) {
-      let icon;
-      if (set.code == "j25" || set.code == "fj25") {
-        icon = "https://svgs.scryfall.io/sets/default.svg?1730088000";
-      } else {
-        icon = set.icon_svg_uri;
-      }
-      info = `<img loading="lazy" src="${icon}" alt="${set.name} icon" width="20">`;
+      info = `<img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon" width="20">`;
     }
   });
   return info;

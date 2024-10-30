@@ -28,19 +28,13 @@ export default class setsCatalog {
     list.appendChild(header);
     const parentSets = data.filter((set) => !set.parent_set_code);
     parentSets.forEach((set) => {
-      let icon;
-      if (set.code == "j25" || set.code == "fj25") {
-        icon = "https://svgs.scryfall.io/sets/default.svg?1730088000";
-      } else {
-        icon = set.icon_svg_uri;
-      }
       const element = document.createElement("li");
       element.setAttribute("id", `set-${set.code}`);
       element.innerHTML = `<a class="set_link" href="result.html?element=set&s=${set.code}&type=name&order=asc&page=1">
                               <p class="set_name">${set.name}</p>
                               <p class="set_code">${set.code.toUpperCase()}</p>
                               <div class="set_icon">
-                              <img loading="lazy" src="${icon}" alt="${set.name} icon">
+                              <img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon">
                               </div>
                               <p class="set_cards">${set.card_count}</p>
                               <p class="set_date">${set.released_at}</p>
@@ -56,19 +50,13 @@ export default class setsCatalog {
       unresolvedSets = unresolvedSets.filter((set) => {
         const parentElement = list.querySelector(`#set-${set.parent_set_code} > ul`);
         if (parentElement) {
-          let icon;
-          if (set.code == "j25" || set.code == "fj25") {
-            icon = "https://svgs.scryfall.io/sets/default.svg?1730088000";
-          } else {
-            icon = set.icon_svg_uri;
-          }
           const element = document.createElement("li");
           element.setAttribute("id", `set-${set.code}`);
           element.innerHTML = `<a class="set_link" href="result.html?element=set&s=${set.code}&type=name&order=asc&page=1">
                                   <p class="set_name">${set.name}</p>
                                   <p class="set_code">${set.code.toUpperCase()}</p>
                                   <div class="set_icon">
-                              <img loading="lazy" src="${icon}" alt="${set.name} icon">
+                              <img loading="lazy" src="${set.icon_svg_uri}" alt="${set.name} icon">
                               </div>
                                   <p class="set_cards">${set.card_count}</p>
                                   <p class="set_date">${set.released_at}</p>

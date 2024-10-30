@@ -114,14 +114,14 @@ export default class CardGlimpse {
     const button = document.createElement("button");
     button.setAttribute("class", "erase_button");
     button.textContent = "❌";
-    button.onclick = () => {
+    button.addEventListener("click", () => {
       const updatedFavorites = favorites.filter((fav) => fav.id !== card.id);
       setLocalStorage("favorites", updatedFavorites);
       if (snippet) {
         snippet.remove();
       }
       window.location.reload();
-    };
+    });
     return button;
   }
   createFavoriteButton(card) {
@@ -132,12 +132,12 @@ export default class CardGlimpse {
       button.textContent = "❤️";
     } else {
       button.textContent = "🖤";
-      button.onclick = () => {
+      button.addEventListener("click", () => {
         if (button.textContent !== "❤️") {
           saveFavorite(card);
           button.textContent = "❤️";
         }
-      };
+      });
     }
     return button;
   }

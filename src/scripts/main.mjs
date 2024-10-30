@@ -3,6 +3,9 @@ import search, { setLocalStorage, getLocalStorage, dataExpirationCheck } from ".
 import CardGlimpse from "./result.mjs";
 // Module configurations.
 let workBox;
+let buttonBox;
+let label;
+let button;
 // generate the main page.
 export default class dialer {
   constructor() {}
@@ -19,12 +22,12 @@ export default class dialer {
     const sections = ["main", "card"];
     const title = document.createElement("h1");
     title.textContent = "Trading Cards Info Tracker";
-    const slogan = document.createElement("h2");
-    slogan.textContent = "The place where you can find information about every card of Magic the Gathering.";
+    label = document.createElement("h2");
+    label.textContent = "The place where you can find information about every card of Magic the Gathering.";
     root.appendChild(title);
-    root.appendChild(slogan);
+    root.appendChild(label);
     sections.forEach((section) => {
-      const workBox = document.createElement("div");
+      workBox = document.createElement("div");
       workBox.setAttribute("id", `${section}_section`);
       root.appendChild(workBox);
     });
@@ -81,7 +84,9 @@ export default class dialer {
     };
     const button = document.createElement("button");
     button.textContent = "🔍";
-    button.onclick = executeSearch;
+    button.addEventListener("click", () => {
+      executeSearch();
+    });
     input.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
         executeSearch();
@@ -97,34 +102,34 @@ export default class dialer {
   }
   wildCardButton() {
     workBox = document.getElementById("main_section");
-    const buttonBox = document.createElement("div");
+    buttonBox = document.createElement("div");
     buttonBox.setAttribute("id", "wild_button");
-    const buttonLabel = document.createElement("h3");
-    buttonLabel.textContent = "Or better get a...";
-    const button = document.createElement("button");
+    label = document.createElement("h3");
+    label.textContent = "Or better get a...";
+    button = document.createElement("button");
     button.textContent = "wild card";
-    button.onclick = () => {
+    button.addEventListener("click", () => {
       const call = new search();
       call.getWildCard().then((card) => {
         window.location.href = `card.html?s=${card.id}`;
       });
-    };
-    buttonBox.appendChild(buttonLabel);
+    });
+    buttonBox.appendChild(label);
     buttonBox.appendChild(button);
     workBox.appendChild(buttonBox);
   }
   favoritesButton() {
     workBox = document.getElementById("main_section");
-    const buttonLabel = document.createElement("h3");
-    buttonLabel.innerHTML = "Did you pick any card?<br>Then go to...";
-    const buttonBox = document.createElement("div");
+    label = document.createElement("h3");
+    label.innerHTML = "Did you pick any card?<br>Then go to...";
+    buttonBox = document.createElement("div");
     buttonBox.setAttribute("id", "fav_button");
-    const button = document.createElement("button");
+    button = document.createElement("button");
     button.textContent = "Favorites";
-    button.onclick = () => {
+    button.addEventListener("click", () => {
       window.location.href = "result.html?element=favorites&type=name&order=asc";
-    };
-    buttonBox.appendChild(buttonLabel);
+    });
+    buttonBox.appendChild(label);
     buttonBox.appendChild(button);
     workBox.appendChild(buttonBox);
   }
