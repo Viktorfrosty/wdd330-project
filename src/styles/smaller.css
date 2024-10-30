@@ -72,6 +72,9 @@
   #rulings {
     grid-row: 5/6;
   }
+  #rulings li {
+    width: 100%;
+  }
   #rulings li p {
     text-align: center;
     margin-left: 0;
