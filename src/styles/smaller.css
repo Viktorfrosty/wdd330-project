@@ -11,14 +11,81 @@
     text-align: center;
   }
   #root.main_page {
-    display: flex;
-    flex-direction: column;
+    display: inherit;
+    flex-direction: inherit;
     justify-content: center;
     align-items: center;
   }
   /*card page*/
+  #card_visualizer {
+    display: grid;
+    grid-template-rows: repeat(6, auto);
+    grid-template-columns: auto;
+  }
+  #card_img {
+    grid-row: 1/2;
+    border-radius: 10px;
+  }
+  #alt_button {
+    grid-row: 2/3;
+    margin-top: 0px;
+  }
   #card_data {
+    grid-row: 3/4;
+  }
+  #card_data a {
+    align-self: center;
+  }
+  #legalities {
+    grid-row: 4/5;
+  }
+  #rulings {
+    grid-row: 5/6;
+  }
+  #rulings li p {
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+  }
+  #rulings li, #card_data, #legalities, #rulings {
     display: flex;
     flex-direction: column;
   }
+  #alt_button, #card_img, #card_data, #legalities, #rulings {
+    grid-column: 1/2;
+  }
+  /* sets page*/
+  #set_list, #set_list a, #set_list span{
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  #set_list ul {
+    padding: 0px;
+  }
+  #set_list p {
+    margin: 0;
+    padding: 0;
+    justify-self: center;
+  }
+  #set_list li {
+    margin-top: 50px;
+  }
+  #set_list p::before {
+    content: "";
+  }
+  /*result page*/
+  #card_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #display{
+    flex-direction: row;
+    width: auto;
+    height: auto;
+    top: 143px;
+   }
 }
