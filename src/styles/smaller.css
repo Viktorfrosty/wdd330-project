@@ -21,7 +21,7 @@
   /*main page*/
   #root {
     margin-top: 200px;
-    max-width: 80%;
+    max-width: 90%;
     text-align: center;
   }
   #root.main_page {
@@ -66,9 +66,7 @@
     grid-row: 4/5;
   }
   #legalities li {
-    width: 85%;
-  }
-  #legalities li legality {
+    width: 90%;
     margin-right: auto;
   }
   #rulings {
@@ -123,5 +121,9 @@
     border-radius: 0px;
     margin: 0;
     width: 100%;
+  }
+  #set_list {
+    margin-top: 0;
+    margin-right: 35px;
   }
 }
