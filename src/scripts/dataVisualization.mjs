@@ -284,14 +284,14 @@ export default class Visualizer {
   errorPage() {
     root.setAttribute("class", "error");
     messageTitle.textContent = "Sorry, the information was not found";
-    messageParaph.innerHTML = "Go back to <a href='index.html'>Home</a> and try again with other search parameters.";
+    messageParaph.innerText = "Go back to Home and try again with other search parameters.";
     root.appendChild(messageTitle);
     root.appendChild(messageParaph);
   }
   noFavorites() {
     root.setAttribute("class", "error");
     messageTitle.textContent = "Sorry, there are not favorites saved";
-    messageParaph.innerHTML = "Go back to <a href='index.html'>Home</a> and search for a card that you like.";
+    messageParaph.innerText = "Go back to Home and search for a card that you like.";
     root.appendChild(messageTitle);
     root.appendChild(messageParaph);
   }
