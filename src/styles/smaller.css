@@ -129,4 +129,7 @@
     margin-top: 0;
     margin-right: 35px;
   }
+  .awaiting {
+    margin-top: 25px;
+  }
 }
